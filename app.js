@@ -1,12 +1,21 @@
 const Shopify = require("shopify-api-node");
 const date = new Date();
+const express = require('express')
+const multer  = require('multer');
 const options = { month: "short", day: "numeric" };
 const date2 = date.toLocaleDateString("en-US", options);
 const fs = require("fs");
 const http = require("https");
 const zipFolder = require("zip-a-folder");
 var zipper = require("zip-local");
+const path = require("path");
 var net = require("net");
+const app = express()
+
+const port = 3000
+app.use(`wigs.com/${date2}`, express.static(path.join(__dirname, `wigs.com/${date2}`)));
+
+
 const shopify2 = new Shopify({
   shopName: "wigs-store",
   apiKey: "def0b879df143c2b3575391121b3272a",
@@ -39,21 +48,9 @@ async function getShop() {
     fs.mkdirSync(dir2);
   }
 
-  class ZipAFolder {
-    static main() {
-      zipFolder.zipFolder(
-        `wigs.com/${date2}/assets`,
-        `wigs.com/${date2}/assets2.zip`,
-        function (err) {
-          if (err) {
-            console.log("Something went wrong!", err);
-          }
-        }
-      );
-    }
-  }
-  await Promise.all(
-    res.map(async (asset) => {
+
+   
+Promise.all(res.map(async (asset) => {
       if (asset.public_url === null) {
         const res5 = await shopify1.asset.get(assets[0].id, {
           "asset[key]": asset.key,
@@ -65,19 +62,14 @@ async function getShop() {
         console.log("arrrr", arr.length);
         var parts = asset.key.split("/");
         var answer = parts[parts.length - 1];
-        // var writeStream = fs.createWriteStream(
-        //   `wigs.com/${date2}/assets/${answer}`
-        // );
-        // writeStream.write(res5.value);
-        // writeStream.end();
-
-        let k = await fs.writeFile(`wigs.com/${date2}/assets/${answer}`,res5.value,
-    // callback function that is called after writing file is done
-    function(err) { 
-        if (err) throw err;
-        // if no error
-        console.log("Data is written to file successfully.")
-});
+        var writeStream = await fs.createWriteStream(
+          `wigs.com/${date2}/assets/${answer}`
+        );
+        writeStream.write(res5.value);
+        writeStream.on('finish', () => {
+            console.log('wrote all data to file');
+        });
+        writeStream.end();
       } else {
         let src2 = await asset.key.replace(".js", ".txt");
         junk.push({
@@ -102,10 +94,64 @@ async function getShop() {
         });
       }
     })
-  );
+  ).then((values) => {
+    console.log(values);
+    console.log("finish");
+  
+  });
 
-  console.log("finish");
-  const zip = ZipAFolder.main();
-  console.log("zip", zip);
+ 
 }
-getShop();
+
+async function zipFile(){
+    class ZipAFolder {
+        static main() {
+          zipFolder.zipFolder(
+            `wigs.com/${date2}/assets`,
+            `wigs.com/${date2}/assets2.zip`,
+            function (err) {
+              if (err) {
+                console.log("Something went wrong!", err);
+              }
+            }
+          );
+        }
+      }
+      const zip =   await ZipAFolder.main();
+     console.log("zip", zip);
+}
+getShop().then(zipFile)
+
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, `wigs.com/${date2}`);
+//     },
+//     filename: (req, file, cb) => {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//         cb(null, file.fieldname + '-' + uniqueSuffix)
+//     }
+// });
+// const fileFilter = (req, file, cb) => {
+//     if (file.mimetype == 'assets2/zip' ) {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// }
+// const upload = multer({ storage: storage, fileFilter: fileFilter });
+// app.post('/upload', upload.single('file'), (req, res, next) => {
+//     try {
+//         return res.status(201).json({
+//             message: 'File uploded successfully'
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// });
+app.get('/', (req, res) => {
+    res.status(200).send('Running');
+});
+
+
+
+app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
