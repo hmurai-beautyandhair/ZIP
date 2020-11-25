@@ -1,0 +1,86 @@
+<div class="row homepage-section no-fouc">
+
+  <h2 class="desktop-12 tablet-6 mobile-3"><a href="{{ collection.url }}">{{ 'layout.homepage.collections_title' | t }}</a></h2> 
+
+  <ul class="collection-tabs desktop-12 tablet-6 mobile-3">
+    {% for link in linklists[settings.homepage-collection-linklist].links %}
+    <li><a href="#tab-{{ forloop.index }}">{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+  
+  {% if settings.homepage-collection-linklist == blank %}
+  <div class="theme-instructions">
+    <div class="onboard desktop-12 tablet-6 mobile-3">
+      <h3>Home page - featured collections</h3>
+      You are seeing this message as you have enabled the Featured collections section of your Home page options
+      but have yet to choose a menu from the section titled: <strong>Home page - featured collections</strong>
+      <br /><br />
+      To configure this section go to the <a href="/admin/themes/43759171/editor">theme Customizer</a> and open the section named: <strong>Home page - featured collections</strong>.
+      <br /><br />
+      Need more help? take a look at our <a target="_blank" href="http://support.undergroundmedia.co.uk/customer/portal/articles/2384080-home-page---featured-collections">tutorial</a>.
+    </div>
+
+    <div class="theme-content">
+      {% for i in (1..4) %}
+      <div class="collection-index desktop-3 tablet-half mobile-half{% cycle ' first', '', '', ' last' %}">
+        <div class="collection-image">
+          <img src="//cdn.shopify.com/s/images/themes/product-{{ forloop.index }}.png" alt="{{ image.alt }}" />
+        </div>
+        <div class="collection-info">
+          <h3>Sample collection</h3>
+          {% if settings.collection_count %}<p>5 products</p>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% for link in linklists[settings.homepage-collection-linklist].links %}
+  {% assign collection = link.object %}
+  <div id="tab-{{ forloop.index }}">  
+    <div class="desktop-12 tablet-6 mobile-3">
+      <div class="product-collection-carousel">
+        
+        {% if collection.image %}
+        <div class="product-index" data-alpha="{{ collection.title }}">          
+          {{ collection.image.src | collection_img_url: 'grande' | img_tag: collection_title }}     
+        </div>  
+        {% endif %}
+        
+        {% for product in collection.products limit: settings.homepage-collection-limit %}
+        <div class="product-car">
+          {% assign products-per-row = settings.products-per-row %}
+          <div class="product-index" data-alpha="{{ product.title }}" data-price="{{ product.price }}">         
+            {% include 'product-listing' with collection %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $('ul.collection-tabs').each(function(){
+      var active, content, links = $(this).find('a');
+      active = links.first().addClass('active');
+      content = $(active.attr('href'));
+      links.not(':first').each(function () {
+        $($(this).attr('href')).hide();
+      });
+      $(this).find('a').click(function(e){
+        active.removeClass('active');
+        content.hide();
+        active = $(this);
+        content = $($(this).attr('href'));
+        active.addClass('active');
+        content.show();
+        return false;
+      });
+    });
+  });
+</script>

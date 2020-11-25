@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+ <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-P7JL3T6');</script> 
+{%if page.handle == "wig-videos" %}
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  {% else %}
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  {%endif%}
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+
+	{{ 'jquery.lazyload.min.js' | asset_url | script_tag }}	
+<script>
+ $(function() {
+          $("img").lazyload({
+          effect : "fadeIn", // optional - Take out this line if dont want the fade in / flash effect when images are loaded
+          failure_limit : 50,  //optional - include only if using images that are not in the natural collection order eg random order like  my site - if so set to no of products in collection but no higher than 50 
+          threshold : 200 //optional - include if want images starting to load eg 200px before they are on screen - on my page it loads the images more smoothly
+          });
+  
+   
+   
+   			$( document ).ajaxComplete(function( event, xhr, settings ) {
+  				
+              if(settings.url="https://ecb.hextom.com/ecb_get_bars?shop=wigscom.myshopify.com"){
+						{%if customer %}   					
+                			$("#ecb_message").text("New Deals Every Day! ")
+							$("#ecb_email_input_wrap").remove();
+                			$("#ecb_email_button_wrap a").text('Click Here!').attr('href','/pages/daily-deals');
+						{%endif%}
+		                setTimeout( function (){  /*if($('#pulse_broadcast').length == 0){ $('#fsb_bar').prepend('<div class="blob white" style="display:inline-block;" id="pulse_broadcast"></div>') } */ $("#fsb_close").css({"text-align":"center","width":"30px"});$('nav.shifter-navigation').css('padding-top','30px'); },150);
+                
+				}
+					
+  				
+			});
+   
+   
+ 
+      });
+</script>
+  
+<script>
+      {% if customer.tags.size > 0 %}
+        window.upsell_customer_tags = "{{customer.tags |join: ','}}";
+      {% endif %}
+    </script>
+  <meta charset="utf-8" />
+  <meta name="ahrefs-site-verification" content="69d3b3ca703017e4169fa6705e4c1ea2d3111bfb72044d45a7a22a4a6863193a">
+  <meta name="msvalidate.01" content="EB592D30CE4CDC1B591A8FAA19DD8CF0" />
+  <meta name="google-site-verification" content="xtifNRJWGVD2zk54gIUwUKGmT-DHsBIKK9cn5D5JCFg" />
+  <meta name="google-site-verification" content="xtKDvbbwwmWI-C9JIJT_SH2lWfYGVQpS3FqEvCQM1A8" />
+{% include 'searchresults' %}
+  <title>{{ page_title }}{{ searchQuery }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}{% if current_page != 1 %} - Page {{ current_page }}{% endif %}{{ searchQuery }}" />
+  {% endif %}
+
+  <link rel="canonical" href="{{ canonical_url }}" />
+
+  {% include 'social-media-meta-tags' %}
+
+  <!-- CSS
+================================================== -->
+
+  {{ 'stylesheet.css' | asset_url | stylesheet_tag }}
+  {{ 'font-awesome.css' | asset_url | stylesheet_tag }}
+  {{ 'queries.css' | asset_url | stylesheet_tag }}
+  {% include 'google-fonts' %}
+  <!--[if LTE IE 8]>
+{{ 'gridlock.ie.css' | asset_url | stylesheet_tag }}  
+<![endif]--> 
+
+
+  <style>@media screen and (max-width:480px){ iframe[src^="https://www.youtube.com/embed/"] {width:100%;height:190px;margin: auto;}  } .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }#void-click{color:#000;cursor:default;} ul#cart li a#void-click:hover{color:#000;}#flag_graphic {width:59px;}#fsb_background{background-size:100% auto;background-repeat:no-repeat;}
+
+.blob {
+	background: black;
+	border-radius: 50%;
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	margin-right: 6px;
+	height: 12px;
+	width: 12px;
+	transform: scale(1);
+	animation: pulse-black 2s infinite;
+}
+
+.blob.white {
+	background: white;
+	box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+	animation: pulse-white 1.5s infinite;
+}
+
+@keyframes pulse-white {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+	}
+	
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+	}
+	
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+	}
+}
+</style>
+  
+  <!-- JS
+================================================== -->
+
+  
+ 
+  {{ 'theme.js' | asset_url | script_tag }} 
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}  
+  {{ 'jquery.fs.shifter.js' | asset_url | script_tag }}
+
+  {% if template == 'index' or template contains 'blog' %}
+  {{ 'instafeed.js' | asset_url | script_tag }}
+  {% endif %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Favicons
+================================================== -->
+
+  <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}">
+
+  {% if template contains 'customers' %}
+  {{ "shopify_common.js" | shopify_asset_url | script_tag }}
+  {{ "customer_area.js"  | shopify_asset_url | script_tag }}
+  {% endif %}
+
+  {{ content_for_header }}
+
+  <!-- responsive youtube video script -->
+<script>
+(function($){
+     $(function(){
+	
+        //this will first make sure that all youtube videos on a page will load with no 
+		//related videos
+       $('iframe[src*="youtube.com"]').each(function(){
+
+            var parser = document.createElement('a');
+            parser.href=$(this).attr('src');
+            if(parser.href.indexOf('rel=0') === -1){
+            var joining_char = '&';
+            if(parser.href.indexOf('?') === -1){
+            joining_char = '?';
+            }
+            $(this).attr('src',parser.href+joining_char+'rel=0');
+            }
+
+		});
+         $('iframe.responsiveyoutube-100,iframe.responsiveyoutube-50,iframe.responsiveyoutube-75').each(function(){
+              
+              var class_list = $(this).attr('class').split(/\s+/);
+              for(var i = 0; i < class_list.length; i++){
+				var match = class_list[i].match(/responsiveyoutube-(\d*)/gi);
+					if(match !== null){ var percent=match[0].split('-')[1];}
+				}
+				$(this).wrap('<div class="exp-'+percent+'"><div class="embed-container"></div></div>');
+              
+            });
+       
+       //end responsive youtube script
+       
+       //start e-mail signup confirmation popup
+	       
+
+        function getUrlParameter(sParam)
+        {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) 
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) 
+                {
+                    return sParameterName[1];
+                }
+            }
+
+        }
+
+        if(getUrlParameter("result")  === "success"){
+
+                $.fancybox(
+                  '<p><a href="/"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/1701_popup_signup_confirmation.jpg" ></a></p>',
+                {
+                        'autoDimensions'	: true,
+                    'width'         		: 350,
+                    'height'        		: 'auto',
+                    'transitionIn'		: 'fade',
+                    'transitionOut'		: 'fade'
+                }
+            );
+
+        }
+
+		//end e-mail signup confirmation popup
+  
+		//this removes the styles of the reward points link
+       $('#void-click').on('click',function(e){ e.preventDefault(); return false; });
+       //this makes sure that any search removes discontinued items.
+	   
+		//Add email to sign up form if on sign up form page.
+		var customer_email = getUrlParameter('email');if(customer_email !== ''){$('input#email').val(customer_email)}
+       
+       //Sale Banner fix
+       $('body').on('click', '#fsb_close', function(){  $('.is-moved-by-drawer').css('margin-top','0px');$('nav.shifter-navigation').css('padding-top','0px');});
+       
+       {%if template == 'index'%}
+       //include the ga tracking
+       {%render 'homepage-ga-tracking'%}
+       {%endif%}
+       
+     });
+})(jQuery)
+</script>
+
+{% include 'sca.freegifts' %}
+
+
+<!-- Pinterest Tag -->
+<script>
+!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+      n=window.pintrk;n.queue=[],n.version="3.0";var
+      t=document.createElement("script");t.async=!0,t.src=e;var
+      r=document.getElementsByTagName("script")[0];
+      r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2614611558091');
+pintrk('page');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt=""
+      src="https://ct.pinterest.com/v3/?tid=2614611558091&noscript=1" />
+</noscript>
+<!-- end Pinterest Tag -->
+
+  <!-- Global site tag (gtag.js) - Google AdWords: 1072629339 --> <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1072629339"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-1072629339'); </script> 
+    
+  {%comment%}{% include "loyaltylion" %}{%endcomment%}
+{% include "donations-script" %}
+  
+  
+<!-- This line added automatically by JSON-LD for SEO. -->{% include 'jsonld-for-seo' %}  
+{%comment%}
+  <script>
+	  $(document).ready(function(){
+  				
+   	
+	if(  $.cookie("hss") ){
+		$('#circle-30,#special-sale-seperator,#AddToCartForm .header').css('display','none');
+      	
+	}
+  
+  })
+</script>
+
+{%endcomment%}
+  
+</head>
+
+<body class="gridlock shifter {{ template }}">
+
+
+  {% include 'timber-cart' %}
+  <div id="top-bar"{% if settings.full-width-header %} class="gridlock-fluid"{% endif %}>
+    {% if settings.full-width-header %}<div class="row">{% endif %}
+    <div class="row">
+      <div class="desktop-12 tablet-6 mobile-3">
+        {{ settings.top_bar_message }}
+      </div>
+    </div>
+    {% if settings.full-width-header %}</div>{% endif %}
+  </div>  
+  <div class="shifter-page is-moved-by-drawer" id="PageContainer">   
+    <div class="page-wrap">
+
+      <header{% if settings.full-width-header %} class="gridlock-fluid"{% endif %}>
+        {% if settings.full-width-header %}<div class="row">{% endif %}
+        <div id="identity" class="row">        
+          <div id="logo" class="{% if settings.logo-center %}desktop-4 desktop-push-4 tablet-6{% else %}desktop-8 tablet-3{% endif %} mobile-3">       
+            {% if settings.use_logo_image %}
+            <a href="/"><img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" style="border: 0;"/></a>
+            {% else %}
+            <a href="/">{{ shop.name }}</a>
+            {% endif %}           
+          </div>  
+
+          <div class="desktop-4 {% if settings.logo-center %}tablet-6{% else %}tablet-3{% endif %} mobile-3">
+            <ul id="cart"{% if settings.logo-center %} class="tablet-3"{% endif %}>            
+              {% if shop.customer_accounts_enabled %}
+              <li>
+                {% if customer  %}
+                <a href="/account" rel="nofollow">{{ 'layout.customer.my_account' | t }} <i class="fa fa-user"></i></a>
+                <a href="/account/logout" rel="nofollow">{{ 'layout.customer.log_out' | t }}</a>
+                {% else %}                   
+                <a href="/account/login" rel="nofollow">{{ 'layout.customer.my_account' | t }}  <i class="fa fa-user"></i></a>
+                {% endif %}
+              </li>
+              {% endif %}
+              {% if settings.show_multiple_currencies %}
+              <li>{% include 'currencies-switcher' %}</li>
+              {% endif %}
+				{% if customer %}<li><a href="/account" rel="nofollow">My Points: <span class="sweettooth-points-balance">(loading)</span></a></li>{% endif %}
+              
+              
+              <li class="cart-overview">
+                <a href="/cart" rel="nofollow" {% if settings.ajax_cart_method == 'drawer' %}class="site-header__cart-toggle js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false"{% endif %}>
+                  <span class="cart-words">{{ 'cart.general.title' | t }}</span>
+                  &nbsp;<i class="fa fa-shopping-cart"></i> 
+                  <span class="CartCount">{{ cart.item_count }}</span>
+                </a> 
+              </li>
+              <li>
+                <a href="/pages/advice-how-tos">
+                  <span class="cart-words">
+                    NEW TO WIGS?
+                  </span>
+                  &nbsp;<i class="fa fa-info-circle header-advice"></i>
+                </a>
+              </li>
+              
+
+              <li class="search-toggle">
+                
+                <i class="  fas fa fa-search"></i>
+                
+              </li>
+              
+
+              <li class="shifter-handle"><i class="fa fa-bars" aria-hidden="true"></i></li>
+              
+            </ul>           
+
+            <ul id="social-links"{% if settings.logo-center %} class="tablet-3"{% endif %}>
+              {% if settings.show_facebook %}<li><a href="{{ settings.facebook_url }}" target="_blank" rel="nofollow"><i class="fa fa-facebook"></i></a></li>{% endif %}
+              {% if settings.show_twitter %}<li><a href="{{ settings.twittername }}" target="_blank" rel="nofollow"><i class="fa fa-twitter"></i></a></li>{% endif %}
+              {% if settings.show_pinterest %}<li><a href="{{ settings.pinterest_url }}" target="_blank" rel="nofollow"><i class="fa fa-pinterest"></i></a></li>{% endif %}
+              {% if settings.show_tumblr %}<li><a href="{{ settings.tumblr_url }}" target="_blank" rel="nofollow"><i class="fa fa-tumblr"></i></a></li>{% endif %}
+              {% if settings.show_youtube %}<li><a href="{{ settings.youtube_url }}" target="_blank" rel="nofollow"><i class="fa fa-youtube"></i></a></li>{% endif %}
+              {% if settings.show_googleplus %}<li><a href="{{ settings.googleplus_url }}" target="_blank" rel="nofollow"><i class="fa fa-google-plus"></i></a></li>{% endif %}
+              {% if settings.show_instagram %}<li><a href="//instagram.com/{{ settings.instagram-id }}" target="_blank" rel="nofollow"><i class="fa fa-instagram"></i></a></li>{% endif %}
+              <li class="searchbox">
+              <form action="/search" method="get">
+                <input type="text" name="q" id="q" placeholder="{{ 'general.search.placeholder' | t }}" />
+              </form>  
+              </li>            
+            </ul>
+          </div>
+        </div>
+        {% if settings.full-width-header %}</div>{% endif %}
+      </header>
+
+      {% include 'navigation' %}
+      	        
+      <div class="clear"></div>
+      {% if template contains 'collection' %}      
+      {% if collection.description contains '[banner]' %}
+      {% capture banner %}{{ collection.handle }}.jpg{% endcapture %}
+      {% capture alt %}{{ collection.title }}{% endcapture %}
+      <div class="collection-banner">
+        <img src="{{ banner | file_url }}" alt="{{ collection.title }}">
+      </div>
+      {% endif %}
+      {% endif %}  
+
+      {% if template contains 'blog' and settings.blog-banner %}
+      <div class="collection-banner">
+        <img src="{{ 'blog-banner.jpg' | asset_url }}" alt="{{ collection.title }}">
+      </div>
+      {% endif %}
+
+      {% if template == 'index' %}	
+      {{ content_for_layout }}
+      {% else %}	
+      <div id="content" class="row">	
+        {% if template != 'index' %}
+        {% if settings.breadcrumb %}
+        {% include 'breadcrumb' %}	
+        {% endif %}	
+        {% endif %}
+        {{ content_for_layout }}  
+      </div>
+      {%if apply_special_sale%}<div class="row" {%if template contains "page" %}style="display:none"{%endif%}><p>* 40% discount applies to select styles and colors only. Discounts cannot be combined. While supplies last.</p></div>{%endif%}
+      {% endif %}
+
+    </div>  
+    <div style="text-align:center;">
+  		<a href="/pages/the-wigs-com-experience" ><img class="lazyload" style="width:100%;max-width:1400px;min-height:100%" src="" data-src="https://cdn.shopify.com/s/files/1/2636/2774/files/1904_hBanner_thewigsExperience_withCTA.jpg?430" loading="lazy" data-ga-cat="Homepage Images" data-ga-label="Wigs.com Experience"></a>
+	</div>
+    
+    {%comment%}    
+    <div style="margin: 15px 0 25px 0">
+    <a href="/pages/customer-survey-august-2020">
+      <picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/Screen_Shot_2020-08-03_at_5.15.18_PM.png?v=1596650654" media="(max-width: 800px)"> 
+    	<img style="min-width:100%;min-height:100%" src="https://cdn.shopify.com/s/files/1/1410/9094/files/2008_homepagebanner_Feedback_1.jpg?v=1596650663" data-ga-cat="Homepage Images" data-ga-label="Customer Survey">
+	  </picture>
+    </a>
+    </div>
+    {%endcomment%}
+    
+    <div class="trustpilot-widget" data-locale="en-US" data-template-id="53aa8912dec7e10d38f59f36" data-businessunit-id="590362fe0000ff0005a16777" data-style-height="130px" data-style-width="100%" data-theme="light" data-stars="5"> </div> 
+
+    <div id="newsletter">
+      <div class="row">
+        {% include 'mailing' %}
+      </div>
+    </div>  
+    
+    <footer>
+
+      <div class="row">
+
+        {% assign grid = 0 %}
+        {% if settings.footer-blog != '' %}{% assign grid = grid | plus: 1 %}{% endif %}
+        {% if settings.footer-contact %}{% assign grid = grid | plus: 1 %}{% endif %}
+        {% if settings.footer-1-links != '' %}{% assign grid = grid | plus: 1 %}{% endif %}
+        {% if settings.footer-2-links != '' %}{% assign grid = grid | plus: 1 %}{% endif %}
+        {% if grid > 0 %}
+
+        {% if settings.footer-blog != '' %}
+        <div class="desktop-{{ 12 | divided_by: grid }} tablet-half mobile-full">
+          <div class="section-title">
+            <h4>{{ 'layout.footer.section_1_title' | t }}</h4>
+          </div>        
+          <ul>
+            {% for article in blogs[settings.footer-blog].articles limit: settings.footer-blog-limit %}
+            <li><a href="{{ article.url }}">{{ article.title }}</a></li>
+            {% endfor %}
+             <li><a href="/pages/our-wigs-community">Our Community</a></li>
+          </ul>
+        </div>
+        {% endif %}        
+
+        {% if settings.footer-contact %}
+        <div class="desktop-{{ 12 | divided_by: grid }} tablet-half mobile-full">
+          <div class="section-title">
+            <h4>{{ 'layout.footer.section_2_title' | t }}</h4>
+          </div>
+          {% comment %}
+          <div style="padding:6px;background-color: #FBEDE7;border-radius: 6px;color: #D14604;font-size: 14px;">
+            <strong>Weather Alert!</strong> Due to a Tornado in the Dallas area our call center is currently closed. We hope to re-open soon!
+          </div>
+          {% endcomment %}
+          <ul>
+            {% if settings.show-email %}<li><label>{{ 'layout.footer.email_label' | t }}</label>{{ settings.email }}</li>{% endif %}
+            {% if settings.show-phone %}<li><label>{{ 'layout.footer.phone_label' | t }}</label>{{ settings.phone }}</li>{% endif %}
+            <li><strong>Holiday Hours</strong>:</li>
+            <li>Thanksgiving Day - <span style="font-style:italic;">CLOSED</span><li>
+				<li>Black Friday - 8am - 3pm (CST)<li>
+				<li>Cyber Monday - Regular Hours<li>
+            {% if settings.show-address %}<li><label>{{ 'layout.footer.address_label' | t }}</label><img align="left" id="flag_graphic" src="" classy="lazyload" data-src="{{ 'smallFlagfor-Site.gif' | asset_url }}" alt="{{US Flag}} " loading="lazy">{{ settings.address }} | <b style="font-weight:bold">Corporate Office</b></li>{% endif %}
+            <li><label>Returning your order?</label><a href="/pages/returns" rel="nofollow">Click here</a></li>
+		</ul>
+        </div>
+        {% endif %}
+
+        {% if settings.footer-1-links != '' %}
+        <div class="desktop-{{ 12 | divided_by: grid }} tablet-half mobile-full">
+          <div class="section-title">
+            <h4>{{ 'layout.footer.section_3_title' | t }}</h4>
+          </div>
+          <ul>
+            {% for link in linklists[settings.footer-1-links].links %}                
+            <li>{{ link.title | link_to: link.url }}</li>
+            {% endfor %}
+            <li><a href="/pages/wigs-covered-by-insurance" title="Insurance Wigs">Insurance &amp; Wigs</a></li>
+            <li><a href="/pages/wig-videos" title="Wigs 101 Videos">Wigs 101 Videos</a></li>
+            <li><a href="/pages/wig-buyers-guide" title="Wig Buyers Guide">Wig Buyers Guide</a></li>
+            <li><a href="/pages/alternative-hair-glossary" title="Hair From A to Z">Hair Glossary</a></li>
+            
+          </ul>  
+        </div>
+        {% endif %}
+
+        {% if settings.footer-2-links != '' %}
+        <div class="desktop-{{ 12 | divided_by: grid }} tablet-half mobile-full">
+          <div class="section-title">
+            <h4>{{ 'layout.footer.section_4_title' | t }}</h4>
+          </div>
+          <ul>
+            {% for link in linklists[settings.footer-2-links].links %}                
+            <li>{{ link.title | link_to: link.url }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endif %}
+
+      </div> 
+
+      <div class="clear"></div>
+
+      <div class="sub-footer row">
+
+        <div class="desktop-6 tablet-3 mobile-3 left-side">
+          Copyright &copy; {{ 'now' | date: "%Y" }} {{ shop.name | link_to: '/' }} | A <a href="http://www.beautyandhair.com" target="_blank" rel="nofollow">Beauty &amp; Hair</a> Company
+        </div>
+        <div class="desktop-6 tablet-3 mobile-3 right-side">   
+        </div>  
+      </div>
+
+    </footer>
+  </div>
+  {% include 'mobile-navigation'%}
+  {% include 'popup' %}
+
+  <script type="text/javascript">
+    //initiating jQuery
+    jQuery(function($) {
+      if ($(window).width() >= 741) {
+
+        $(document).ready( function() {
+          //enabling stickUp on the '.navbar-wrapper' class
+          $('#nav').stickUp();
+        });
+      }
+
+    });
+  </script>  
+
+
+
+  {% include 'popup-cart' %}
+  {% comment %}
+  <a href="#" class="scrollup"><i class="icon-chevron-up icon-2x"></i></a>
+  {% endcomment %}
+  <!-- Begin Recently Viewed Products -->
+  <script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    // Including api.jquery.js conditionnally.
+    if (typeof Shopify.resizeImage === 'undefined') {
+      document.write({{ "api.jquery.js" | shopify_asset_url | script_tag | json }});
+    }
+    //]]>
+  </script>
+
+  {{ '//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js' | script_tag }}
+  {{ 'jquery.products.min.js' | asset_url | script_tag }}
+
+  {% if template contains 'product' %}
+  <script type="text/javascript" charset="utf-8">
+    //<![CDATA[
+    Shopify.Products.recordRecentlyViewed();
+    //]]>
+    $('input, textarea').placeholder();
+  </script>
+  {% endif %}  
+
+  {% if settings.show-facebook-like %} 
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=127142210767229";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  {% endif %}
+
+
+  {% include 'currencies' %}
+
+  {{ 'handlebars.min.js' | asset_url | script_tag }}
+  {% include 'ajax-cart-template' %}
+  {{ 'ajax-cart.js' | asset_url | script_tag }}
+  <script>
+    jQuery(function($) {
+      ajaxCart.init({
+        formSelector: '#AddToCartForm',
+        cartContainer: '#CartContainer',
+        addToCartSelector: '#AddToCart',
+        cartCountSelector: '.CartCount',
+        cartCostSelector: '.CartCost',
+        moneyFormat: {{ shop.money_format | json }},
+        onToggleCallback: function(cart) {
+        Currency.convertAll(shopCurrency, Currency.currentCurrency);
+        jQuery('.selected-currency').text(Currency.currentCurrency);
+      }
+                    });
+    });
+    jQuery('body').on('ajaxCart.afterCartLoad', function(evt, cart) {
+      // Bind to 'ajaxCart.afterCartLoad' to run any javascript after the cart has loaded in the DOM
+      timber.RightDrawer.open();
+    });      
+  </script>  
+  
+  
+  <!-- Add any additional scripts below this line --> 
+
+
+{% include 'pick-an-option' %}
+
+  
+<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"5683121"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script><noscript><img src="//bat.bing.com/action/0?ti=5683121&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" /></noscript>
+ <script>
+    function hideShowMarker(){
+		
+		      	var markers = $('.marker');	
+		//var sold_out_gallery_marker = $('#sold-out-gallery-marker');	
+      markers.each(function(){	
+        			var els=1;
+      				$(this).show();	
+      				$(this).nextAll().each(function(){if( $(this).hasClass('swatch-divider') || $(this).hasClass('marker') ){ return false;}else{ if($(this).css('display') !=='none'){ els++; } }   });	
+        			if(els == 1){   $(this).hide();   }	
+      })
+	}
+   
+   
+    $(window).on('resize',function() {
+      var WindowWidth = $(window).width();
+      if (WindowWidth > 980) {
+       var div_height=jQuery('.top-right-gd').height();
+        setTimeout(function(){
+          div_height = (div_height === 0)? "auto":div_height; 
+      	 $('.bigger-gd .field-content').css("height",div_height);  
+        },1000)
+      }
+      else
+      {
+       $('.bigger-gd .field-content').css("height","auto");
+      }
+      
+    });
+    $(document).ready(function() {
+      $(window).trigger('resize');
+      
+      $('.color_group_list li a').on('click',function(e){
+        e.preventDefault();
+        var id = $(this).attr('href').replace('#','');
+        
+        $('.color_group_list li a').removeClass('active');
+        $(this).addClass('active');
+        $('.swatch-element.color').hide();
+        if( id == 'all' ){
+           var is_mobile = ( $('#product-photos').css('display')  == "none") ? true : false; 
+          if(is_mobile){
+            $('.swatch-element.color').show();
+          }
+          else{
+          	$('.swatch-element.color').not('.product-image-element').show();
+          }
+        }
+        else{
+          $('.swatch-element.color.'+id).show(); 
+        }
+		hideShowMarker();   
+      }).text( function(i,text){  return text.replace('-',' ');  } );
+      
+    });
+  </script>
+  <script>
+    jQuery(function() {
+      jQuery('.swatch :radio').change(function() {
+        var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+        var optionValue = jQuery(this).val();
+        jQuery(this)
+        .closest('form')
+        .find('.single-option-selector')
+        .eq(optionIndex)
+        .val(optionValue)
+        .trigger('change');
+      });
+    });
+    
+    pintrk('track', 'pagevisit');
+  </script> 
+	
+{% include 'smile-initializer' %}
+{% include 'daily-deals-loader' %}
+<script async type="text/javascript" data-api-key="" id="stamped-script-widget" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/lastsecondcoupon/js/emailcollectionbar.js?shop=wigscom.myshopify.com"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/lastsecondcoupon/js/freeshippingbar.js?shop=wigscom.myshopify.com"></script>
+<!-- This line added automatically by JSON-LD for SEO. -->{% include 'jsonld-for-seo' %}
+<!--
+<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
+<script type="text/javascript">window.Beacon('init', 'a24188c0-c32b-40f3-a022-5d392e7bf4d8')</script>  
+-->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+  <script>
+    window.onload = function () {
+      $(document).ready(function() {
+          if($("#fsb_bar:contains('30%')").length == 0) {
+            $(".clearance_sale_ahref").show();
+          }
+          else
+          {
+            //$(".bob_bar_alt").show();
+          }
+      });
+    }
+  </script>
+</body>
+</html>

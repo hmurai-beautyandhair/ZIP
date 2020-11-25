@@ -1,0 +1,26 @@
+<label class="desktop-4 tablet-2 mobile-3">{{ 'general.newsletter_form.newsletter_title' | t }}</label>
+
+<div id="signup" class="desktop-4 tablet-2 mobile-3">
+
+<!-- <form action="https://api.wigs.com/relay.php" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" >  -->
+<form method="post" action="/contact#contact_form" id="mc-embedded-subscribe-form" accept-charset="UTF-8" class="contact-form">
+<input type="hidden" name="site" value="wigs">
+<input type="hidden" name="addressbookid" value="11236637">
+<input type="hidden" name="userid" value="117078">
+<input type="hidden" name="ReturnURL" value="https://www.wigs.com/">
+<input value="" name="contact[email]"  class="email" id="mce-EMAIL" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" required="" type="email"> 
+<input type="hidden" id="double" name="double" value="double"/>
+<input value="{{ 'general.newsletter_form.submit' | t }}" name="subscribe" id="mc-embedded-subscribe" class="small button" type="submit">
+</form>
+
+</div>
+
+<ul id="social-icons" class="desktop-4 tablet-2 mobile-3">
+  {% if settings.show_facebook %}<li><a href="{{ settings.facebook_url }}" target="_blank" rel="nofollow"><i class="fa fa-facebook fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_twitter %}<li><a href="{{ settings.twittername }}" target="_blank" rel="nofollow"><i class="fa fa-twitter fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_pinterest %}<li><a href="{{ settings.pinterest_url }}" target="_blank" rel="nofollow"><i class="fa fa-pinterest fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_tumblr %}<li><a href="{{ settings.tumblr_url }}" target="_blank" rel="nofollow"><i class="fa fa-tumblr fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_youtube %}<li><a href="{{ settings.youtube_url }}" target="_blank" rel="nofollow"><i class="fa fa-youtube fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_googleplus %}<li><a href="{{ settings.googleplus_url }}" target="_blank" rel="nofollow"><i class="fa fa-google-plus fa-2x"></i></a></li>{% endif %}
+  {% if settings.show_instagram %}<li><a href="//instagram.com/{{ settings.instagram-id }}" target="_blank" rel="nofollow"><i class="fa fa-instagram fa-2x"></i></a></li>{% endif %}
+</ul>

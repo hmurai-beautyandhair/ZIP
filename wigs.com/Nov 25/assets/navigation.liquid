@@ -1,0 +1,137 @@
+<nav id="nav" role="navigation"{% if settings.full-width-header %} class="gridlock-fluid"{% endif %}>
+  {% if settings.full-width-header %}<div class="row">{% endif %}
+  <div id="navigation" class="row">      
+    <ul id="nav" class="desktop-12 mobile-3">
+      {% for link in linklists.main-menu.links %}
+      {% capture link_handle %}{{ link.title | handle }}{% endcapture %}            
+      {% capture child_list_handle %}{{ link.title | handleize }}{% endcapture %}
+      {% if link.title == settings.megadropdown_link %}
+      <!-- Start megamenu -->
+      <li class="dropdown">{{ link.title | link_to: link.url }}
+        <ul class="megamenu">
+          <div class="mega-container">
+            {% if settings.nav_promo_image %}
+            <span class="desktop-3 tablet-hide mm-image">
+              <a href="{{ settings.nav_promo_link }}">
+                <img src="{{ 'nav_promo.jpg' | asset_url }}" alt="Shop All Wigs | Synthetic and Human Hair Wigs, with and w/o Lace Front">
+              </a>
+            </span>
+            {% endif %}
+            <span class="{% if settings.nav_promo_image %}desktop-9{% else %}desktop-12{% endif %} tablet-6">
+              {% assign mega = 0 %}
+              {% if settings.mega_1_show %}{% assign mega = mega | plus: 1 %}{% endif %}
+              {% if settings.mega_2_show %}{% assign mega = mega | plus: 1 %}{% endif %}
+              {% if settings.mega_3_show %}{% assign mega = mega | plus: 1 %}{% endif %}
+              {% if settings.mega_4_show %}{% assign mega = mega | plus: 1 %}{% endif %}
+              {% if mega > 0 %}    
+              <!-- Start Megamenu Inner Links -->
+              {% if settings.mega_1_show %}            
+              <li class="desktop-{{ 12 | divided_by: mega }}"><h4>{{ linklists[settings.mega_1_links].title }}</h4>
+                <ul class="mega-stack">
+                  {% for link in linklists[settings.mega_1_links].links %}
+                  <li>{{ link.title | link_to: link.url }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endif %}
+              {% if settings.mega_2_show %}            
+              <li class="desktop-{{ 12 | divided_by: mega }}"><h4>{{ linklists[settings.mega_2_links].title }}</h4>
+                <ul class="mega-stack">
+                  {% for link in linklists[settings.mega_2_links].links %}
+                  <li>{{ link.title | link_to: link.url }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endif %}
+              {% if settings.mega_3_show %}            
+              <li class="desktop-{{ 12 | divided_by: mega }}"><h4>{{ linklists[settings.mega_3_links].title }}</h4>
+                <ul class="mega-stack">
+                  {% for link in linklists[settings.mega_3_links].links%}
+                  <li>{{ link.title | link_to: link.url }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endif %}
+              {% if settings.mega_4_show %}            
+              <li class="desktop-{{ 12 | divided_by: mega }}"><h4>{{ linklists[settings.mega_4_links].title }}</h4>
+                <ul class="mega-stack">
+                  {% for link in linklists[settings.mega_4_links].links %}
+                  <li>{{ link.title | link_to: link.url }}</li>
+                  {% endfor %}
+                </ul>
+              </li> 
+              {% endif %}    
+              {% endif %}  
+            </span>
+          </div>
+        </ul>
+      </li>
+      <!-- End megamenu & start multi column where needed -->
+      {% elsif linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+      <!-- How many links to show per column -->
+      {% assign num = settings.linklist-breakpoint | plus:0 %}     
+      <!-- How many links in this list -->
+      {% assign numx = linklists[child_list_handle].links.size %}      
+      <!-- Number of links divided by number per column -->
+      {% assign numy = numx | divided_by: num %}
+      <!-- Modulo balance of total links divided by links per column -->
+      {% assign mod = numx | modulo:num %}
+      <!-- Calculate the modulo offset -->
+      {% assign mod_offset = numx | minus:mod %}
+
+      {% comment %}
+      {{ num }} chosen number of links per column
+      {{ numx }} number of links in the linklist
+      {{ numy }} Columns needed
+      {{ mod }}  Balance for last column
+      {{ mod_offset }} links to offset before adding mod
+      {% endcomment %}
+
+      <!-- Start math for calculated multi column dropdowns -->
+      <li class="dropdown">{{ link.title | link_to: link.url }}
+        {% if linklists[child_list_handle].links.size > num %}
+		{% include 'navigation-columns' %}
+        <!-- if the list is less than the chosen number -->      
+        {% else %}
+        <ul class="submenu">
+          {% for l in linklists[child_list_handle].links %}
+          <li><a href="{{ l.url }}">{{ l.title }}</a>
+            {% capture child_list_handle %}{{ l.title | handleize }}{% endcapture %}
+            {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}                   
+            <ul class="nested">
+              {% for l in linklists[child_list_handle].links %}
+              <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      <!-- stop doing the math -->
+      {% else %}
+		{%comment%}Manual insertion of dropdown menus{%endcomment%}
+      		{%capture dropdown_menu_html_snippet%}{%include 'main-dropdown-menu'%}{%endcapture%}
+			{%assign dropdown_class_var = "" %}
+	    	{%assign dropdown_menu_titles = 'Hair Pieces,Brands,Care' |split: ','%}
+      		{%assign dropdown_menu_html = dropdown_menu_html_snippet | split: '#!'  %}
+			{%assign dropdown_menu_html_output = ""%}
+      		{%for dropdown_menu_title in dropdown_menu_titles %}
+				
+      				{%if dropdown_menu_title == link.title %}
+							{%assign dropdown_class_var = 'class="dropdown"' %}
+      						{%assign dropdown_menu_html_output = dropdown_menu_html[forloop.index0] %}
+							 {% break %}
+      			
+      				{%endif%}
+      		{%endfor%}
+      
+        <li {{dropdown_class_var}}>{{ link.title | link_to: link.url }}{{dropdown_menu_html_output}}</li>
+      {% endif %}
+      {% endfor %}
+    </ul> 
+  </div> 
+  {% if settings.full-width-header %}</div>{% endif %}
+</nav>
+

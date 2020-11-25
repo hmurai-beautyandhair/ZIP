@@ -1,0 +1,204 @@
+{% comment %}
+Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
+{% endcomment %}
+
+{% assign file_extension = 'png' %}
+<!-- swatch is being used -->
+{% if swatch == blank %}
+<div class="swatch error">
+  <p>You must include the snippet swatch.liquid with the name of a product option.</p> 
+  <p>Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+</div>
+{% else %}
+
+{% assign found_option = false %}
+{% assign is_color = false %}
+{% assign option_index = 0 %}
+
+{% for option in product.options %}
+{% if option == swatch %}
+{% assign found_option = true %}
+{% assign option_index = forloop.index0 %}
+<style>
+  label[for="product-select-option-{{ option_index }}"] { display: none; }
+  #product-select-option-{{ option_index }} { display: none; }
+  #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
+</style>
+{% comment %}<script>$(window).load(function() { $('.selector-wrapper:eq({{ option_index }})').hide(); });</script>{% endcomment %}
+{% assign downcased_option = swatch | downcase %}
+{% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+{% assign is_color = true %}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+	
+{%assign SS_sale_avaialable_swatches = ""%}
+{%assign SS_sale_unavailable_swatches = ""%}
+{%assign SS_sale_sold_out_swatches = ""%}
+{%assign SS_catch_all = ""%}
+
+{% unless found_option %}
+<div class="swatch error">
+  <p>You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that does not belong to your product.</p>
+  <p>Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+  <p><strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is <code>'Color'</code>.</p>
+</div>
+{% else %}
+<div class="swatch clearfix" data-option-index="{{ option_index }}">
+  <div class="header">{{ swatch }}s {{color_difference_link}}</div>
+  {% assign values = '' %}
+  {% for variant in product.variants %}
+  {% assign value = variant.options[option_index] %}
+  {%capture SS_catch_all%}
+  {% unless values contains value %}
+  {% assign values = values | join: ',' %}
+  {% assign values = values | append: ',' | append: value %} 
+  {% assign values = values | split: ',' %}
+  
+  {% assign find_class = blank %}
+  {% if color_groups_colors contains variant.title  %}
+   {% assign find_index = 0 %}
+   {% assign color_groups_colors_sp = color_groups_colors | split:',' %}
+    {% for single_color in color_groups_colors_sp %}
+    {% if single_color == variant.title %}
+    {% assign find_index = forloop.index %}
+    {% endif %}
+    {% endfor %}
+
+    {% if find_index > 0 %}
+    {% assign arry_index = find_index | minus:1 %}
+    {% assign color_groups_groups_splt = color_groups_groups | split:',' %}
+    {% assign find_class = color_groups_groups_splt[arry_index] %}
+    {% endif %}
+  
+  {% endif %}
+  
+  {%if variant.available == false %}
+  		{%assign sold_out_white_x='<span style="color:white;opacity:.6;font-size:66px;display:inline-block;height:35px;position:absolute;top:0px;left:3px;margin:0;padding:0;">&times;</span>'%}
+  		{%assign sold_out_white_x='<span style="display:block;padding:7px 0 0 7px;margin:0px;height:35px;width:35px;opacity:.6;"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/transparent-not-there.png?v=1579910292"></span>'%}
+	{%else%}
+  		{%assign sold_out_white_x=''%}
+  	{%endif%}
+  
+  <div data-variant-id ="{{variant.id}}"  data-value="{{ value | escape }}" class="{% if find_class != blank %}{{find_class}} {% endif %}swatch-element {% if is_color %}color {% endif %}{{ value | handle }} {% if variant.available %}available{% else %}{%comment%}soldout{%endcomment%}{% endif %}">
+    {% if is_color %}
+    {%comment %}<div class="tooltip">
+      <img src="{{ variant.image | img_url: '250x' }}"/>
+      <span>{{ variant.title }}</span>
+    </div> {%endcomment%}
+    {% endif %}
+    <input id="swatch-{{ option_index }}-{{ value | handle }}" type="radio" name="option-{{ option_index }}" value="{{ value | escape }}"{%comment%}{% if forloop.first %} checked{% endif %}{%endcomment%} {% unless variant.available %}{%comment%}disabled{%endcomment%}{% endunless %} />
+    {% if is_color %}
+    <label for="swatch-{{ option_index }}-{{ value | handle }}" style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ variant.image | img_url: '50x50' }})">
+     <!--  <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" /> -->
+	{{sold_out_white_x}}
+    </label>
+    {% else %}
+    <label for="swatch-{{ option_index }}-{{ value | handle }}">
+      {{ value }}
+      <!-- <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" /> -->
+    </label>
+    {% endif %}
+  </div>
+  {% endunless %}
+  {% if variant.available %}
+  <script>
+    jQuery('.swatch[data-option-index="{{ option_index }}"] .{{ value | handle }}').removeClass('soldout').addClass('available').find(':radio').removeAttr('disabled');
+  </script>
+  {% endif %}
+  {%endcapture%}
+  {%assign variant_id_to_check = variant.id | downcase %}
+  {%if  apply_special_sale == true %}
+  
+  		{%if variant.inventory_quantity > 0 and special_sale_variants contains variant_id_to_check %}
+        	{%capture SS_sale_avaialable_swatches %}
+          		{{SS_sale_avaialable_swatches}}{{SS_catch_all}}
+        	{%endcapture%}
+      	{%elsif variant.available == false  %}
+  				{%capture SS_sale_sold_out_swatches %}
+  					{{SS_sale_sold_out_swatches}}{{SS_catch_all}}
+  				{%endcapture SS_sale_sold_out_swatches %}
+  		{%else%}
+        	{%capture SS_sale_unavailable_swatches %}
+          		{{SS_sale_unavailable_swatches}}{{SS_catch_all}}
+        	{%endcapture%}
+    	{%endif%}
+  {%else%}
+  {{SS_catch_all}}
+  {%endif%}
+  
+  
+  {% endfor %}
+  {%if  apply_special_sale == true %}
+  {{SS_sale_unavailable_swatches}}
+	{%if SS_sale_sold_out_swatches != blank%}
+  	<div id='sold-out-gallery-marker'  style="background-image:url('data:image/svg+xml,%3Csvg%20height%3D%2245%22%20width%3D%2245%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C45%2028%2C45%2045%2C23%2028%2C0%22%20style%3D%22fill%3A%23666%3B%22%2F%3E%3C%2Fsvg%3E');color:#fff;width:45px;height:45px;font-size: 11px;line-height: 12px;padding-top:10px;padding-left:2px;border-right: 1px solid white;" class="swatch-element">BACK<br>SOON</div>{{SS_sale_sold_out_swatches}}
+  {%endif%}
+  <div class="swatch-divider" style="clear:both;display:block;">&nbsp;</div>
+  {%if SS_sale_avaialable_swatches != ""%}
+  <div class="header"><span style="font-weight: bold;font-size: 18px;color: #C4425C;">{{SS_percent_off}}% SALE</span> <span id="special-sale-price" style="
+    background: #ffedea;
+    padding: 3px;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight:bold;
+    color: #C4425C;
+"></span>
+On clearance colors below!</div>
+  {%endif%}
+  <div id="special-sale-seperator">
+  {{SS_sale_avaialable_swatches}}
+    </div>
+<script>
+  $(function(){
+function displayInitialSpecialSalePrice(){
+if( 		$('#special-sale-seperator  div.swatch-element.available').length > 0 ){
+	
+		var prices = [];
+				
+		$('#special-sale-seperator  div.swatch-element.available').each(function(){
+			var variant_id = $(this).data('variant-id');
+          var price_unsplit = $("#product-select-{{product.id}} option[value='"+variant_id+"']").text();
+			var split_price = price_unsplit.split('-');	
+			 var price = split_price[split_price.length -1];
+			price = parseFloat(price.replace('$','').replace(',',''));
+			prices.push(price);
+			
+		})
+	var display_string = "";
+	if(prices.length > 1){
+		var max_price = Math.max.apply(null, prices);
+		var min_price = Math.min.apply(null, prices);
+      if(min_price != max_price){
+			display_string = "$"+min_price.toFixed(2).toString()+" - "+"$"+max_price.toFixed(2).toString();
+		}
+		else{
+			display_string = "$"+prices[0].toFixed(2).toString();
+		}	
+		
+		
+	}
+	else{
+			display_string = "$"+prices[0].toFixed(2).toString();
+		}
+}
+	
+$('#special-sale-price').text(display_string);
+}
+ displayInitialSpecialSalePrice()
+    });
+</script>
+    <div class="swatch-divider" style="clear:both;display:block;">&nbsp;</div>
+  {%endif%}
+  
+  
+{%include 'non-swatch-images' %}
+</div>
+
+{% endunless %}
+
+{% endif %}

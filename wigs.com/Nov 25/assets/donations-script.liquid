@@ -1,0 +1,357 @@
+<script>
+
+  
+function addSpecialOffer(callback,params){
+	var special_offer_checkbox = document.querySelector('#special-offer-input input');
+	if(special_offer_checkbox){
+			if(special_offer_checkbox.checked){
+						
+
+						const offer_id = $('input[name="add-special-offer"]').data('offer-product');
+ 						$.post('/cart/add.js',{quantity:1,id:offer_id,properties:{'special-offer':'1119'}  } ,function(data){
+ 									
+                        }).always(function(){ callback(params);					  })
+
+			
+
+			}else{
+						callback(params);
+
+			}
+				
+
+			
+
+    }else{  callback(params); }
+
+}
+  
+  
+  
+function setCheckBoxStatusDisabled(status){
+    var special_offer_checkbox = document.querySelector('#special-offer-input input');
+  	
+  if(special_offer_checkbox){
+  
+  
+        if(status=== true){
+
+            special_offer_checkbox.disabled = true;
+            special_offer_checkbox.checked = false;
+            //special_offer_text.textContent = "Easy styling with BeautiMark's Shaping Creme!";
+        }
+        else{
+            special_offer_checkbox.disabled = false;
+
+          //special_offer_text.textContent = "Your purchase qualifies for a special promo!";
+        }
+  	}
+  }
+  	function removeItems(variant_id){
+  	
+		console.log('removing items');
+		$.post( "/cart/change.json", {id:variant_id,quantity:0}).always(function(){ ajaxCart.load();  })
+  		
+  
+   }
+  
+  
+  function checkSpecialOffer(cart_items){
+    	
+		let qualifies_for_offer = false;
+    	let offer_exists_in_cart = false;
+
+  		if(typeof cart_items !== "undefined"){
+	
+          if( cart_items.filter(x=>x.product_type=="Wigs").length > 0 ){
+            qualifies_for_offer = true;
+            setCheckBoxStatusDisabled(false);
+            	
+            
+          }
+					
+				
+		}
+		
+    
+    		
+    
+    
+    	if( cart_items.filter(x=>x.properties['special-offer'] === '1119').length > 0 ){
+				
+				offer_exists_in_cart = true;
+			
+		}
+    
+    	
+    if(!qualifies_for_offer){
+    	//setCheckBoxStatusDisabled(true);
+    }	
+    if(offer_exists_in_cart && !qualifies_for_offer){
+      		let to_remove = cart_items.filter(x=>x.properties['special-offer'] === '1119');
+      		let offer_id = to_remove[0].variant_id;
+    		removeItems(offer_id);
+			
+    }
+    
+    	
+  }
+  
+  function stringToBool(str){
+  	return (str === 'true');
+  }
+
+function getCheckBoxSetting(){
+
+  if(localStorage.getItem('bh_donation') === null){
+
+  				localStorage.setItem('bh_donation','true');
+  
+  
+  
+  }
+  //else{
+  	//console.log('checking initial setting not null');
+  
+  				return stringToBool(localStorage.getItem('bh_donation'));
+  //}
+
+
+}
+
+
+function flipCheckBoxSetting(){
+  	
+  		var current = stringToBool(localStorage.getItem('bh_donation'));
+  
+  		localStorage.setItem('bh_donation',!current);
+  
+  }
+
+
+function getDonationAmount(){
+
+var amount = $('#CartContainer p.text-right');
+
+
+
+if(amount.length == 1){
+
+var donation= 50;
+
+amount = amount.text().replace('$','');
+
+var cents_string = amount.split('.')[1];
+
+var cents = parseInt(cents_string);
+
+if(cents !== 0){
+
+donation = 100 - cents;
+
+}
+
+
+return 95;
+//return donation;
+}
+
+}
+
+function removeDonation(donation_variant) {
+
+jQuery.get('/cart.json',function(cart){
+cart_items  = cart.items;
+for(var i = 0; i< cart_items.length; i++){
+
+        if(cart_items[i].id == donation_variant){
+
+                jQuery.ajax({
+                        type: 'POST',
+                        url: '/cart/update.js',
+                        async: false,
+                        data: "updates["+donation_variant+"]=0",
+                        dataType: 'json',
+                        success: function() {
+                            //location.reload();
+							//console.log('donation removed');
+							updateCartCount();
+                        }
+                    });
+
+            }
+        }
+
+
+})
+     }
+
+
+function addDonation(donation_variant,donation_amount){
+
+    //qty = parseInt(donation_amount.toFixed(2) * 100);
+	qty = parseInt(donation_amount);
+	qty = 1;
+    jQuery.ajax({
+                        type: 'POST',
+                        url: '/cart/add.js',
+                        async: false,
+                        data: {quantity: qty, id: parseInt(donation_variant)},
+                        dataType: 'json',
+                        success: function() {
+                           
+                        }
+                    });
+
+
+}     
+
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this, 
+    c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = d == undefined ? "." : d, 
+    t = t == undefined ? "," : t, 
+    s = n < 0 ? "-" : "", 
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+
+function recalculateSubTotal(donation_amount,add_remove){
+  var subtotal_container = $('#CartContainer p.text-right strong');
+	if(add_remove == 'add'){
+
+				last_subtotal = subtotal_container.text();
+                  var current_subtotal = subtotal_container.text();	
+              
+                  current_subtotal = current_subtotal.replace('$','').replace(',','');
+                  var current_subtotal_parts = current_subtotal.split('.');
+                  var dollars = parseInt(current_subtotal_parts[0]);
+                  var cents = parseInt(current_subtotal_parts[1]);
+                  
+                  if(cents + donation_amount == 100){
+                      var new_subtotal = dollars + 1;
+                      var new_subtotal_float = 	parseFloat(new_subtotal);
+                     
+                      subtotal_container.text( "$"+new_subtotal_float.formatMoney(2)  );
+
+                  }	
+      }
+  else{ subtotal_container.text(current_real_subtotal); }
+	//var new_subtotal = donation_amount.toFixed(2)  +  current_subtotal.toFixed(2);
+	//subtotal_container.text( new_subtotal.toString() );
+	
+}
+
+  function updateCartCount(){
+	var cartCount = $('.CartCount');
+	var current_qty = 0;
+    for(let i =0; i < cart_items.length; i++ ){
+		
+      if(cart_items[i].id !== parseInt(donation_variant) ){
+				current_qty += cart_items[i].quantity;
+				
+				
+
+		}
+    }
+  	cartCount.text( current_qty.toString() ); 
+  }
+  
+  
+var original_subtotal = null;
+var donation_variant  = '13387323506799';
+removeDonation(donation_variant);
+  
+var x = halt_submit = true;
+var donation = 0.00;
+var current_real_subtotal = null;
+  $(function(){
+    jQuery('body').on('click', '[name="checkout"], [name="goto_pp"], [name="goto_gc"]', function(event) {
+            
+            if( $('input[name="bh_donation"]:checked').length == 1 ){
+                if(halt_submit){    
+                        event.preventDefault();
+                        removeDonation(donation_variant);
+                        addDonation(donation_variant,donation);
+                        halt_submit = false;
+                        $(this).click();
+                }
+            
+            else{
+
+               return true;
+            }
+
+        }
+            
+    })
+
+
+
+
+jQuery('body').on('ajaxCart.afterCartLoad', function(evt, cart) {
+
+  
+donation = getDonationAmount();  
+
+  if(original_subtotal === null){
+  					original_subtotal  =  $('#CartContainer p.text-right strong').text() ;	
+    				
+  }
+
+  current_real_subtotal = $('#CartContainer p.text-right strong').text() ;	
+  
+//determine initial setting for donation
+  if( getCheckBoxSetting() ){
+	//console.log('initial set');
+  	$("input[name='bh_donation']").prop('checked',true);
+	recalculateSubTotal(donation,'add');
+	//console.log('initial set prop checked');
+  }
+  else{  
+			$("input[name='bh_donation']").prop('checked',false);
+			recalculateSubTotal(donation,'remove');
+	}
+	
+  $("input[name='bh_donation']").click(function(){  flipCheckBoxSetting();  
+
+        if( getCheckBoxSetting() ){
+
+			
+        recalculateSubTotal(donation,'add');
+      }
+      else{  
+
+                recalculateSubTotal(donation,'remove');
+        }
+
+
+
+	})
+
+ if(typeof donation !== "undefined"){
+	//console.log(donation_string);
+   donation_string = (donation >= 10)? "0."+donation.toString(): "0.0"+donation.toString();
+    $('#bh_donation_amount').text( donation_string );
+
+
+
+
+ }
+
+  
+    {%comment%}Special Sale{%endcomment%}
+    {%if apply_special_sale %}
+  var ss_amounts = $('.ajaxcart__product-meta:contains(" {{SS_special_sale_prefix}}")').closest('.ajaxcart__product').find('p strong:contains("$")');
+		ss_amounts.each(function(){ var amount = parseFloat($(this).text().replace(',','').split('$')[1]).toFixed(2) ;var discount_amount_off; if($(this).data('ajax-cart-vendor') == "Wig Pro"){ discount_amount_off = 50; }else{ discount_amount_off = {{SS_percent_off}};  } var discount_amount = amount*( 0.01 *(100 - discount_amount_off) ); $(this).text( "$"+discount_amount.toFixed(2).toString() ) })
+  {%endif%}
+  {%comment%}End Special Sale{%endcomment%}
+	
+  	var offer_container = $('.ajaxcart__product-meta:contains(" 1119")').closest('.ajaxcart__product').find('p strong:contains("$")');		  		
+  	offer_container.each(function(){ var amount = parseFloat($(this).text().replace(',','').split('$')[1]).toFixed(2) ; var discount_amount = 5.00; $(this).text( "$"+discount_amount.toFixed(2).toString() ) })
+  	checkSpecialOffer(cart.items);
+
+})
+})
+</script>

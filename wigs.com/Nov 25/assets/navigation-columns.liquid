@@ -1,0 +1,57 @@
+{% assign numx2 = num | times: 2 %}   
+{% assign numx3 = num | times: 3 %}   
+<ul class="megamenu">
+  <div class="mega-container">
+    {% if settings.nav_promo_image %}
+    <span class="desktop-3 tablet-hide mm-image">
+      <a href="{{ settings.nav_promo_link }}">
+        <img src="{{ 'nav_promo.jpg' | asset_url }}">
+      </a>
+    </span>
+    {% endif %}
+    <span class="{% if settings.nav_promo_image %}desktop-9{% else %}desktop-12{% endif %} tablet-6">
+      {% assign mega = 0 %}
+      {% assign mega = mega | plus: 1 %}
+      {% if numy >= 2 %}{% assign mega = mega | plus: 1 %}{% endif %}
+      {% if numy >= 3 %}{% assign mega = mega | plus: 1 %}{% endif %}
+      {% if mod > 0 %}{% assign mega = mega | plus: 1 %}{% endif %}
+      {% if mega > 0 %}    
+      <!-- Start Megamenu Inner Links -->
+      <li class="desktop-{{ 12 | divided_by: mega }}">
+        <ul class="mega-stack">
+          {% for l in linklists[child_list_handle].links limit: num %}
+          <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% if numy >= 2 %}           
+      <li class="desktop-{{ 12 | divided_by: mega }}">
+        <ul class="mega-stack">
+          {% for l in linklists[child_list_handle].links limit: num offset: num %}
+          <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endif %}
+      {% if numy >= 3 %}           
+      <li class="desktop-{{ 12 | divided_by: mega }}">
+        <ul class="mega-stack">
+          {% for l in linklists[child_list_handle].links limit: num offset: numx2 %}
+          <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endif %}
+      {% if mod > 0 %}           
+      <li class="desktop-{{ 12 | divided_by: mega }}">
+        <ul class="mega-stack">
+          {% for l in linklists[child_list_handle].links limit: num offset: mod_offset %}
+          <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li> 
+      {% endif %}
+      {% endif %}  
+    </span>
+  </div>
+</ul>

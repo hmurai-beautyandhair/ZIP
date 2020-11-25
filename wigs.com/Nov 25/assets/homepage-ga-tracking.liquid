@@ -1,0 +1,67 @@
+Date.prototype.getWeekNumber = function(){
+  var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+  var dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1)/7)
+};
+
+
+$("[data-ga-cat]").click(function(){
+
+var ga_category = $(this).data('ga-cat');
+var ga_label  = $(this).data('ga-label');
+var ga_order = ""
+
+var week_number_output= "";
+var image_alt = "";
+
+
+if(ga_category == "Homepage Hero"){
+
+var ga_order = $(this).data('ga-order');
+image_alt = ' ' +   $(this).find('img').attr('alt').replace(/'/g,'') ;
+
+var date = new Date();
+week_number = date.getWeekNumber();
+week_number_output = " W"+week_number.toString();
+}
+
+
+if(ga_category == "Homepage Tiles"){
+
+image_alt = ' ' + $(this).find('p').text().replace(/'/g,'')  ;
+var ga_order = $(this).data('ga-order');
+var date = new Date();
+week_number = "";
+week_number_output = "";
+
+}
+
+
+if(ga_category == "Homepage Images"){
+if($(this).data('ga-order')){
+	ga_order = $(this).data('ga-order');
+}
+if($(this).find('img').attr('alt') ){
+	image_alt = ' ' + $(this).find('img').attr('alt').replace(/'/g,'') ;
+}
+
+
+week_number = "";
+week_number_output = "";
+
+}
+
+
+
+
+//debug
+console.log(ga_category + " " + ga_label +' '+ ga_order +  week_number_output + image_alt);
+
+
+ga('send','event',ga_category,'Click',ga_label +' '+ ga_order +  week_number_output + image_alt);
+
+
+})
+

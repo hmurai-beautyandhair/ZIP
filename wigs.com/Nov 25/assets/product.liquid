@@ -1,0 +1,977 @@
+{%assign apply_sitewide_discount = true %}
+{%assign collections_handles = product.collections | map: "title" %}
+{%unless collections_handles contains "All"%}
+	{%assign apply_sitewide_discount = false %}
+{%endunless%}
+{%assign percentage_off = 30 %}
+{%if product.vendor == "BeautiMark"%}
+{%unless product.tags contains "NO-DISCOUNT"%}
+{%assign percentage_off = 30 %}
+{%endunless%}
+{%endif%}
+{%assign sitewide_discount_code = "SPREE30"%}
+{%assign discount_percent_coefficient = 100 | minus: percentage_off %}
+
+{%assign discount_percent_coefficient = discount_percent_coefficient | times : 0.01 %} 
+
+
+
+{%assign apply_special_sale  = false %}
+{%if apply_special_sale  %}
+{%include 'special-sale-parameters' %}
+{%endif%}
+
+
+{%if apply_special_sale  %}
+
+{%endif%}
+{{ 'jquery.responsive-dom.js' | asset_url | script_tag }}
+<style>
+  #bh-bigimag-alt-text{ padding:5px; min-height:4em;margin-bottom:5px;}
+  .main-image-navigation span {background-color:#fff;border: 1px solid #ddd;}
+  .main-image-navigation span i {color:#000;}
+  #product-attribute-specs-table {width: 80%;border: 1px solid #eee;margin-top:25px;}
+  #product-attribute-specs-table td {padding: 5px 10px;border: 1px solid #ccc;}
+  
+  #product-description ul {    margin-left: 20px;list-style: disc outside; }
+  #product-description #main_color_group_list{margin-left:0px;}
+  .fancybox-skin {background-color:#fff; border: 1px black solid; padding: 2px; }
+  .fancybox-close{font-size:2.5em; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;}
+  #bh_vendor_name {font-size:22px;}
+	#bh-bigimage-container{position:relative;
+      
+	}
+  
+  .color_group_list li a {text-transform: capitalize;}
+  .main-image-navigation{ position: absolute;bottom: 90px;left: 2.5%;top:initial;right:initial;z-index: 4;width: 95%;text-align: left;}
+  
+  .main-image-navigation span{padding: 10px 20px;opacity: 0.7;}
+  .main-image-navigation span.next {float: right;}
+  #popups li a {text-decoration:underline;font-size:13px;}
+  #pop-five > div{width: 1000px;height: 800px;display: flex;justify-content: space-around;margin-top: 30%;}
+  
+  #agreement_terms_service{font-size:.9em;padding:left:5px;margin-top:5px}
+  #agreement_terms_service_link {color:#6a6afa}
+  ul.color_group_list li > a:first-child {margin-left:0px;}
+  
+  #color-info::before {
+    content: "";
+    display: block;
+    height: 110px;
+    margin: -40px 0 0;
+	}
+
+
+/* loader */
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #c41949;
+  width: 240px;
+  height: 240px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* end loader */
+
+/* blink */
+@keyframes blink {
+    0% { box-shadow: 0 0 40px red; }
+    50% { box-shadow: none; }
+    100% { box-shadow: 0 0 40px red; }
+}
+
+@-webkit-keyframes blink {
+    0% { box-shadow: 0 0 40px red; }
+    50% { box-shadow: 0 0 0; }
+    100% { box-shadow: 0 0 40px red; }
+}
+
+.blink {
+    -webkit-animation: blink 1.0s linear 2.5;
+    -moz-animation: blink 1.0s linear 2.5;
+    -ms-animation: blink 1.0s linear 2.5;
+    -o-animation: blink 1.0s linear 2.5;
+    animation: blink 1.0s linear 2.5;
+}
+/* end blink */
+
+#gwp_addition { text-align:center;float: left; }
+
+@media screen and (min-width:980px){
+#gwp_addition { width: 40%;height: 220px;margin-right: 55px; }
+}
+  
+   p.price-ranges{display:none;}
+  .price-range{font-weight:bold;}
+  .price-range::before,.product-prices.show-currency,.show-dollars::before{ content: "$";};
+  
+</style>
+{%assign new_colors= "" %}
+{%assign pre_launch_colors= "" %}
+{%include 'timed-variables' %}
+{%assign free_gift_included = false %}
+
+{% for tag in product.tags %}
+{% if tag contains 'FREEGIFT'%}
+
+        		{%assign free_gift_included = true %}
+
+{%endif%}
+
+{%if tag contains 'NEW-COLOR-'%}
+{%assign tag_fragments = tag | split: 'NEW-COLOR-' %}
+{%if tag_fragments.size > 1  %}
+{%capture new_colors %}{{tag_fragments[1]}},{{new_colors}}{%endcapture%}
+{%endif%}
+{%endif%}
+{%if tag contains 'PRE-LAUNCH-'%}
+{%assign tag_fragments = tag | split: 'PRE-LAUNCH-' %}
+{%if tag_fragments.size > 1  %}
+{%capture pre_launch_colors %}{{tag_fragments[1]}},{{pre_launch_colors}}{%endcapture%}
+{%endif%}
+{%endif%}
+{%endfor%}
+
+<script type="application/json" id="new_colors">
+
+{"new_colors":  {%assign new_colors= new_colors| split: ','%}{%if new_colors.size > 0%}{{new_colors | json}}   ,{%else%}[] ,{%endif%}
+"pre_launch_colors": {%assign pre_launch_colors= pre_launch_colors| split: ','%}{%if pre_launch_colors.size > 0%}{{pre_launch_colors | json}}   }{%else%}[] }{%endif%}
+
+</script>
+
+
+{%capture free_gift_icon %}
+<div class="circle"><a href="#free-gift-text" style="color: #fff;text-decoration:none">FREE<br />GIFT</a></div>    
+{%endcapture%}
+{%capture free_gift_icon_mobile %}
+<div class="circle desktop-hide tablet-hide" style="top:10px;display:block;"><a href="#free-gift-text" style="color: #fff;text-decoration:none">FREE<br />GIFT</a></div>    
+{%endcapture%}
+{%capture free_gift_text %}<div style="position:relative;"><a name="free-gift-text" style="display: block;position: absolute;top: -60px;"></a><fieldset style="border: 1px solid #ccc"><legend>&#x1F381; FREE GIFT WITH PURCHASE</legend>For a limited time only, while stocks last, get a free gift when purchasing this product. Simply add it to your basket and the gift will be added automatically &#x1F497;</fieldset></div>{%endcapture %}
+
+{%assign top5_included = false %}
+{% for tag in product.tags %}
+{% if tag contains 'TOP5' %}
+{%assign top5_included = true %}
+{%endif%}
+{%endfor%}
+
+{%capture top5_icon %}
+<div class="circle"><span style="color: #fff;font-size:14px">TOP 5</span></div>    
+{%endcapture%}
+{%capture top5_icon_mobile %}
+<div class="circle desktop-hide tablet-hide" style="top:10px;display:block;"><span style="color: #fff;font-size:14px">TOP 5</span></div>    
+{%endcapture%}
+
+
+{%assign new_tag_included = false %}
+{% for tag in product.tags %}
+{% if tag == 'NEW' %}
+{%assign new_tag_included = true %}
+{%endif%}
+{%endfor%}
+
+{%capture new_icon %}
+<div class="circle" style="padding-top:14px;"><span style="color: #fff;font-size:14px;">NEW</span></div>    
+{%endcapture%}
+{%capture new_icon_mobile %}
+<div class="circle desktop-hide tablet-hide" style="top:10px;display:block;padding-top:14px;"><span style="color: #fff;font-size:14px">NEW</span></div>    
+{%endcapture%}
+
+
+{%if apply_special_sale %}
+{%capture SS_sale_icon %}
+<div class="circle" id="ss_circle" style="display:none;"><span style="color: #fff;font-size:14px">{{SS_percent_off}}% OFF</span></div>    
+{%endcapture%}
+{%capture SS_sale_icon_mobile %}
+<div class="circle desktop-hide tablet-hide" id="ss_circle_mobile" style="top:10px;display:none;"><span style="color: #fff;font-size:14px">{{SS_percent_off}}% OFF</span></div>    
+{%endcapture%}
+{%endif%}
+
+
+
+<div id="product-{{ product.id }}" class="product-page">
+
+  
+  
+
+  {%comment%}{% include 'product-schema-review-data' %}  {%endcomment%}
+<div style="position:relative;relative">
+  {%if free_gift_included == true%}
+  {{free_gift_icon_mobile}}
+  {%endif%}
+  
+  {%if top5_included == true%}
+  {{top5_icon_mobile}}
+  {%endif%}
+  
+  
+  {%if new_tag_included == true%}
+  {{new_icon_mobile}}
+  {%endif%}
+  
+    {%if apply_special_sale  %}
+{{SS_sale_icon_mobile}}
+  	{%endif%}
+  <div class="circle desktop-hide tablet-hide" id="new-color-circle-mobile" style="top:10px;display:none;"><span style="color: #fff;font-size:12px">NEW HUE</span></div> 
+</div>   
+  
+  {%include 'generate-ss-data'%}
+  
+  <div id="mob-product-images" class="owl-carousel desktop-hide tablet-hide mobile-3">
+    {% for image in product.images %}
+{% assign bh_mobile_thumbnail_variant_attribute='' %}	
+{% if image.attached_to_variant? %}		
+		{% capture bh_mobile_thumbnail_variant_attribute %} data-mobile-thumbnail-variant="{{ image.variants[0].title }}" {% endcapture %}		
+{% endif %}
+
+    <div class="mthumb"><img src="{{ image | product_img_url: '525x700' }}" alt="{{ image.alt | escape }}" {{ bh_mobile_thumbnail_variant_attribute }}></div>
+    {% endfor %}
+  </div> 
+  <div id="product-photos" class="{% if settings.related-products == 'right' %}desktop-5{% else %}desktop-6{% endif %}  tablet-3 mobile-hide">
+    {% assign featured_image = product.selected_variant.featured_image | default: product.featured_image %}
+    <div id="bigimage" class="bigimage-{{ product.id }}{% if settings.thumbnails != 'bottom' %} desktop-10 tablet-5{% else %} desktop-12 tablet-6{% endif %}">
+<div id="bh-bigimage-container">
+    <div class="main-image-navigation" id="bh-main-image-navigation">
+      <span class="prev"><i class="fa fa-angle-left"></i></span>
+      <span class="next"><i class="fa fa-angle-right"></i></span>
+    </div> 
+    {%if free_gift_included == true%}
+		{{free_gift_icon}}
+	{%endif%}
+  
+    {%if top5_included == true%}
+		{{top5_icon}}
+	{%endif%}
+	
+    {%if new_tag_included == true%}
+		{{new_icon}}
+	{%endif%}
+  
+  	 {%if apply_special_sale  %}
+  		{{SS_sale_icon}}
+  	{%endif%}
+  <div class="circle" style="display:none;" id="new-color-circle"><span style="color: #fff;font-size:12px">NEW HUE</span></div>     
+      <img class="mainimage" id="{{ product.id }}" data-image-id="{{ image.id }}" src="{{ featured_image | img_url: '525x700' }}" alt='{{ image.alt }}' title="{{ product.title }}"/> 
+</div>
+      <div id="bh-bigimag-alt-text"></div>
+     
+    
+    </div>
+    {% if product.images.size > 1 %} 
+    <div class="thumbnails{% if settings.thumbnails == 'bottom' %} desktop-12 tablet-6{% endif %}">
+      {% for image in product.images %}
+				{% assign bh_thumbnail_variant_attribute='' %}		
+	  {% if image.attached_to_variant? %}		
+		{% capture bh_thumbnail_variant_attribute %} data-thumbnail-variant="{{ image.variants[0].title }}" {% endcapture %}		
+	  {% endif %}
+      <a id="{{ forloop.index }}"  href="{{ image | product_img_url: '525x700' }}" data-image-id="{{ image.id }}" class="{% if forloop.first %}active {% endif %}thumb clicker-{{ product.id }}">
+        <img class="thumbnail desktop-2 tablet-1" src="{{ image | product_img_url: '525x700' }}" alt="{{ image.alt | escape }}" data-image-id="{{ image.id }}" title="{{ image.alt | escape }}" {{ bh_thumbnail_variant_attribute }}/>
+      </a>
+      {% endfor %} 
+    </div>
+    {% endif %}
+  </div>
+
+
+  <script>
+    function thumbnailToSelectSync(color,default_value_text){		
+
+      var select_box = $('#product-select-{{product.id}}-option-0 ');		
+                         if(typeof  color !== "undefined" && color !== ''){		
+
+        select_box.val(color);		
+        select_box.find('option[value="'+color+'"]');		
+
+      }		
+
+      else{		
+        if(select_box.find('option').eq(0).text() !== default_value_text ){		
+          select_box.prepend('<option>'+default_value_text+'</option>');		
+        } 		
+        select_box.val(0);  		
+      }		
+      select_box.change();	
+	  //console.log(color);	
+    }
+
+
+	function showAltTagContentFor( $this ){
+					var newAltTagText = $this.attr('alt');
+					$('#bh-bigimag-alt-text').text(newAltTagText);
+		}	
+    //$('.bigimage-{{ product.id }}').zoom();	
+    
+    {% if product.images.size > 1 %}
+    // Next and Previous Navigation
+    $('.next').click(function() {
+      var $current = $('.thumb.active'); // active thumb
+      var $thumbs = $('.thumb'); // find other thumbs
+      var $next = $thumbs.eq($thumbs.index($current) + 1); // next thumb        
+      $($next).trigger('click');
+      $($current).removeClass('active');
+		//add functionality to change the alt image on click
+	showAltTagContentFor( $next.find('img') );
+	//end image alt on click
+	thumbnailToSelectSync($next.find('img').data('thumbnail-variant'),"Choose a Color");
+	//console.log($next.data('thumbnail-variant'));  
+    });
+
+    $('.prev').click(function() {
+      var $current = $('.thumb.active'); // active thumb
+      var $thumbs = $('.thumb'); // find other thumbs
+      var $previous = $thumbs.eq($thumbs.index($current) - 1); // prev thumb        
+      $($previous).trigger('click');
+	//add functionality to change the alt image on click
+	showAltTagContentFor( $previous.find('img') );
+	//end image alt on click
+	thumbnailToSelectSync($previous.find('img').data('thumbnail-variant'),"Choose a Color");
+    });
+
+    // Switching main image
+    $('.clicker-{{ product.id }}').click(function() {
+      var newImage = $(this).attr('href');
+    $('.bigimage-{{ product.id }} img').attr({
+      src: newImage
+      });
+
+    $("a.active").removeClass("active");
+    $(this).addClass('active');
+	//add functionality to change the alt image on click
+	showAltTagContentFor( $(this) );
+	//end image alt on click
+    return false;
+    });    
+    {% endif %}     
+  </script>
+
+  <div id="product-right" class="{% if settings.related-products == 'right' %}desktop-7{% else %}desktop-6{% endif %} tablet-3 mobile-3">
+    <div id="esc-oos-form"></div>
+    <div id="product-description" {% if settings.related-products == 'right' %}class="desktop-10 tablet-6 mobile-3"{% endif %}>
+          
+		{% if collection %} 
+      <div class="product-navigation">
+        {% if collection.previous_product %}
+        {{ '<i class="fa fa-angle-left" aria-hidden="true"></i>' | link_to: collection.previous_product }}
+        {% endif %}
+        {% if collection.next_product %}
+        {{ '<i class="fa fa-angle-right" aria-hidden="true"></i>' | link_to: collection.next_product }}
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if settings.vendor %}<h2 id='bh_vendor_name'>{{ product.vendor }}</h2>{% endif %}
+      <h1 class="product-title-main">{{ product.title }}</h1>
+<!-- reviews star rating -->
+      {%comment%}<div style="margin: 10px 0px;"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>{%endcomment%}
+      <span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ product.id }}" data-product-sku="{{ product.handle }}" style="display: inline-block;">{{ product.metafields.stamped.badge }}</span>
+<!-- end reviews star rating -->    
+{%comment%}
+if Product is GWP do not display price or buying information.
+{%endcomment %}
+{% assign product_is_gwp = false %}    
+{% for tag in product.tags %}
+{%if tag == "GWP"%}
+{% assign product_is_gwp = true %}
+{% endif %}    
+{%endfor%}
+
+ {% if product_is_gwp == false %}
+      <div >
+        
+  		{%assign variant_prices = product.variants | map: "price" %}
+        {%assign variant_prices = variant_prices | sort %}
+        
+        {%assign first_price = variant_prices | first %}
+        {%assign last_price = variant_prices | last %}
+        
+        
+        {%assign display_range = false %}
+      	          {%assign display_singular_price = true %}
+	        
+	        
+	        {%if first_price != last_price and product.selected_variant == NIL %}
+	        {%assign display_range = true %}
+			{%assign display_singular_price = false %}
+        <p class="price-ranges">
+        	<span class="price-range">{{first_price | money_without_currency}}</span> &ndash; <span class="price-range">{{last_price | money_without_currency}}</span>&nbsp;<span class="was">{{ product.compare_at_price | money_without_currency }}</span>
+        </p>
+        {%if apply_sitewide_discount %}
+                					{%capture percent_off_range%}
+        		
+		        	<span class="price-percent-off-range">{{first_price | times: discount_percent_coefficient | round: 2 | money_without_currency}}</span> &ndash; <span class="price-percent-off-range">{{last_price | times: discount_percent_coefficient | round: 2 | money_without_currency}}</span>
+        		
+        	{%endcapture%}
+      
+      
+        {%else%}
+        	{%assign percent_off_range = ''%}
+        	
+        {%endif%}
+        {%else%}
+        
+        
+        
+        	
+     	
+        {%endif%}      
+        {%capture initial_discount_price %}{{first_price | times: discount_percent_coefficient | round: 2 | money_without_currency}}{%endcapture%}
+        
+        	
+        
+        
+		        {%assign discounted_price = first_price | times: discount_percent_coefficient | round: 2%}
+        		{%capture initial_discount_price %}{{first_price | minus: discounted_price | round: 2 | money_without_currency}}{%endcapture%}
+        <!-- new-product-price: {%render 'display-price'%} -->
+        <p class="product-prices">
+		{%if display_singular_price%}
+          {% if product.available %}
+          {% if product.compare_at_price > product.price %}
+          <span class="product-price show-currency" >{%render 'display-price'%}</span>&nbsp;<span class="was">{{ product.compare_at_price | money_without_currency }}</span>
+          <small class='msrp-text' style="color:#c41949"> MSRP</small>
+          {% else %}
+           <span class="product-price show-currency" >{%render 'display-price'%}</span>
+          {% endif %}
+          {% else %}
+          		{%if product.tags contains 'PRE-LAUNCH'%}
+						<span class="product-price" >Coming Soon</span>
+				{%else%}
+          				<span class="product-price" >{{ 'products.product.sold_out' | t }}</span>
+				{%endif%}
+          {% endif %}
+          {%else%}
+	          <span class="product-price" ></span>&nbsp;<span class="was">{{ product.compare_at_price | money_without_currency }}</span>
+	       {%endif%}
+          
+        </p>    
+        
+        {%if apply_sitewide_discount %}
+        {%if display_range %}
+		{%assign initial_display_price = initial_discount_price%}
+        
+        {%else%}
+        {%assign initial_display_price = initial_discount_price %}
+        
+        {%endif%}
+		
+		{% if product.available %}
+        {%unless product.tags contains "NO-DISCOUNT"%}
+        <p id="sitewide-sale-message" style="background: #ffedea;padding: 5px;display: inline-block;border-radius: 4px;">
+          
+          <span style="font-weight:bold;color: #C4425C;">{{percentage_off}}% SALE TODAY!</span> TAKE EXTRA <span style="font-weight:bold" class="show-dollars">{{- initial_display_price -}}</span> OFF!
+          {%endunless%}
+          {%comment%}  
+          <span style="font-weight:bold;color: #C4425C;">SALE</span> <span style="font-weight:bold;color: #C4425C;" class="product-price-sale">{{initial_display_price}}</span>   <span class="product-percent-off" style="color: #666;">
+    <small>({{percentage_off}}% off) {%if product.vendor != "BeautiMark" or product.tags contains "NO-DISCOUNT"%}apply at checkout: <b>{{sitewide_discount_code}}</b>{%endif%}</small></span>
+        </p>
+        {%endcomment%}  
+        
+        {%comment%}
+        <p id="sitewide-sale-message" style="background: #ffedea;padding: 5px;display: inline-block;border-radius: 4px;">
+          <span style="font-weight:bold;color: #C4425C;">SAVE {{initial_display_price}} TODAY!</span> <span class="product-percent-off" style="color: #C4425C;">EXTRA <small>{{percentage_off}}% OFF!</small> </span>  <small style="color: #666;">Applies at checkout</small>
+        </p>
+        {%endcomment%}
+        
+        
+        	
+        
+        
+		{%endif%}
+{%endif%} 
+        	{%assign product_is_in_clearance = false %}
+        	{%assign product_collection_titles = product.collections | map: "title" %}
+			{%if product_collection_titles contains "40% OFF Clearance Sale - Limited Time! Limited Quantities!" %}
+        		{%assign product_is_in_clearance = true %}
+			{%endif%}
+			
+         {%unless product_collection_titles contains "All"%}
+        	
+       	<script>
+          $(function(){
+			var embed_container = $(".embed-container");
+            var embed_string = "<div style='font-size:12px'>**Please note: this product is excluded from discounts, promotions and points.</div>";
+            if(embed_container.length > 0)  { $(embed_string).insertAfter('.embed-container')   }else { $(embed_string).insertAfter('#popups')   }; 
+            
+			})
+        </script>
+        {%endunless%}
+		{% include 'color-difference-warning' %}
+        {% include 'product-form' %}
+        {% include 'product-popups' %}
+        
+        
+      </div>
+{%endif%}
+      {{ product.description }}
+      {{bh_special_offer_banner}}
+		
+      
+      
+      	{%assign wigsecure_is_avaialable = false%}
+		{% if all_products['wig-secure-accessory-amy-gibson'].variants[0].inventory_quantity > 0 or all_products['wig-secure-accessory-amy-gibson'].variants[1].inventory_quantity > 0 %}
+			{%assign wigsecure_is_avaialable = true%}
+		{%endif%}
+        {%assign wigsecure_is_avaialable = false%}
+
+        {% if product.type == "Wigs" and wigsecure_is_avaialable %} 
+      	<div style="margin-top:30px;">
+          <a href="/products/wig-secure-accessory-amy-gibson">
+            <picture>
+              <source media="(max-width: 560px)" srcset="//cdn.shopify.com/s/files/1/1410/9094/files/AmyGibson-SocialBanner-v4-320x320.jpg?39477"><img src="//cdn.shopify.com/s/files/1/1410/9094/files/AmyGibson-Banner-V4-560x146_REV2.jpg?39475" alt="WigSECURE by Amy Gibson" draggable="false">
+            </picture>
+          </a>
+        </div>
+        {%endif%} 
+      
+      {{color_difference_text}}
+      <div class="desc">
+        {% include 'social' with product %}
+      </div>
+    </div>
+
+    {% if settings.related-products == 'right' %}
+    <div id="related" class="desktop-2 tablet-hide mobile-hide">
+      {% include 'related-products' %}
+    </div>	
+    {% endif %}
+  </div>
+  <div class="clear"></div>
+    <!-- start reviews -->
+  {%comment%}  <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+    <div id="agreement_terms_of_service_popup" style="display:none"><p style="width:600px;text-align:justify;padding:20px;"> Any comments, reviews, suggestions, ideas, images, videos, submissions or other communications submitted or offered to us ("Your Comments") will be and remain the property of Beauty and Hair. Submission of Your Comments, whether via email, postal mail, or otherwise, will constitute an assignment to Beauty and Hair of all worldwide rights, title and interest to all intellectual property rights in Your Comments.</p><p style="width:600px;text-align:justify;padding:20px;"> We will be entitled to use, reproduce, disclose, publish and distribute Your Comments (or any part thereof, in edited or modified form) for any purpose whatsoever, without compensation to you. You agree that: Your Comments will not violate rights of any third party, including but not limited to, copyright, trademark, privacy or other personal or proprietary rights; Your Comments will not contain libelous, threatening, defamatory or otherwise unlawful, abusive or obscene materials; and you will not transmit any computer virus or other malware that could affect operation of our Site.</p></div>
+  {%endcomment%}
+  
+  <div id="stamped-main-widget"   
+data-widget-style="standard" 
+data-product-id="{{ product.id }}"   
+data-name="{{ product.title | escape }}"   
+data-url="{{ shop.url }}{{ product.url }}"   
+data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" 
+data-description="{{ product.description | escape }}"   
+data-product-sku="{{product.handle}}">   
+{{ product.metafields.stamped.reviews }}   
+</div>
+  
+  <!-- end reviews -->
+	        		 
+  {% if settings.related-products == 'bottom' %}
+  <div id="related" class="bottom-related">
+    {% include 'related-products' %}
+  </div>	
+  <div class="clear"></div>
+  {% endif %}
+
+  <div id="looked-at" class="desktop-12 mobile-hide">
+    {% include 'recently-viewed' %}
+  </div>
+</div>
+<script>
+		var gwp_shown = false; 
+  		var price_ranges_shown = false;
+  (function($) {
+    
+   		function addNewColorsColorGroup(){
+    
+      		var new_colors_data = JSON.parse ( document.getElementById('new_colors').textContent ); 
+      		var new_colors = new_colors_data.new_colors;
+      
+     		for(var i = 0; i < new_colors.length; i++){
+      				
+        			$('div[data-value="'+new_colors[i]+'"]').addClass("new-colors");
+      			
+      		}
+    
+    
+    
+    	}
+    
+    	addNewColorsColorGroup();
+    
+    
+    	{%if display_range == true%}
+          $(function(){
+
+            price_ranges_shown = true;  
+
+			var url = new URL(window.location.href);
+            var prices  = $('.product-prices');
+            var price_ranges= $('.price-ranges');
+            if( url.searchParams.get('variant') === null){
+              
+              
+              		prices.css('display','none');
+              		price_ranges.show();
+              
+              
+            }
+            $('.swatch,.thumbnail ').click(function(){   if(price_ranges_shown== true){  price_ranges.hide();prices.show();price_ranges_shown= false;  }});
+
+          });
+		{%endif%}
+    
+    
+	//fifth popup
+	$('#popups li.last').click(function(e){
+    $pop_five_content = $('#pop-five').clone();
+    $.fancybox($pop_five_content,{'width': 800,'height': 'auto','transitionIn': 'fade','transitionOut': 'fade'}) 
+    e.preventDefault();	
+    var content; 
+    $.get('/apps/help-center',function(response){     
+        content = $(response).find('#hc-return-policy').closest('.s4com-section-body').find('span'); 
+        $('.fancybox-inner').empty(); 
+        content.each(function(index){
+          $(this).find('svg').remove(); 
+          if(index < 3){ 
+            $(this).text( $(this).text().replace('&nbsp;',' ') ) 
+          };
+          if(index === 3){
+            //$(this).text(" ");
+          }
+          if(index === 4){ 
+            //$(this).html('  (altered packaging/product, worn, or damaged items are not eligible for return) <strong>postmarked back to us within 14 days of receiving.</strong> ');  
+          }; 
+          $(this).wrap('<div></div>').appendTo( ".fancybox-inner" );      
+        });
+      }); 
+    return false; 
+    });
+	//end fifth poopup
+
+    
+    {%if product.id == 9279143178 %}
+          	 {%comment%} This is used only for hiding an offending comment in a certain product{%endcomment%}
+		
+                               function removePN() {
+                  if (!$("#spr-review-12915587").size()) {
+                    window.requestAnimationFrame(removePN);
+                  }else {
+                    var review =  $('#spr-review-12915587').find('.spr-review-content-body')
+					var review_text  = review.text();
+					review.text( review_text.replace(/Suz.*/,'')  )
+                   }
+                }
+				removePN();
+
+  		
+		{%endif%}
+    
+    //show GWP ad
+     {%comment%}   
+    
+    {%- comment %}<locksmith:1aee>{% endcomment -%}
+      {%- include 'locksmith-variables', locksmith_scope: 'subject', locksmith_subject: collection, locksmith_subject_parent: product %}{% if locksmith_transparent %}{% else %}{% continue %}{% endif -%}
+    {%- comment %}</locksmith:1aee>{% endcomment -%}
+	{%endcomment%}    
+	
+    {%assign gwp_products =  ""  | split: ","%}
+    
+    {%capture to_search_for%}{{product.id}}{%endcapture%}
+    
+	{% if gwp_products contains  to_search_for%}
+    
+     	{%assign show_at = 1553796000   %}
+ 	 	{%assign current_unix = "now" | date: "%s" | plus : 0 %}	
+    
+		{%if current_unix > show_at %}
+    
+		$('#product-right #product-description > p').each(function(){
+
+			if($(this).find('iframe').length == 0 && gwp_shown== false){gwp_shown = true;$(this).prepend('<div id="gwp_addition"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/RW_WRISTELT.jpg?7449673772016641890"><div >Free Gift with Purchase of this style</div><br></div>');return false;}
+
+		})
+        
+    
+	{%else%}
+	<!-- no gift -->
+  	{%endif%}
+    
+        
+    {%endif%}
+
+      
+      {%comment%}
+      //--------------- Pinterest addtocart functions
+      
+      			    
+          function buildPinterestObject(items){
+
+            var selected = $('[name="id"]').val();
+  						selected = selected.toString();
+
+	
+                  function formatPrice(numb){
+
+                              return Number.parseFloat( Number.parseFloat(numb/100).toFixed(2) )
+                  }
+
+                  var final_price=0;
+                  var order_quantity = 0;
+
+                  for(var i =0; i < items.length; i++){
+
+                          final_price += items[i].final_price * items[i].quantity;
+
+                  }
+
+                  final_price = formatPrice(final_price);
+
+                  for(var i =0; i < items.length; i++){
+
+                          order_quantity += items[i].quantity;
+
+                  }
+
+                  var variant = meta.product.variants.filter(x=>x.id.toString()== selected)[0];
+                  var line_item = {};
+                  if(typeof variant !== "undefined"){
+
+                      line_item.product_name = variant.name;
+                      line_item.product_variant_id = variant.id;
+                      line_item.product_variant = variant.public_title;
+                      line_item.product_price =  formatPrice(variant.price);
+                      line_item.product_quantity = $('#quantity').val();
+
+                  }
+
+                   var pinterest_object = {
+                      value: final_price,
+                      order_quantity,
+                      currency: window.ShopifyAnalytics.meta.currency,
+                      line_items:[line_item]
+
+
+
+                  }
+
+                  pintrk('track','addtocart',pinterest_object);
+
+                  //console.log(pinterest_object);	
+
+
+
+          }
+
+
+
+          function preparePinterestData(callback){
+                          let items;
+
+                      if(typeof cart_items !== "undefined"){
+
+                          items = cart_items;
+                          callback(items)
+                          //buildPinterestItems(items);
+                          //console.log('cart.items'+ items);
+                      }else{
+
+                          Shopify.getCart(function(cart){ items = cart.items; callback(items) });
+                          //console.log('ajax');
+                      }
+                      //callback(items);
+                      //console.log(items);
+                      //return items;
+          }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      //-------------------end Pinterest
+     {%endcomment%} 
+      
+      
+      
+
+
+ $('iframe[src*="youtube.com"]:not(".responsiveyoutube-50"):not(".responsiveyoutube-75"):not(".responsiveyoutube-100")').each(function() {
+        //$(this).removeAttr('width').removeAttr('height');
+        $(this).wrap('<div style="position: relative;overflow: hidden;max-width: 100%;width: 100%;display: inline-block;height:100%;" class="embed-container" />');
+    });
+
+    function showAltTagContent(altTagText) {
+        $('#bh-bigimag-alt-text').text(altTagText);
+
+		
+    }
+    
+    jQuery(function() {
+      
+      
+      $('#bh_vendor_name,h1.product-title-main,.stamped-product-reviews-badge.stamped-main-badge,p.product-prices,#sitewide-sale-message,.price-ranges').responsiveDom({
+      
+		prependTo: '.product-page',
+          mediaQuery: '(max-width:750px)'
+      
+      });
+      
+
+      
+$('#esc-oos-form').responsiveDom({
+
+appendTo: '#AddToCartForm',
+mediaQuery: '(max-width:750px)'
+
+});
+
+      
+  var $notify_form = $('.notify_form .contact-form');		
+  		
+  $notify_form.each(function() {		
+    var $nf = $(this);		
+    $nf.on("submit", function (e) {		
+      if($nf.find('.notify_email').val() != "") {		
+        $.ajax({		
+            type: $nf.attr('method'),		
+            url: 'https://api.wigs.com/email_relays/outOfStock.php',//$nf.attr('action'),	
+            data: $nf.serialize(),		
+            success: function (data) {		
+              $notify_form.fadeOut("slow", function(){		
+                $nf.prev('.message').html("Thanks! We will notify you when this product becomes available!");		
+              });		
+            }		
+        }).fail(function(){ 		
+					$notify_form.fadeOut("slow", function(){		
+                $nf.prev('.message').html("Thanks! We will notify you when this product becomes available!");		
+              });		
+			});		
+      } else {		
+        $nf.prev('.message').html("Please provide a valid email address.");		
+      }  		
+      e.preventDefault();		
+    });		
+  });  		
+  $notify_form.hide();   
+      
+      $('.mthumb').each(function(){
+			var image_alt = $(this).find('img').attr('alt');
+ 	
+			$(this).append('<div>'+image_alt+'</div>');
+		});
+      
+      
+        $('td:contains("Ideal Face Shape")').next().text(function(i, text) {
+            return text.replace(/,/g, ', ');
+        });
+
+
+        var first_alt = jQuery('.thumbnails a img').eq(0).attr('alt');
+
+        showAltTagContent(first_alt);
+
+        jQuery('.thumbnails a img').click(function() {
+            //console.log($(this).attr('alt'));
+            showAltTagContent($(this).attr('alt'));
+			var color = $(this).data('thumbnail-variant');		
+            thumbnailToSelectSync(color,'Choose a Color'); 
+
+        });
+
+        function addImageButton() {
+
+
+            SPR.submitForm = function(t) {
+                        var agreed = document.getElementById('comment_form_agreement');
+                if( agreed.checked ){
+                var e;
+                return e = this.$(t).serializeObject(),e["review[body]"]=saveImageURLInText(e["review[body]"],review_image_url), e = this.$.extend(e, this.extraAjaxParams), e = this.$.param(e), e = e.replace(/%0D%0A/g, "%0A"), this.$.ajax({
+                    url: this.api_url + "/reviews/create",
+                    type: "GET",
+                    dataType: "jsonp",
+                    data: e,
+                    success: this.formCallback,
+                    beforeSend: function(t) {
+                        return function() {
+                            return t.$(".spr-button-primary").attr("disabled", "disabled")
+                        }
+                    }(this),
+                    complete: function(t) {
+                        return function() {
+                            return t.$(".spr-button-primary").removeAttr("disabled")
+                        }
+                    }(this)
+                }), !1
+                }
+                else{
+
+                    $('#comment_form_agreement').closest('div').css({'border':'1px solid red','padding':'5px'});
+                    
+                }
+            }
+
+
+			$('fieldset.spr-form-review').after('<div id="form1_container" style="position:relative;bottom:0px;margin-left:5px;margin-top:20px;"><form id="form1" enctype="multipart/form-data" method="post">           <div id="image_upload_container"> <div class="row" style="margin-bottom:5px;">   <label for="file">Select a Photo to Upload</label>  <input type="file" name="file" id="file" accept="image/gif, image/jpeg, image/png" onchange="previewImage(this)" /> </div>  <div id="fileName"></div> <div id="fileSize"></div> <div id="fileType"></div> <div class="row">   </div> <div id="filePreview"></div>   <div id="progressNumber"></div> </div> <div id="agreement_terms_service" style="margin:20px 0px;"> <input type="checkbox"  id="comment_form_agreement" style="min-width:0px;width:20px">&nbsp;I agree to the <a href="#agreement_terms_of_service_popup" class="fancybox" id="agreement_terms_service_link">Terms &amp; Conditions for Comments, Suggestions & Submissions</a></div></form> </div>');
+            $(document).off('click', '.spr-summary-actions-newreview', addImageButton);
+          
+        }
+
+        $(document).on('click', '.spr-summary-actions-newreview', addImageButton);
+       {%if bh_special_offer%}
+      
+     	//setTimeout( initializeSpecialOfferCheckbox, 1000);
+      	let special_offer_image = document.getElementById('bh-special-offer-image'); 
+      special_offer_image.addEventListener('click',function(e){ e.preventDefault(); if( !$('input[name="add-special-offer"]').prop('checked') ) { 
+						  
+        
+        				  var target = $("#bh-special-offer-container");
+                          if( target.length ) {
+
+                              $('html, body').stop().animate({
+                                  scrollTop: target.offset().top-100
+
+                              }, 1000);
+                              $('input[name="add-special-offer"]').click();
+                          }				
+				
+  			} 
+				
+	
+
+
+
+		})
+        {%endif%}
+
+    });
+    
+    
+    if($("#main_color_group_list li").length == 1){ $('#main_color_group_list').remove(); }
+    
+    
+    
+    {{include 'product-page-ga-tracking'}}
+    
+})(jQuery);
+
+
+  
+  	var url_par = document.location.search;
+      if( url_par.indexOf("variant") !== -1 ){
+          var param_parts  = url_par.split('=');
+         var var_id = param_parts[1];
+      }
+      else{
+
+      var var_id = {{product.id}};
+      }
+
+
+</script>

@@ -1,0 +1,39 @@
+<ul id="main_color_group_list" class="color_group_list">
+  <li><a href="#all" class="active">All</a></li>
+  {% assign color_group_list == "" %}
+  {% for variant in product.variants %}
+  {%capture color_group_to_include%}{{product.vendor | downcase | replace: ' ','-'}}-color-groups{%endcapture%}     
+  {% capture the_snippet_content %}{% include color_group_to_include %}{% endcapture %}
+	{% unless the_snippet_content contains "Liquid error" %}
+	{% include color_group_to_include %}
+  
+  <!-- {{color_group_to_include }} -->
+  {% endunless %}
+  {%assign color_group_keys = color_groups_colors | split : ',' %}
+  {%assign color_group_values = color_groups_groups | split : ',' %}
+
+  {%for key in color_group_keys %}
+  {%if key == variant.title %}
+  {%capture color_group%}{{ color_group_values[forloop.index0] }}{%endcapture%}
+  {%break%}
+  {%else%}
+  {%assign color_group = ""%}
+  {%endif%}
+  {%endfor%}
+
+  {% unless color_group_list contains color_group %}
+  {% if color_group != blank %}
+  {% assign color_group_list = color_group_list | append:"," | append:color_group %}
+  <li>
+    <a href="#{{color_group | downcase}}">{{color_group}}</a>
+  </li>
+  {% endif %}
+  {% endunless %}
+
+  {%endfor%}
+   {%unless new_colors == blank %}
+ 	<li>
+    <a href="#new-colors">New Colors</a>
+  	</li>
+  {% endunless %}
+</ul>

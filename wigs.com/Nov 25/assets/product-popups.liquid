@@ -1,0 +1,61 @@
+{% if template != 'product.quick' %}
+
+<ul id="popups">
+  
+  {% if request.path contains 'topper' or request.path contains 'toppiece' or request.path contains 'top-piece' %}
+  
+  <li class="first"><a href="#" id="pop-six" >New To Toppers? Start Here</a></li>
+  <li><a href="#" id="pop-seven" >Hair Toppers Buying Guide</a></li> 
+   
+  {% elsif request.path contains 'wig' %}
+  
+  <li class="first"><a href="#" id="pop-one" class="">Find Your Wig Size</a></li>
+  <li><a href="#" id="pop-three" class="">How to Wash A Human Hair Wig or Synthetic Wig</a></li> 
+  
+  {% endif %}
+  
+  <li><a href="#" id="pop-two">How to Choose Color</a></li>
+  <li><a href="#pop-four" class="fancybox">Ask us a question</a></li>
+  <li class="last"><a href="#" id="pop-five" rel="nofollow">Return Policy</a></li>
+</ul>
+
+<div id="pop-four" style="display: none">{% include 'question' %}</div>
+
+
+<script>
+  $(function(){ 
+
+    //popup handlers
+    $('#pop-one,#pop-two,#pop-three,#pop-five,#pop-six,#pop-seven').click(function(e){
+
+      e.preventDefault();
+      var popup_pages = [];
+
+      popup_pages['pop-one'] = '/pages/find-your-wig-size';
+      popup_pages['pop-two'] = '/pages/how-to-choose-color-content';
+      popup_pages['pop-three'] = '/pages/how-to-wash';
+      popup_pages['pop-five'] = '/26362774/policies/refund-policy.html?locale=en';
+      //14109094
+      popup_pages['pop-six'] = '/pages/hair-toppers-101-content';
+      popup_pages['pop-seven'] = '/pages/shop-hair-toppers-content';
+
+      var this_popup_id = $(this).attr('id');
+
+      $.get(popup_pages[this_popup_id],function(data){
+
+        $.fancybox(data,{maxWidth:'1000',autoHeight:true});
+
+      })
+
+      return false;
+    })
+    //end popup handlers
+    
+
+  });
+ </script>
+
+
+
+
+{% endif %}

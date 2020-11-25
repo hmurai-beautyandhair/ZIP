@@ -1,0 +1,14 @@
+{% for tag in product.tags %}
+	
+    {% if tag == "SHOW-PERCENT-OFF" %} 
+    {%capture percent_discount %} | {{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | divided_by: 10  | floor | times :10 }}% OFF{%endcapture%}
+	<!-- {{ 41 | divided_by: 10  | floor | times :10}}			percentage off: {{percent_discount }} -->
+	{%endif%}
+    
+    {% if tag == "CLOSEOUT" %} 
+       {%capture closeout %} | CLOSEOUT {%	endcapture %}
+    {%endif%}
+    
+    {%endfor %}
+    
+    

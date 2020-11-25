@@ -1,0 +1,215 @@
+<ul id="sortme">
+ {% if settings.sort_by %} 
+  <li class="clearfix filter">
+    <p>{{ 'collections.sorting.title' | t }}</p> 
+    <select id="sort-by" class="styled-select">
+      <option value="manual"><!-- {{ 'collections.sorting.featured' | t }} -->Trending</option>
+      <option value="price-ascending">{{ 'collections.sorting.price_ascending' | t }}</option>
+      <option value="price-descending">{{ 'collections.sorting.price_descending' | t }}</option>
+      <option value="title-ascending">{{ 'collections.sorting.az' | t }}</option>
+      <option value="title-descending">{{ 'collections.sorting.za' | t }}</option>
+      <option value="created-ascending">{{ 'collections.sorting.date_ascending' | t }}</option>
+      <option value="created-descending">{{ 'collections.sorting.date_descending' | t }}</option>
+      <option value="best-selling">{{ 'collections.sorting.best_selling' | t }}</option>
+    </select>
+  </li>
+  <script>
+    Shopify.queryParams = {};
+    if (location.search.length) {
+      for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+        aKeyValue = aCouples[i].split('=');
+        if (aKeyValue.length > 1) {
+          Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+        }
+      }
+    }
+    jQuery('#sort-by')
+    .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
+    .bind('change', function() {
+      Shopify.queryParams.sort_by = jQuery(this).val();
+      location.search = jQuery.param(Shopify.queryParams);
+    });
+  </script>  
+  {% endif %}
+  
+
+{% if settings.sort-drop-down-a-check %}                        
+  <li class="clearfix filter">
+{% assign tags = settings.sort_a  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+<!-- <p>{{ 'collections.filter.shop_by_color' | t }}</p> -->
+ <p>{{ 'collections.filter.shop_by_length' | t }}</p>
+    <select class="styled-select coll-filter">
+      <option value="">{{ 'collections.filter.all' | t }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+{% if settings.sort-drop-down-b-check %}
+  <li class="clearfix filter">
+{% assign tags = settings.sort_b  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+<p>{{ 'collections.filter.shop_by_size' | t }}</p>
+    <select class="styled-select coll-filter">
+      <option value="">{{ 'collections.filter.all' | t }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+{% if settings.sort-drop-down-c-check %}
+  <li class="clearfix filter">
+{% assign tags = settings.sort_c  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+<p>{{ 'collections.filter.shop_by_material' | t }}</p>
+    <select class="styled-select coll-filter">
+      <option value="">{{ 'collections.filter.all' | t }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+
+  
+  
+  
+  
+  {% comment %}Begin the custom filters per product type.{% endcomment %}
+  
+
+  
+{% assign top_levels = "wigs,hair-extensions,hairpieces,hair-care-products" | split: ',' %}
+{% comment %}{% assign cap_feature_collections = "wigs,womens-wigs,mens-wigs-toupees-hairpieces,kids-human-hair-synthetic-wigs,human-hair-wigs,synthetic-hair-wigs,lace-front-wigs,new-arrivals,bob-wigs,pixie-wigs,layered-wigs,straight-wigs,wavy-curly-wigs" | split :',' %}{% endcomment %}
+
+  
+{% assign cap_construction_options = settings.sort_wigs | split: ',' %}
+{% assign all_tags_in_collection = %}
+{% assign show_cap_construction = false %}
+ {% for cap_construction_option in cap_construction_options %}
+ {% assign compare_cap_option = cap_construction_option | strip %}
+ {% assign show_cap_options = false %}
+   {% for tag in collection.all_tags %}
+		{% assign compare_tag = tag | strip %}	
+		{% if compare_cap_option == compare_tag %}
+ 			{% assign show_cap_options = true %}
+    	{% endif %}	
+   {% endfor %}
+{% endfor %}
+<!-- show_cap_options:{{show_cap_options}} -->
+{% if top_levels contains collection.handle or  show_cap_options == true %}
+  {% assign setting_string = 'sort_' | append: collection.handle %}
+	  {%assign setting_string_text = 'sort_' | append: collection.handle |append : "_text"%}
+{% if show_cap_options == true %}
+   {% assign setting_string = 'sort_wigs'  %}
+	  {%assign setting_string_text = 'sort_wigs' %} 
+  {% endif %}
+  <!-- setting_string:{{ setting_string }} -->
+  {% if settings.sort-drop-down-d-check %}
+  <li class="clearfix filter">
+{% assign tags = settings[setting_string]  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+{% assign tags_text = settings[setting_string_text]  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}
+<!-- <p>{{ 'collections.filter.shop_by_material' | t }}</p> -->
+    {% if top_levels contains collection.handle or  show_cap_options == true %}
+    <p>Cap Feature</p>
+	{% else %}
+	<p>Type</p>
+	{% endif %}
+    <select class="styled-select coll-filter">
+      <option value="">{{ 'collections.filter.all' | t }}</option>
+      {% for tag in tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tags_text[forloop.index0] }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{  tags_text[forloop.index0] }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+{% endif %}
+{% comment %} This is to be decided upon later.
+{% else %}
+  
+  {% if settings.sort-drop-down-d-check %}
+  <li class="clearfix filter">
+{% comment %}{% assign tags = settings.sort_c  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    {% endcomment %}
+
+<p>{{ 'collections.filter.shop_by_material' | t }}</p>
+    <select class="styled-select coll-filter" class="bh_last_filter">
+      <option value="">{{ 'collections.filter.all' | t }}</option>
+      {% for tag in collection.all_tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+		      {% endif %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+
+      {% endfor %}
+    </select>
+  </li>
+
+
+{% endif %}
+{% endcomment %}
+  
+  
+{% endif %}
+  
+{% comment %}End the custom filters{% endcomment %}
+    
+  
+  
+</ul>  
+                   
+     
+<script>
+  /* Product Tag Filters - Good for any number of filters on any type of collection pages */
+  /* Give you product tag filter select element a class of coll-filter */
+  /* Give your collection select a class of coll-picker */
+  /* Brought to you by Caroline Schnapp */
+  var allFilters = jQuery('.coll-filter, .coll-picker');
+  allFilters.change(function() {
+    var newTags = [];
+    jQuery('.coll-filter').each(function() { 
+      if (jQuery(this).val()) {
+        newTags.push(jQuery(this).val());
+      }
+    });
+    if (newTags.length) {
+      var query = newTags.join('+');
+      if (jQuery('.coll-picker').length) {
+        window.location.href = '/collections/' + jQuery('.coll-picker').val() + '/' + query;
+      }
+      else {
+        window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('tag', query);
+      }
+    } 
+    else {
+      if (jQuery('.coll-picker').length) {
+        window.location.href = '/collections/' + jQuery('.coll-picker').val();
+      }
+      else {
+        {% if collection.handle %}
+        window.location.href = '/collections/{{ collection.handle }}';
+        {% elsif collection.products.first.type == collection.title %}
+        window.location.href = '{{ collection.title | url_for_type }}';
+        {% elsif collection.products.first.vendor == collection.title %}
+        window.location.href = '{{ collection.title | url_for_vendor }}';
+        {% endif %}
+      }
+    }
+  });
+</script>

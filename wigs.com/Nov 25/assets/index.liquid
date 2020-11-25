@@ -1,0 +1,39 @@
+{% if settings.home_section_1 != blank %}
+  {% include settings.home_section_1 %}
+{% endif %}
+
+{% if settings.home_section_2 != blank %}
+  {% include settings.home_section_2 %}
+{% endif %}
+
+{% if settings.home_section_3 != blank %}
+  {% include settings.home_section_3 %}
+{% endif %}
+
+{% include 'homepage-featured-products' %}
+{% include 'homepage-tiles-hardcoded' %}
+
+{% if settings.home_section_4 != blank %}
+  {% include settings.home_section_4 %}
+{% endif %}
+
+{% if settings.home_section_5 != blank %}
+  {% include settings.home_section_5 %}
+{% endif %}
+
+{% if settings.home_section_6 != blank %}
+  {% include settings.home_section_6 %}
+{% endif %}
+
+{% if settings.home_section_7 != blank %}
+  {% include settings.home_section_7 %}
+{% endif %}
+
+{% if settings.home_section_8 != blank %}
+  {% include settings.home_section_8 %}
+{% endif %}
+
+<div class="load-wait">
+<i class="fa fa-spinner fa-spin"></i>
+</div>
+

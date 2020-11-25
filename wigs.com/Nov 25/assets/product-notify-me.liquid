@@ -1,0 +1,27 @@
+{%comment%} This is taken from the hairextensions 'notify me form {%endcomment%}
+  <div class="notify_form notify-form-{{ product.id }}" id="notify-form-{{ product.id }}" {% if product.available %}style="display:none"{% endif %}>
+    <p class="message"></p>
+    {% form 'contact' %}
+      {% if form.posted_successfully? %}
+        <p><em>Thanks! We will notify you when this color available!</em></p>
+      {% elsif form.errors %}
+    <p><em>There was an error. Please <a href="/pages/contact-us">contact us.</a></em></p>
+      {% else %}
+        <p>
+          <label for="contact[email]">Notify me when this color is available:</label>
+          
+          {% if customer %}
+            <input type="hidden" name="contact[email]" class="notify_email" value="{{ customer.email }}" />
+          {% else %}
+            <input required type="email" class="notify_email" name="contact[email]" id="contact[email]" placeholder="Enter your email address..." value="{{ contact.fields.email }}" />
+          {% endif %}
+			
+          {%capture message_content %}Please notify me when {{ product.title | remove: '"' }} becomes available {{canonical_url}} {%endcapture%}
+          <input type="hidden" name="contact[body]" class="notify_form_message" data-body="{{ message_content }}" value="{{ message_content  }}" />
+          <input class="action_button" type="submit" value="Send" style="margin-bottom:0px" />  
+		  <input type="hidden" name="sku" value="" />
+		  <input type="hidden" name="color" value="" />     
+        </p>
+      {% endif %}
+    {% endform %}
+  </div>

@@ -1,0 +1,111 @@
+  <div id="breadcrumb" class="desktop-12">
+    <a href="/" class="homepage-link" title="home">Wigs</a>{%comment%}title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>{%endcomment%}
+    {% if template contains "product" %}
+    {% if collection %}            
+    <span class="separator"> / </span> 
+    {% if collection.handle %}
+    {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+    {{ collection.title | link_to: url }}
+    {% elsif collection.all_products_count > 0 and collection.products.first.type == collection.title %}
+    {{ collection.title | link_to_type }}
+    {% elsif collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}
+    {{ collection.title | link_to_vendor }}
+    {% endif %}
+    {% else %}
+    <span class="separator"> / </span> 
+    {{ product.type | link_to_type }}
+    {% endif %}
+    <span class="separator"> / </span>
+    <span class="page-title"><a href="{{product.url}}">{{ page_title }}</a></span>
+    {% elsif template == "article" %}
+    <span class="separator"> / </span> 
+    {{ blog.title | link_to: blog.url }}
+    <span class="separator"> / </span>
+    <span class="page-title">{{ page_title }}</span>
+    {% elsif template contains "collection" %}
+    {% if current_tags.size > 0 %}
+    <span class="separator"> / </span>
+    {{ collection.title | link_to: collection.url }}
+    <span class="separator"> / </span>
+    <span class="page-title">{{ current_tags.first }}</span>
+    {% else %}
+    <span class="separator"> / </span>
+    <span class="page-title"><a href="{{collection.url}}">{{ page_title }}</a></span>
+    {% endif %}
+    {% else %}
+    <span class="separator"> / </span>
+	<span class="page-title"><a href="{{page.url}}">{{ page_title }}</a></span>
+    {% endif %}
+  </div>
+<script>
+  (function($){
+    $(function(){
+
+function breadCrumbsToListItems($breadCrumbsJQ){
+	var itemListElements = [];
+
+	$breadCrumbsJQ.each(function(index){
+						
+						var itemListElement = {};
+						itemListElement["@type"]  = "ListItem";
+						itemListElement.position  = index+1;				
+						itemListElement.item = {};
+						
+						//create "name" attribute
+						itemListElement.item.name = $(this).text();
+					
+						var attr = $(this).attr('href');
+						var is_page_title =  $(this).hasClass("page-title");
+						if( itemListElement.position === 1 ){
+								
+									itemListElement.item["@id"] = location.origin;
+
+						}
+						else if( typeof attr !== typeof undefined && attr !== false && !is_page_title ){
+									
+										itemListElement.item["@id"] = location.origin+$(this).attr('href');
+
+						}
+                		else if( is_page_title ){
+
+										itemListElement.item["@id"] = $('link[rel="canonical"]').attr('href');
+						//add an image if it exists
+                        var main_image=$('#bigimage').find('.mainimage');
+						if( main_image.length !== 0 ){
+                          			
+                          				itemListElement.item.image = main_image.attr('src');
+                          }
+						}
+
+						itemListElements.push(itemListElement);
+        
+
+	})
+
+
+	return itemListElements
+}
+
+
+
+var $breadCrumbsJQ = $('#breadcrumb >').not('.separator');
+var listItemElements = breadCrumbsToListItems($breadCrumbsJQ);
+
+var data =
+{
+	  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": listItemElements,
+
+
+}
+
+
+var s = document.createElement('script');
+s.type = "application/ld+json";
+s.appendChild(document.createTextNode( JSON.stringify(data) ));
+document.body.appendChild(s);
+})
+})(jQuery)
+</script>
+<div class="clear"></div>

@@ -1,0 +1,24 @@
+
+{%if product.type != 'Hair Care' and product.type != 'Accessories' and product.type != "Hats/Headcovers"%}
+
+
+{%capture color_difference_link %}
+<small>&nbsp;<a href="#color-info" style="text-decoration:underline"><i class="fa fa-info-circle header-advice" style="color: #c41949;"></i><span style="margin-left:3px;">Actual color may slightly differ*</span></a></small>
+{%endcapture%}
+
+
+{%capture color_difference_text %}
+<div id="color-info">
+<h3>Hair Colors</h3>
+Color shows up slightly different based on hair fiber or style.  Each color swatch or photo shown can vary from screen to screen as well as production batch as components of the wigs are handmade.  
+These swatches are designed to give you a good idea of the color but may vary from hair to hair. 
+To learn more, visit our '<a href="/pages/choose-color-with-confidence" style="text-decoration:underline;">Choosing a color</a>' page.
+</div>
+{%endcapture%}
+
+{%else%}
+
+{%assign color_difference_link='' %}
+{%assign color_difference_text = ''%}
+
+{%endif%}

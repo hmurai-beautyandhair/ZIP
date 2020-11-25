@@ -1,0 +1,169 @@
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+<h1>{{ page.title }}</h1>
+  {%if   page.handle == "sale-november-2020"%}
+  
+  <h2 style="color: #c41949; text-align: center; margin: 1.2em 0"><strong>FREE U.S. Ground Shipping!</strong></h2>
+  {%endif%}
+<picture>
+
+  {%if page.handle == "sale-november-2020"%}
+  	 	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/2011_MSaleBanner_NoNameSale_30.jpg?v=1603140945" media="(max-width: 800px)">     
+  {%elsif page.handle  == "sale-october-2020" %}
+  
+  	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/2010_Msalebanner_treatyourselfSale_30.jpg?v=1603140945" media="(max-width: 800px)">     
+  {%elsif page.handle  == "bfcm-november-2020" %}
+  	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/2011_mobile_lp_bfcm_promo.jpg?v=1603805438" media="(max-width: 800px)">     
+  {%endif%}
+
+   	 <img src="{{ page.metafields.template.banner }} " class="{{hide_banner}}" />    
+</picture>
+  
+{{ page.content }}
+  
+  
+{%if   page.handle == "sale-november-2020" or page.handle == "bfcm-november-2020"  or page.handle == "sale-september-2020" or page.handle == "sale-october-2020" %}  
+{% assign collection = collections['wigs'] %}
+{% assign second_collection_link_text = "Shop Best Sellers" %}
+{% assign second_collection_link_href = "/collections/wigs" %}
+{% assign second_collection_limit  = 4 %}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+  
+{%endif%}
+  
+  
+  
+{%if   page.handle == "sale-august-2020" or page.handle == "sale-october-2020" or page.handle == "sale-november-2020" or page.handle == "bfcm-november-2020" %}  
+{% assign collection = collections['custom-collection-sale'] %}
+{% assign second_collection_link_text = "Shop New Arrivals" %}
+{% assign second_collection_link_href = "/collections/new-arrivals" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+
+{%endif%}
+
+  
+{%comment%} 
+  
+{%if  page.handle == "sale-jan-2020"  or page.handle == "sale-february-2020" or page.handle == "valentines-day-sale-2020" or page.handle == "sale-march-2020"%}  
+{% assign collection = collections['ellen-wille-new-arrivals'] %}
+{% assign second_collection_link_text = "Shop New Ellen Wille" %}
+{% assign second_collection_link_href = "/collections/ellen-wille-new-arrivals" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+  
+{%endif%}
+  
+{%endcomment%}
+  
+{% if page.handle == "sale-october-2019" %}  
+{% assign collection = collections['jon-renau-fall-wig-collection'] %}
+{% assign second_collection_link_text = "Shop New Jon Renau " %}
+{% assign second_collection_link_href = "/collections/jon-renau-new-arrivals" %}
+{% assign second_collection_limit  = 4 %}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+  
+{%endif%}
+    
+   
+  
+{% if page.handle == "sale-october-2019"  %}  
+{% assign collection = collections['raquel-welch-new-arrivals'] %}
+{% assign second_collection_link_text = "Shop New Raquel Welch" %}
+{% assign second_collection_link_href = "/collections/raquel-welch-new-arrivals" %}
+{% assign second_collection_limit  = 4 %}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+
+{%endif%}
+  
+  
+{% if page.handle == "sale-november-2019"  or page.handle == "thanksgiving-sale-2019" %}  
+{% assign collection = collections['new-arrivals-by-rene-of-paris'] %}
+{% assign second_collection_link_text = "Shop New Rene of Paris" %}
+{% assign second_collection_link_href = "/collections/new-arrivals-by-rene-of-paris" %}
+{% assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+  
+{%endif%}
+     
+
+  
+  
+{%if  page.handle == "black-friday-sale-2019" or page.handle == "cyber-monday-sale-2019" or page.handle == "christmas-sale-2019" or page.handle == "sale-december-2019" %}  
+{% assign collection = collections['top-19-of-2019'] %}
+{% assign second_collection_link_text = "Top 19 of 2019" %}
+{% assign second_collection_link_href = "/collections/top-19-of-2019" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+
+{%endif%}
+  
+  
+  
+
+{%if page.handle == "" %} 
+{% assign collection = collections['wigs'] %}
+{% assign second_collection_link_text = "Shop All Wigs" %}
+{% assign second_collection_link_href = "/collections/wigs" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+  
+</div>
+
+{%endif%}
+
+{% include 'sale-page-content' %}					

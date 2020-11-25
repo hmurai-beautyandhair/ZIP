@@ -1,0 +1,932 @@
+! function(window) {
+    var finder = "",
+        globalStore = {},
+        BrandName = "Guidelines",
+        brandKey = ".guidelines-product-finder",
+        domainName = window.location.hostname,
+        globalFinderId = "",
+        globalShopId = "",
+        showReporting = !1,
+        secureType = "",
+        shopId, finder_url = window.location.href,
+        finder_url_parameter_name = "guidelines",
+        finder_url_parameter_value = decodeURIComponent((new RegExp("[?|&]" + finder_url_parameter_name + "=([^&;]+?)(&|#|;|$)").exec(location.search) || [, ""])[1].replace(/\+/g, "%20")) || "",
+        URL_search = window.location.search,
+        URL_path = window.location.pathname,
+        URL_refresh = URL_path + URL_search,
+        tagsLoaded = !1,
+        resultsRequested = !1,
+        web_url, proxyURL;
+    secureType = "https:" != window.location.protocol ? "http:" : "https:", "localhost" == domainName ? (web_url = "http://localhost/Guidelines//public/", proxyURL = "http://localhost/Guidelines/public", showReporting = !0) : "guidelinesapp.eloquentcommerce.com" == domainName ? (web_url = secureType + "//guidelinesapp.eloquentcommerce.com/", proxyURL = secureType + "//guidelinesapp.eloquentcommerce.com/public", showReporting = !0) : (web_url = secureType + "//guidelinesapp.eloquentcommerce.com/", proxyURL = secureType + "//" + domainName + "/apps/public", showReporting = !1);
+    var s3_url = "https://d21h25dhkwgass.cloudfront.net/",
+        s3_url_json = secureType + "//d1832h3ylsolo6.cloudfront.net",
+        tagSelections = [],
+        tagSelectionObj = {},
+        sudo = [];
+    tagSelectionObj.sudo = "";
+    var anna = [];
+    tagSelectionObj.anna = "";
+    var reg = [];
+    tagSelectionObj.reg = "";
+    var jsRegEx = [];
+    tagSelectionObj.jsRegEx = "";
+    var steps = [];
+    tagSelectionObj.steps = "";
+    var regCounter = 0,
+        checkBoxCheck = !0,
+        TotalClickCount = 0,
+        Guidelines = function($) {
+            "use strict";
+
+            function loadFinderHTMLandCSS(a) {
+                var b = $(a),
+                    c = b.data("product-finder-id"),
+                    d = b.data("product-finder-store-id");
+                globalFinderId = c, globalShopId = d;
+                var e = getCookie("gid"),
+                    f = $(window).height(),
+                    g = $(window).width(),
+                    h = "a_rId=" + finder_url_parameter_value + "&gid=" + e + "&fId=" + c + "&domain=" + domainName + "&h=" + f + "&w=" + g + "&shopId=" + d,
+                    i = proxyURL + "/css/";
+                $.when($.get(i + "pf-guidelines.all.min.v1.css", function(a) {
+                    globalStore.cssMain = a
+                }), $.ajax({
+                    async: !1,
+                    type: "POST",
+                    dataType: "JSON",
+                    url: proxyURL + "/finder.json.php",
+                    data: h,
+                    beforeSend: function() {}
+                }).done(function(a) {
+                    var b = a.error,
+                        c = a.html,
+                        d = a.settings,
+                        f = a.css,
+                        g = a.google,
+                        h = a.answertags,
+                        i = a.labels,
+                        j = a.domain,
+                        k = a.resultsInfo,
+                        l = a.finderObject;
+                    b.length > 0 && (c = "", handleError("Problem loading finder.json")), globalStore.error = b, globalStore.settings = d, globalStore.html = c, globalStore.css = f, globalStore.google = g, globalStore.answertags = h, globalStore.labels = i, globalStore.storeName = j, globalStore.resultsInfo = k, globalStore.finderObject = l, e || (document.cookie = "gid=" + globalStore.settings.gid + "; expires=0; path=/")
+                }).fail(function(a) {
+                    var b = a.error;
+                    handleError("Problem with AJAX call to database."), handleError(b)
+                })).then(function() {
+                    if ($("<style type='text/css'>" + globalStore.cssMain + "</style>").appendTo("head"), globalStore.html) {
+                        var a = globalStore.html.indexOf("Error.");
+                        if (1 == a && "undefined" != a) {
+                            var c = globalStore.html.replace("Error.", "");
+                            handleError(c)
+                        } else {
+                            if ($("<style type='text/css'>" + globalStore.css + "</style>").appendTo("head"), globalStore.google) {
+                                var d = "<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=" + globalStore.google + "' >";
+                                $(d).appendTo("head")
+                            }
+                            b.empty().append(globalStore.html).fadeIn(3e3), init()
+                        }
+                    }
+                })
+            }
+
+            function runRegEx(a, b, c) {
+                var d = "",
+                    e = createRegExTests(a, d);
+                return c && (e = "(" + e + ")"), e
+            }
+
+            function init() {
+                var a, b;
+                if (a = null !== globalStore.settings ? globalStore.settings.transistionType : "fade", null !== globalStore.resultsInfo && "" !== globalStore.resultsInfo.steps_obj) {
+                    b = globalStore.resultsInfo.number_of_steps;
+                    var c = globalStore.resultsInfo.steps_obj.replace(/&quot;/g, '"'),
+                        d = JSON.parse(c);
+                    tagSelectionObj.steps = d;
+                    var e = tagSelectionObj.steps,
+                        f = 1,
+                        g = [],
+                        h = [],
+                        i = [],
+                        j = "";
+                    for (var k in e) {
+                        var l = e[k],
+                            m = "",
+                            n = "",
+                            o = g.length > 0 ? " AND " : "";
+                        j = f > 1 ? " && " : "";
+                        var p = "",
+                            q = "[object Array]" === Object.prototype.toString.call(l);
+                        if (q) {
+                            var r = l.length;
+                            for (var s in l) {
+                                var t = String(l[s]);
+                                if (t) {
+                                    var u = m.length > 0 ? " <br><br>- or - <br><br> " : "";
+                                    t ? (p = t.toUpperCase(), m += o + u + " " + p.replace(/,/g, " and ") + " ") : m += o + u + " ", o = "";
+                                    var v = n.length > 0 ? " || " : "";
+                                    n += v + runRegEx(t, f, ""), i.push(t)
+                                }
+                            }
+                            h[f] = 1 === r ? j + n : j + "(" + n + ")", jsRegEx.push(j + n), g.push(m), steps.push(i), f++
+                        } else l && (p = l.toUpperCase(), m = o + " " + p.replace(/,/g, " and ") + " ", g.push(m), h[f] = j + runRegEx(l, f, !0), jsRegEx.push(j + runRegEx(l, f, !0)), steps.push(l), f++)
+                    }
+                    tagSelectionObj.jsRegEx = h, tagSelectionObj.sudo = g, getIndividualTagsFromSteps()
+                } else b = "1";
+                finder = $("#pf-app-sy").slippry({
+                    adaptiveHeight: !0,
+                    start: b,
+                    loop: !1,
+                    captions: !1,
+                    controls: !1,
+                    pager: !1,
+                    transition: a,
+                    continuous: !1,
+                    useCSS: !0,
+                    padding: 0,
+                    slideMargin: 0,
+                    auto: !1
+                }), loadResults(), globalStore.resultsInfo.number_of_steps > 0 && ($(".pf-back-link").show(), $(".pf-pagination  li").removeClass("pf-pagination-status-active"), $("ul.pf-pagination li:eq(" + (b - 1) + ")").addClass("pf-pagination-status-active"))
+            }
+
+            function addToGlobalObject(a, b, c) {
+                var d = "";
+                b != 1 + c && (d = void 0 !== tagSelectionObj.jsRegEx && null !== tagSelectionObj.jsRegEx && 0 !== tagSelectionObj.jsRegEx.length ? " && " : ""), jsRegEx[b - (1 + c)] = d + "(" + a + ")", tagSelectionObj.jsRegEx = jsRegEx
+            }
+
+            function createRegExTests(a, b) {
+                var c = "";
+                a && (c = a.split(","));
+                for (var d = "", e = 0; e < c.length; e++) {
+                    var f = d.length > 1 ? " && " : "",
+                        g = c[e].replace(/\$/g, "");
+                  console.log("original:" + g);  
+						g = g.replace('\/','\\/');
+							console.log("new:" + g);
+                    d += f + "/\\b" + $.trim(g.toLowerCase()) + "\\b/.test(str)", regCounter++
+                }
+                var h = b ? " || " : "";
+                return b += h + "(" + d + ")"
+            }
+
+            function displayCounts() {
+                if ($(".pf-report-holder").length) {
+                    var a = "<!-- START WRAPPER --><div class='pf-report-wrapper'>";
+                    a += "<div class='pf-report-header'>Summary</div>";
+                    var b = 0,
+                        c = 0;
+                    if (globalStore) {
+                        var d = globalStore.answertags,
+                            e = globalStore.labels;
+                        for (var f in d) {
+                            b++, c = 0;
+                            var g = d[f],
+                                h = e[f],
+                                i = h.answer;
+                            a += "<div class='pf-report-step'>" + h.headline + "</div>";
+                            for (var j in g) {
+                                c++;
+                                var k = getCountofTag(g[j].toLowerCase());
+                                if (k) {
+                                    var l = k.count,
+                                        m = k.products;
+                                    m = m.replace(/'/g, "\\'"), m = m.replace(/"/g, "");
+                                    var n = "";
+                                    (l > 1 || 0 === l) && (n = "s"), a += "<div class='pf-report-answer'>", a += "<span class='pf-summary-text'><b>" + i[j] + "</b><span>", a += "<ul class='pf-summary-text'>", a += "<li>Tags: " + g[j] + "</li>", a += "<li>" + l + " Product" + n + "</li>", a += "</ul>", a += "</div>"
+                                }
+                            }
+                        }
+                    } else console.log("Missing globalStore Object.");
+                    a += "</div><!-- END WRAPPER -->", $(".pf-report-tags").html(a)
+                }
+            }
+
+            function countResults() {
+                if ($(".pf-report-holder").length) {
+                    var a = "",
+                        b = "<!-- START WRAPPER -->";
+                    if (b += "  <div class='pf-report-wrapper'>", b += "  <div class='pf-report-header'>Search</div>", b += "  <div class='pf-report-count pf-summary-text'></div>", b += "  <div class='pf-summary-text'>Show me all items that are tagged:</div>", b += "  <ul class='pf-summary-text'>", tagSelectionObj) {
+                        var c = tagSelectionObj.sudo,
+                            d = tagSelectionObj.jsRegEx,
+                            e = 2;
+                        for (var f in c) b += "<li class='pf-summary-text'>" + c[f] + "  </li>", a += d[e], e++
+                    }
+                    b += "  </ul>", b += "  <div class='pf-report-footnote'></div>", b += "</div>", b += "<!-- END WRAPPER -->", $(".pf-report-search").html(b), highlight(), countCurrentResults()
+                }
+            }
+
+            function getIndividualTagsFromSteps() {
+                var a, b, c, d = [],
+                    e = [];
+                if (tagSelectionObj) {
+                    var f = tagSelectionObj.steps;
+                    for (var g in f) {
+                        var h = "[object Array]" === Object.prototype.toString.call(f[g]);
+                        if (h)
+                            for (var i = 0, j = f[g].length; j > i; i++) a = f[g][i] ? f[g][i].split(",") : f[g][i], d.push(a);
+                        else b = f[g] ? f[g].split(",") : f[g], d.push(b)
+                    }
+                    for (var k = 0, l = d.length; l > k; k++)
+                        for (var m in d[k]) c = $.trim(d[k][m]), e.push(c);
+                    tagSelectionObj.reg = e
+                }
+            }
+
+            function highlight() {
+                var a, b = "",
+                    c = "",
+                    d = "",
+                    e = "";
+                $("span").removeClass("highlight"), getIndividualTagsFromSteps();
+                var f = $(".pf-report-products").html(),
+                    g = tagSelectionObj.steps;
+                for (var h in g) {
+                    var i = "";
+                    if ($.isArray(g[h]))
+                        for (var j = 0; j < g[h].length; j++) j > 0 && (d = ","), i += d + $.trim(g[h][j]);
+                    else i = g[h];
+                    var k = "",
+                        l = "";
+                    if (i && (k = i.split(","), l = k.length), l >= 0)
+                        for (var m = 0; l > m; m++) a = $.trim(k[m].toLowerCase()), e = "\\b" + a + "\\b", b = new RegExp(e, "gi"), c = '<span class="highlight">' + a + "</span>", f = f.replace(b, c)
+                }
+                $(".pf-report-products").html(f)
+            }
+
+            function getCountofTag(a) {
+                var b, c = 0,
+                    d = "",
+                    e = "",
+                    f = "",
+                    g = "";
+                a = a.replace(/\$/g, ""), a = a.replace(/ /g, "");
+                var h = a.split(","),
+                    i = h.length;
+                if (i > 1) {
+                    for (var j = 0; i > j; j++) g += "(?=.*\\b" + h[j] + "\\b)";
+                    b = "^" + g + ".*$"
+                } else b = "^(?=.*\\b" + a + "\\b).*$";
+                var k = productList.data,
+                    l = "";
+                for (var m in k) {
+                    var n = k[m],
+                        o = n.published_at,
+                        p = n.title;
+                    if (n.tags) {
+                        var q = $.trim(n.tags.toLowerCase());
+                        l = q.replace(/ /g, ""), l = l.replace(/\$/g, "")
+                    }
+                    if (o) {
+                        var r = new RegExp(b, "g"),
+                            s = r.test(l);
+                        e += "<span class='pf-summary-text'><b>" + p + "</b></span>", e += "<ul class='pf-summary-text'>", e += "<li>Tags: " + q + "</li>", e += "</ul>", s && (c++, f += p.toLowerCase() + "<hr>"), d++
+                    }
+                }
+                var t = {
+                    count: c,
+                    products: f
+                };
+                return displayProductReport(e, d), t
+            }
+
+            function displayProductReport(a, b) {
+                var c = "<!-- START WRAPPER -->";
+                c += "<div class='pf-report-wrapper'>", c += "  <div class='pf-report-header'>Products</div>", c += "  <div class='pf-report-product-summary pf-summary-text'>", c += "      <span class='highlight'><b>" + b + "</b></span> associated products", c += "  </div>", c += "  <div class='pf-report-product-list'>", c += "" + a, c += "  </div>", c += "</div>", c += "<!-- END WRAPPER -->", $(".pf-report-products").html(c)
+            }
+
+            function countCurrentResults() {
+                var totalCount = 0,
+                    itemCount = 0,
+                    regExCheck = "";
+                if (tagSelectionObj.jsRegEx)
+                    for (var i = 0; i < tagSelectionObj.jsRegEx.length; i++) tagSelectionObj.jsRegEx[i] && (regExCheck += tagSelectionObj.jsRegEx[i]);
+                if (productList.data && regExCheck) {
+                    var myData = productList.data,
+                        str_clean = "";
+                    for (var key in myData) {
+                        var obj = myData[key];
+                        if (obj.tags) {
+                            var str = $.trim(obj.tags.toLowerCase());
+                            str = str.replace(/\$/g, "")
+                        }
+                        var puplished = obj.published_at;
+                        eval(regExCheck) && puplished && itemCount++, puplished && totalCount++
+                    }
+                }
+                var resultsOutput = "<div class='pf-report-count-style'>Results: <span class='highlight'>" + itemCount + "</span> of " + totalCount + " products*</b></div>",
+                    footnoteOutput = "<div class='pf-report-footnote-style'>* Results only include published products.</div>";
+                $(".pf-report-count").html(resultsOutput), $(".pf-report-footnote").html(footnoteOutput)
+            }
+
+            function displayResults() {
+                var a = "";
+                finder_url_parameter_value ? runDisplayofResults(finder_url_parameter_value) : $.when($.ajax({
+                    type: "POST",
+                    url: proxyURL + "/finder.anna.php",
+                    dataType: "json",
+                    data: {
+                        saveTo: "results",
+                        a_sId: globalStore.settings.a_sId,
+                        results_url: removeParam(finder_url_parameter_name, URL_refresh),
+                        number_of_steps: finder.getSlideCount(),
+                        step_results: JSON.stringify(tagSelectionObj.steps)
+                    }
+                })).done(function(b) {
+                    a = b, runDisplayofResults(a)
+                })
+            }
+
+            function runDisplayofResults(resultsID) {
+                var gold = "",
+                    replacement = "",
+                    imageCount = 0,
+                    imageSize = globalStore.settings.results_image_size,
+                    regExCheck = "";
+                if (tagSelectionObj.jsRegEx)
+                    for (var i = 0; i < tagSelectionObj.jsRegEx.length; i++) tagSelectionObj.jsRegEx[i] && (regExCheck += tagSelectionObj.jsRegEx[i]);
+                if (productList.data) {
+                    var myData = productList.data,
+                        str_clean = "";
+                    for (var key in myData) {
+                        var obj = myData[key];
+                        if (obj.tags) {
+                            var str = $.trim(obj.tags.toLowerCase());
+                            str = str.replace(/\$/g, "")
+                        }
+                        if (regExCheck) {
+                            if (eval(regExCheck)) {
+                                var puplished = obj.published_at,
+                                    title = obj.title,
+                                    handle = obj.handle,
+                                    image = obj.images,
+                                    variants = obj.variants,
+                                    price, currency_front, currency_back, compare_at_price = "",
+                                    currency = globalStore.settings.currency;
+                                currency_front = globalStore.settings.currency_front, currency_back = globalStore.settings.currency_back, null == currency_front && (currency_front = ""), null == currency_back && (currency_back = ""), null !== puplished && void 0 !== puplished && (image.length > 0 ? (image = image[0].src, replacement = "Large" == imageSize ? "_large." : "Medium" == imageSize ? "_medium." : "_small.", image = image.replace(/.([^.]*)$/, replacement + "$1")) : image = "", void 0 !== variants ? (price = currency_front + numberWithCommas(variants[0].price) + currency_back, parseFloat(variants[0].compare_at_price) > parseFloat(variants[0].price) && (compare_at_price = currency_front + numberWithCommas(variants[0].compare_at_price) + currency_back)) : price = "", gold += createProduct(handle, title, price, compare_at_price, image, imageSize, imageCount, resultsID), imageCount++)
+                            }
+                        } else gold = ""
+                    }
+                    TotalClickCount++;
+                    var finalMessage = "",
+                        footer = "",
+                        headerMessage = '<div class="pf-app-row pf-step-headline-row"><div class="pf-step-headline-style pf-results-header">' + globalStore.settings.results_headline + "</div></div>";
+                    if (headerMessage += '<div class="pf-app-row pf-step-subheadline-row"><div class="pf-step-subheadline-style">' + globalStore.settings.results_subheadline + "</div></div>", gold.length > 0) finalMessage = gold;
+                    else {
+                        var decoded = $("<textarea/>").html(globalStore.settings.global_results_noresults_msg).text();
+                        finalMessage = '<div class="pf-results-noresults">' + decoded + "</div>"
+                    }
+                    var headerMessagetoHtml = $("<textarea/>").html(headerMessage).text();
+                    $(".pf-product-results").empty().html(headerMessagetoHtml + '<div class="pf-product-wrapper"><div class="pf-app-row pf-results-row">' + finalMessage + "</div></div>" + footer).fadeIn(), changeHeightofResults(), doResize("results"), modifyURL(resultsID)
+                } else tagsLoaded ? $(".pf-product-results").html('<div class="pf-product-wrapper"><div class="pf-app-row"><div class="pf-results-noresults">Connection Problem.<br><br>Please try again later.</div></div></div>') : (resultsRequested = !0, $(".pf-product-results").html('<div class="pf-product-wrapper"><div class="pf-app-row"><div class="pf-results-noresults">Loading Results...</div></div></div>'))
+            }
+
+            function modifyURL(a) {
+                a = "undefined" != typeof a ? a : !1;
+                var b = "";
+                if (history.pushState) {
+                    var c, d = removeParam(finder_url_parameter_name, URL_search);
+                    if (a && 0 === finder_url_parameter_value.length) {
+                        var e = URL_refresh.indexOf("?");
+                        c = e > 0 ? "&" + finder_url_parameter_name + "=" + a : "?" + finder_url_parameter_name + "=" + a, b = !0
+                    }
+                    if (a === !1 && (c = "", finder_url_parameter_value = "", b = !0), b) {
+                        var f = URL_path + d + c;
+                        history.pushState(null, null, f)
+                    }
+                }
+            }
+
+            function updateContent() {}
+
+            function changeHeightofResults() {
+                var a = $(".pf-product-results").find("img"),
+                    b = "",
+                    c = globalStore.settings.transistionType;
+                a.one("load", function() {
+                    b = $("li.pf-step-results.sy-slide." + c + ".sy-active").height(), $(".sy-slides-crop").css({
+                        height: b
+                    }), $(".sy-slides-wrap").css({
+                        height: b
+                    })
+                }).each(function() {
+                    this.complete && $(this).load()
+                })
+            }
+
+            function createProduct(a, b, c, d, e, f, g, h) {
+                var i, j, k;
+                "Large" == f ? (i = "pf-col-xs-12 pf-col-sm-6 ", j = "pf-results-size-large", k = "pf-results-size-large-min") : "Medium" == f ? (i = "pf-col-xs-12 pf-col-sm-6 pf-col-md-4 ", j = "pf-results-size-medium", k = "pf-results-size-medium-min") : (i = "pf-col-xs-6 pf-col-sm-4 pf-col-md-3 ", j = "pf-results-size-small", k = "pf-results-size-small-min"), finder_url_parameter_value || saveResultsItemsAnna(h, b, c, d, e, f);
+                var l = "",
+                    m = "";
+                l = "<div class='" + i + "'>", m = "</div>";
+                var n = globalStore.settings.customDomain,
+                    o = "//" + n + "/products/" + a,
+                    p = "data-url='" + o + "/?" + finder_url_parameter_name + "=" + h + "'  data-title='" + b + "'";
+                return l += '<div class="pf-results-outer ' + j + '">', l += '  <div class="pf-results-inner ' + j + " " + k + ' ">', e ? (l += '<span class="pf-align-helper"></span>', l += '      <a href="' + o + "/?" + finder_url_parameter_name + "=" + h + '" class="pf-results-link" ' + p + '><img class="pf-align-helper" src="' + e + '" alt="' + b + '"></a>') : l += '<div class="pf-no-image ' + j + '">No Image Available</div>', l += "  </div>", l += '  <div class="pf-results-details ' + j + '">', l += '      <a href="' + o + "/?" + finder_url_parameter_name + "=" + h + '" class="pf-results-link" ' + p + ">", l += '          <span class="pf-results-title">' + b + "</span>", l += "      </a>", l += '      <span class="pf-results-price">' + c + "</span><del>" + d + "</del>", l += "  </div>", l += "</div>", l += m
+            }
+
+            function handleTags(a, b, c) {
+                var d = "";
+                --c, c > 0 && (d = $.isEmptyObject(tagSelectionObj.sudo) === !1 ? " and " : ""), steps[c] = a, tagSelectionObj.steps = steps, sudo[c] = d + " " + b + " ", tagSelectionObj.sudo = sudo
+            }
+
+            function numberWithCommas(a) {
+                return a.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+
+            function loadResults(a) {
+                if (null !== globalStore.settings) {
+                    var b, c, d, e = "fId=" + globalFinderId + "&domain=" + domainName + "&shopId=" + globalStore.settings.shopId,
+                        f = globalStore.settings.json_filename;
+                    f.length > 1 && "404" != a ? (b = s3_url_json + "/" + f, c = "GET", d = "jsonp") : (b = proxyURL + "/finder.tag.php", c = "POST", d = "json"), $.ajax({
+                        async: !0,
+                        type: c,
+                        dataType: d,
+                        data: e,
+                        cache: !0,
+                        url: b,
+                        jsonp: "callback",
+                        jsonpCallback: "guidelinesappjson",
+                        success: function(a) {
+                            productList.data = a, tagsLoaded = !0;
+                            var b = finder.getCurrentSlideNumber() - 1,
+                                c = finder.getSlideCount() - 1;
+                            showReporting && displayCounts(), (resultsRequested & b === c || finder_url_parameter_value) && displayResults()
+                        },
+                        error: function(b) {
+                            "undefined" == typeof a && loadResults(b.status)
+                        }
+                    })
+                }
+            }
+
+            function doResize() {
+                if (finder) {
+                    var a = finder.getCurrentSlideNumber(),
+                        b = finder.getSlideCount(),
+                        c = globalStore.settings.show_landing,
+                        d = a;
+                    d = c === !1 ? a : a - 1, b == a && (d = "results");
+                    var e = $("li.sy-slide:nth-child(" + a + ")"),
+                        f = e.height(),
+                        g = $("li.pf-step-" + d),
+                        h = g.height(),
+                        i = "";
+                    i = h > f ? h : f, $(".sy-slides-wrap").css("height", i), $(".sy-slides-crop").css("height", i)
+                }
+            }
+
+            function doOver(a) {
+                $(".sy-slides-wrap").css("height", a), $(".sy-slides-crop").css("height", a), loopLimit++, 10 > loopLimit && doResize("doOver:" + loopLimit)
+            }
+
+            function updatePagination() {
+                var a, b = "";
+                a = finder ? finder.getCurrentSlideNumber() - 1 : 0, 0 === a ? $(".pf-back-link").hide() : $(".pf-back-link").show(), $(".pf-pagination  li").removeClass("pf-pagination-status-active"), $("ul.pf-pagination li:eq(" + a + ")").addClass("pf-pagination-status-active"), b > a && (globalStore.resultsInfo.results_past_regex = null)
+            }
+
+            function handleError(a) {
+                var b = BrandName.toUpperCase() + " MESSSAGE: ";
+                console.warn(b + a)
+            }
+
+            function getCookie(a) {
+                var b = new RegExp(a + "=([^;]+)"),
+                    c = b.exec(document.cookie);
+                return null !== c ? unescape(c[1]) : null
+            }
+
+            function saveAnna(a, b, c, d, e, f, g) {
+                var h = "";
+                $.ajax({
+                    type: "POST",
+                    url: proxyURL + "/finder.anna.php",
+                    dataType: "json",
+                    data: {
+                        saveTo: "clicks",
+                        a_sId: globalStore.settings.a_sId,
+                        step_headline: a,
+                        answer_label: b,
+                        tags: c,
+                        click_count: e,
+                        step_number: d - 1,
+                        answer_order: f,
+                        is_landing: g
+                    },
+                    success: function(a) {
+                        h = a
+                    },
+                    error: function(a) {
+                        h = a
+                    }
+                }).done(function() {})
+            }
+
+            function saveResultsAnna(a) {
+                var b = "";
+                $.ajax({
+                    type: "POST",
+                    url: proxyURL + "/finder.anna.php",
+                    dataType: "json",
+                    data: {
+                        saveTo: "results",
+                        a_sId: globalStore.settings.a_sId,
+                        tags: a
+                    },
+                    success: function(a) {
+                        b = a
+                    },
+                    error: function(a) {
+                        b = a
+                    }
+                }).done(function() {})
+            }
+
+            function saveResultsItemsAnna(a, b, c, d, e, f) {
+                var g = encodeURIComponent(c),
+                    h = encodeURIComponent(d),
+                    i = "";
+                $.ajax({
+                    type: "POST",
+                    url: proxyURL + "/finder.anna.php",
+                    dataType: "json",
+                    data: {
+                        saveTo: "items",
+                        a_sId: globalStore.settings.a_sId,
+                        title: b,
+                        price: g,
+                        compare_at_price: h,
+                        image: e,
+                        image_size: f,
+                        a_rId: a
+                    },
+                    success: function(a) {
+                        i = a
+                    },
+                    error: function(a) {
+                        i = a
+                    }
+                }).done(function() {})
+            }
+
+            function runAnna(a) {
+                var b = "";
+                $.ajax({
+                    type: "POST",
+                    url: proxyURL + "/finder.anna.php",
+                    dataType: "json",
+                    data: a,
+                    success: function(a) {
+                        b = a
+                    },
+                    error: function(a) {
+                        b = a
+                    }
+                }).done(function() {})
+            }
+
+            function showResultsBackLink() {
+                var a = $("#guidelines-back-to-finder-link"),
+                    b = "";
+                $.ajax({
+                    async: !1,
+                    type: "POST",
+                    dataType: "JSON",
+                    url: proxyURL + "/finder.back_to_results.json.php",
+                    data: {
+                        resultsID: finder_url_parameter_value
+                    }
+                }).done(function(c) {
+                    var d, e = c.back_link_data,
+                        f = e.results_url,
+                        g = e.back_link_label,
+                        h = e.back_link_css;
+                    if (f) {
+                        var i = f.indexOf("?");
+                        d = i > 0 ? "&" : "/?";
+                        var j = e.results_url + d + b + finder_url_parameter_name + "=" + finder_url_parameter_value,
+                            k = "<a href='" + j + "'>" + g + "</a>";
+                        e.back_link_css.length > 0 && a.attr("style", h), a.empty().append(e.back_link_label.length > 0 ? k : "<a href='" + j + "'><< Back To Results</a>")
+                    }
+                }).fail(function(a) {
+                    var b = a.error;
+                    handleError("Problem with AJAX call to database for CSS results link. "), handleError(b)
+                })
+            }
+
+            function removeParam(a, b) {
+                var c, d, e = b.split("?")[0],
+                    f = [],
+                    g = -1 !== b.indexOf("?") ? b.split("?")[1] : "";
+                if ("" !== g) {
+                    f = g.split("&");
+                    for (var h = f.length - 1; h >= 0; h -= 1) c = f[h].split("=")[0], c === a && f.splice(h, 1);
+                    d = "?", e = e + d + f.join("&")
+                }
+                return e
+            }
+            var defaults;
+            defaults = {
+                slippryWrapper: '<div class="sy-box" />',
+                slideWrapper: '<div class="sy-slides-wrap" />',
+                slideCrop: '<div class="sy-slides-crop" />',
+                boxClass: "sy-list",
+                elements: "li",
+                activeClass: "sy-active",
+                fillerClass: "sy-filler",
+                loadingClass: "sy-loading",
+                adaptiveHeight: !0,
+                start: 1,
+                loop: !0,
+                captionsSrc: "img",
+                captions: "overlay",
+                captionsEl: ".sy-caption",
+                initSingle: !0,
+                responsive: !0,
+                preload: "visible",
+                pager: !0,
+                pagerClass: "sy-pager",
+                controls: !0,
+                controlClass: "sy-controls",
+                prevClass: "sy-prev",
+                prevText: "Previous",
+                nextClass: "sy-next",
+                nextText: "Next",
+                hideOnEnd: !0,
+                transition: "fade",
+                kenZoom: 120,
+                slideMargin: 0,
+                transClass: "transition",
+                speed: 800,
+                easing: "swing",
+                continuous: !0,
+                useCSS: !0,
+                auto: !0,
+                autoDirection: "next",
+                autoHover: !0,
+                autoHoverDelay: 100,
+                autoDelay: 500,
+                pause: 4e3,
+                onSliderLoad: function() {
+                    return this
+                },
+                onSlideBefore: function() {
+                    return this
+                },
+                onSlideAfter: function() {
+                    return this
+                }
+            }, $.fn.slippry = function(a) {
+                var b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x;
+                return c = this, 0 === c.length ? this : c.length > 1 ? (c.each(function() {
+                    $(this).slippry(a)
+                }), this) : (b = {}, b.vars = {}, l = function() {
+                    var a, b, c;
+                    b = document.createElement("div"), c = {
+                        WebkitTransition: "webkitTransitionEnd",
+                        MozTransition: "transitionend",
+                        MSTransition: "msTransitionEnd",
+                        OTransition: "oTransitionEnd",
+                        transition: "transitionEnd transitionend"
+                    };
+                    for (a in c)
+                        if (void 0 !== b.style[a]) return c[a]
+                }, t = function() {
+                    var a = document.createElement("div"),
+                        b = ["Khtml", "Ms", "O", "Moz", "Webkit"],
+                        c = b.length;
+                    return function(d) {
+                        if (d in a.style) return !0;
+                        for (d = d.replace(/^[a-z]/, function(a) {
+                                return a.toUpperCase()
+                            }); c--;)
+                            if (b[c] + d in a.style) return !0;
+                        return !1
+                    }
+                }(), w = function(a, b) {
+                    var c, d, e, f;
+                    return c = b.split("."), d = $(a), e = "", f = "", $.each(c, function(a, b) {
+                        b.indexOf("#") >= 0 ? e += b.replace(/^#/, "") : f += b + " "
+                    }), e.length && d.attr("id", e), f.length && d.attr("class", $.trim(f)), d
+                }, x = function() {
+                    var a, c, d, e;
+                    d = {}, e = {}, a = 100 - b.settings.kenZoom, e.width = b.settings.kenZoom + "%", b.vars.active.index() % 2 === 0 ? (e.left = a + "%", e.top = a + "%", d.left = "0%", d.top = "0%") : (e.left = "0%", e.top = "0%", d.left = a + "%", d.top = a + "%"), c = b.settings.pause + 2 * b.settings.speed, b.vars.active.css(e), b.vars.active.animate(d, {
+                        duration: c,
+                        easing: b.settings.easing,
+                        queue: !1
+                    })
+                }, j = function() {
+                    b.vars.fresh ? (b.vars.slippryWrapper.removeClass(b.settings.loadingClass), b.vars.fresh = !1, b.settings.auto && c.startAuto(), b.settings.useCSS || "kenburns" !== b.settings.transition || x(), b.settings.onSliderLoad.call(void 0, b.vars.active.index())) : $("." + b.settings.fillerClass, b.vars.slideWrapper).addClass("ready")
+                }, o = function(a, c) {
+                    var d, e, f;
+                    d = a / c, e = 1 / d * 100 + "%", f = $("." + b.settings.fillerClass, b.vars.slideWrapper), f.css({
+                        paddingTop: e
+                    }), j()
+                }, e = function(a) {
+                    var b, c;
+                    void 0 !== $("img", a).attr("src") ? $("<img />").load(function() {
+                        b = a.width(), c = a.height(), o(b, c)
+                    }).attr("src", $("img", a).attr("src")) : (b = a.width(), c = a.height(), o(b, c))
+                }, d = function() {
+                    if (0 === $("." + b.settings.fillerClass, b.vars.slideWrapper).length && b.vars.slideWrapper.append($('<div class="' + b.settings.fillerClass + '" />')), b.settings.adaptiveHeight === !0) e($("." + b.settings.activeClass, c));
+                    else {
+                        var a, d, f;
+                        d = 0, f = 0, $(b.vars.slides).each(function() {
+                            $(this).height() > d && (a = $(this), d = a.height()), f += 1, f === b.vars.count && (void 0 === a && (a = $($(b.vars.slides)[0])), e(a))
+                        })
+                    }
+                }, n = function() {
+                    b.settings.pager && ($("." + b.settings.pagerClass + " li", b.vars.slippryWrapper).removeClass(b.settings.activeClass), $($("." + b.settings.pagerClass + " li", b.vars.slippryWrapper)[b.vars.active.index()]).addClass(b.settings.activeClass))
+                }, r = function() {
+                    !b.settings.loop && b.settings.hideOnEnd && ($("." + b.settings.prevClass, b.vars.slippryWrapper)[b.vars.first ? "hide" : "show"](), doResize(), updatePagination())
+                }, g = function() {
+                    var a, c;
+                    b.settings.captions !== !1 && (a = "img" !== b.settings.captionsSrc ? b.vars.active.attr("title") : $("img", b.vars.active).attr(void 0 !== $("img", b.vars.active).attr("title") ? "title" : "alt"), c = "custom" !== b.settings.captions ? $(b.settings.captionsEl, b.vars.slippryWrapper) : $(b.settings.captionsEl), void 0 !== a && "" !== a ? c.html(a).show() : c.hide())
+                }, c.startAuto = function() {
+                    void 0 === b.vars.timer && void 0 === b.vars.delay && (b.vars.delay = window.setTimeout(function() {
+                        b.vars.autodelay = !1, b.vars.timer = window.setInterval(function() {
+                            b.vars.trigger = "auto", c.goToSlide(b.settings.autoDirection)
+                        }, b.settings.pause)
+                    }, b.vars.autodelay ? b.settings.autoHoverDelay : b.settings.autoDelay)), b.settings.autoHover && b.vars.slideWrapper.unbind("mouseenter").unbind("mouseleave").bind("mouseenter", function() {
+                        void 0 !== b.vars.timer ? (b.vars.hoverStop = !0, c.stopAuto()) : b.vars.hoverStop = !1
+                    }).bind("mouseleave", function() {
+                        b.vars.hoverStop && (b.vars.autodelay = !0, c.startAuto())
+                    })
+                }, c.stopAuto = function() {
+                    window.clearInterval(b.vars.timer), b.vars.timer = void 0, window.clearTimeout(b.vars.delay), b.vars.delay = void 0
+                }, c.refresh = function() {
+                    b.vars.slides.removeClass(b.settings.activeClass), b.vars.active.addClass(b.settings.activeClass), b.settings.responsive ? d() : j(), r(), n(), g()
+                }, q = function() {
+                    c.refresh()
+                }, k = function() {
+                    b.vars.moving = !1, b.vars.active.removeClass(b.settings.transClass), b.vars.fresh || b.vars.old.removeClass("sy-ken"), b.vars.old.removeClass(b.settings.transClass), b.settings.onSlideAfter.call(void 0, b.vars.active, b.vars.old.index(), b.vars.active.index())
+                }, p = function() {
+                    var a, d, e, f, g, h, i;
+                    b.settings.onSlideBefore.call(void 0, b.vars.active, b.vars.old.index(), b.vars.active.index()), b.settings.transition !== !1 ? (b.vars.moving = !0, "fade" === b.settings.transition || "kenburns" === b.settings.transition ? (b.vars.fresh ? (b.vars.slides.css(b.settings.useCSS ? {
+                        transitionDuration: b.settings.speed + "ms",
+                        opacity: 0
+                    } : {
+                        opacity: 0
+                    }), b.vars.active.css("opacity", 1), "kenburns" === b.settings.transition && b.settings.useCSS && (g = b.settings.pause + 2 * b.settings.speed, b.vars.slides.css({
+                        animationDuration: g + "ms"
+                    }), b.vars.active.addClass("sy-ken")), k()) : b.settings.useCSS ? (b.vars.old.addClass(b.settings.transClass).css("opacity", 0), b.vars.active.addClass(b.settings.transClass).css("opacity", 1), "kenburns" === b.settings.transition && b.vars.active.addClass("sy-ken"), $(window).off("focus").on("focus", function() {
+                        b.vars.moving && b.vars.old.trigger(b.vars.transition)
+                    }), b.vars.old.one(b.vars.transition, function() {
+                        return k(), this
+                    })) : ("kenburns" === b.settings.transition && x(), b.vars.old.addClass(b.settings.transClass).animate({
+                        opacity: 0
+                    }, b.settings.speed, b.settings.easing, function() {
+                        k()
+                    }), b.vars.active.addClass(b.settings.transClass).css("opacity", 0).animate({
+                        opacity: 1
+                    }, b.settings.speed, b.settings.easing)), q()) : ("horizontal" === b.settings.transition || "vertical" === b.settings.transition) && (h = "horizontal" === b.settings.transition ? "left" : "top", a = "-" + b.vars.active.index() * (100 + b.settings.slideMargin) + "%", b.vars.fresh ? (c.css(h, a), k()) : (i = {}, b.settings.continuous && (!b.vars.jump || "controls" !== b.vars.trigger && "auto" !== b.vars.trigger || (d = !0, f = a, b.vars.first ? (e = 0, b.vars.active.css(h, b.vars.count * (100 + b.settings.slideMargin) + "%"), a = "-" + b.vars.count * (100 + b.settings.slideMargin) + "%") : (e = (b.vars.count - 1) * (100 + b.settings.slideMargin) + "%", b.vars.active.css(h, -(100 + b.settings.slideMargin) + "%"), a = 100 + b.settings.slideMargin + "%"))), b.vars.active.addClass(b.settings.transClass), b.settings.useCSS ? (i[h] = a, i.transitionDuration = b.settings.speed + "ms", c.addClass(b.settings.transition), c.css(i), $(window).off("focus").on("focus", function() {
+                        b.vars.moving && c.trigger(b.vars.transition)
+                    }), c.one(b.vars.transition, function() {
+                        return c.removeClass(b.settings.transition), d && (b.vars.active.css(h, e), i[h] = f, i.transitionDuration = "0ms", c.css(i)), k(), this
+                    })) : (i[h] = a, c.stop().animate(i, b.settings.speed, b.settings.easing, function() {
+                        return d && (b.vars.active.css(h, e), c.css(h, f)), k(), this
+                    }))), q())) : (q(), k())
+                }, s = function(a) {
+                    b.vars.first = !1, b.vars.last = !1, "prev" === a || 0 === a ? b.vars.first = !0 : ("next" === a || a === b.vars.count - 1) && (b.vars.last = !0)
+                }, c.goToSlide = function(a) {
+                    var c;
+                    b.vars.moving || (c = b.vars.active.index(), "prev" === a ? c > 0 ? a = c - 1 : b.settings.loop && (a = b.vars.count - 1) : "next" === a ? c < b.vars.count - 1 ? a = c + 1 : b.settings.loop && (a = 0) : a -= 1, b.vars.jump = !1, "prev" === a || "next" === a || a === c && !b.vars.fresh || (s(a), b.vars.old = b.vars.active, b.vars.active = $(b.vars.slides[a]), (0 === c && a === b.vars.count - 1 || c === b.vars.count - 1 && 0 === a) && (b.vars.jump = !0), p()))
+                }, c.goToNextSlide = function() {
+                    c.goToSlide("next")
+                }, c.goToPrevSlide = function() {
+                    c.goToSlide("prev")
+                }, h = function() {
+                    if (b.settings.pager && b.vars.count > 1) {
+                        var a, d, e;
+                        for (a = b.vars.slides.length, e = $('<ul class="' + b.settings.pagerClass + '" />'), d = 1; a + 1 > d; d += 1) e.append($("<li />").append($('<a href="#' + d + '">' + d + "</a>")));
+                        b.vars.slippryWrapper.append(e), $("." + b.settings.pagerClass + " a", b.vars.slippryWrapper).click(function() {
+                            return b.vars.trigger = "pager", c.goToSlide(parseInt(this.hash.split("#")[1], 10)), !1
+                        }), n()
+                    }
+                }, i = function() {
+                    b.settings.controls && b.vars.count > 1 && (b.vars.slideWrapper.append($('<ul class="' + b.settings.controlClass + '" />').append('<li class="' + b.settings.prevClass + '"><a href="#prev">' + b.settings.prevText + "</a></li>").append('<li class="' + b.settings.nextClass + '"><a href="#next">' + b.settings.nextText + "</a></li>")), $("." + b.settings.controlClass + " a", b.vars.slippryWrapper).click(function() {
+                        return b.vars.trigger = "controls", c.goToSlide(this.hash.split("#")[1]), !1
+                    }), r())
+                }, m = function() {
+                    b.settings.captions !== !1 && ("overlay" === b.settings.captions ? b.vars.slideWrapper.append($('<div class="sy-caption-wrap" />').html(w("<div />", b.settings.captionsEl))) : "below" === b.settings.captions && b.vars.slippryWrapper.append($('<div class="sy-caption-wrap" />').html(w("<div />", b.settings.captionsEl))))
+                }, v = function() {
+                    c.goToSlide(b.vars.active.index() + 1)
+                }, u = function(a) {
+                    var c, d, e, f;
+                    return f = "all" === b.settings.preload ? a : b.vars.active, e = $("img, iframe", f), c = e.length, 0 === c ? void v() : (d = 0, void e.each(function() {
+                        $(this).one("load error", function() {
+                            ++d === c && v()
+                        }).each(function() {
+                            this.complete && $(this).load()
+                        })
+                    }))
+                }, c.getCurrentSlide = function() {
+                    return b.vars.active
+                }, c.getSlideCount = function() {
+                    return b.vars.count
+                }, c.getCurrentSlideNumber = function() {
+                    return b.vars.active.index() + 1
+                }, c.destroySlider = function() {
+                    b.vars.fresh === !1 && (c.stopAuto(), b.vars.moving = !1, b.vars.slides.each(function() {
+                        void 0 !== $(this).data("sy-cssBckup") ? $(this).attr("style", $(this).data("sy-cssBckup")) : $(this).removeAttr("style"), void 0 !== $(this).data("sy-classBckup") ? $(this).attr("class", $(this).data("sy-classBckup")) : $(this).removeAttr("class")
+                    }), void 0 !== c.data("sy-cssBckup") ? c.attr("style", c.data("sy-cssBckup")) : c.removeAttr("style"), void 0 !== c.data("sy-classBckup") ? c.attr("class", c.data("sy-classBckup")) : c.removeAttr("class"), b.vars.slippryWrapper.before(c), b.vars.slippryWrapper.remove(), b.vars.fresh = void 0)
+                }, c.reloadSlider = function() {
+                    c.destroySlider(), f()
+                }, f = function() {
+                    var d;
+                    return b.settings = $.extend({}, defaults, a), b.vars.slides = $(b.settings.elements, c), b.vars.count = b.vars.slides.length, b.settings.useCSS && (t("transition") || (b.settings.useCSS = !1), b.vars.transition = l()), c.data("sy-cssBckup", c.attr("style")), c.data("sy-classBackup", c.attr("class")), c.addClass(b.settings.boxClass).wrap(b.settings.slippryWrapper).wrap(b.settings.slideWrapper).wrap(b.settings.slideCrop), b.vars.slideWrapper = c.parent().parent(), b.vars.slippryWrapper = b.vars.slideWrapper.parent().addClass(b.settings.loadingClass), b.vars.fresh = !0, b.vars.slides.each(function() {
+                        $(this).addClass("sy-slide " + b.settings.transition), b.settings.useCSS && $(this).addClass("useCSS"), "horizontal" === b.settings.transition ? $(this).css("left", $(this).index() * (100 + b.settings.slideMargin) + "%") : "vertical" === b.settings.transition && $(this).css("top", $(this).index() * (100 + b.settings.slideMargin) + "%")
+                    }), b.vars.count > 1 || b.settings.initSingle ? (-1 === $("." + b.settings.activeClass, c).index() ? (d = "random" === b.settings.start ? Math.round(Math.random() * (b.vars.count - 1)) : b.settings.start > 0 && b.settings.start <= b.vars.count ? b.settings.start - 1 : 0, b.vars.active = $(b.vars.slides[d]).addClass(b.settings.activeClass)) : b.vars.active = $("." + b.settings.activeClass, c), i(), h(), m(), void u(b.vars.slides)) : this
+                }, f(), this)
+            };
+            var finders = $(brandKey),
+                finderCount = 0,
+                productList = {};
+            finders.length > 0 ? finders.each(function(a, b) {
+                finderCount ? handleError("Product Finder (product-finder-id:" + $(this).data("product-finder-id") + ") will not be displayed. We only support showing one Product Finder per page. ") : (loadFinderHTMLandCSS(b), finderCount++)
+            }) : handleError("No mathcing Product Finders"), $(window).resize(function() {
+                doResize("window resize")
+            }), finder_url_parameter_value && showResultsBackLink(), $(document).on("click", ".pf-answer-check-next-button", function(a) {
+                a.preventDefault();
+                var b, c = finder.getCurrentSlideNumber(),
+                    d = globalStore.settings.show_landing;
+                b = d ? 1 : 0;
+                var e = $(this).data("num"),
+                    f = "#answer-check-" + e + '[type="checkbox"]:checked',
+                    g = [],
+                    h = "",
+                    i = "",
+                    j = !1;
+                TotalClickCount++, $(f).each(function() {
+                    var a = String($(this).data("tags")),
+                        b = $(this).data("answer"),
+                        e = globalStore.finderObject[c - 1].headline,
+                        f = $(this).data("answerorder");
+                    if (a) {
+                        g.push(a), tagSelections.push(a);
+                        var k = h.length > 0 ? " <br><br>- or - <br><br> " : "",
+                            l = "";
+                        a ? (l = a.toUpperCase(), h += k + " " + l.replace(/,/g, " and ") + " ") : h += k + " ", i = createRegExTests(a, i)
+                    } else b && (j = !0);
+                    saveAnna(e, b, a, c, TotalClickCount, f, d)
+                }), i ? (addToGlobalObject(i, c, b), handleTags(g, h, c - b), checkBoxCheck = !0) : checkBoxCheck = j ? !0 : !1
+            }), $(document).on("click", ".pf-answer", function(a) {
+                if (a.preventDefault(), checkBoxCheck) {
+                    var b = "100%";
+                    $(".sy-slides-wrap").css("height", b), $(".sy-slides-crop").css("height", b);
+                    var c, d = $(this).data("goto"),
+                        e = String($(this).data("tags")),
+                        f = ($(this).data("aid"), $(this).data("num"), $(this).data("ischeckbox")),
+                        g = $(this).data("answer"),
+                        h = $(this).data("answerorder"),
+                        i = finder.getSlideCount(),
+                        j = finder.getCurrentSlideNumber(),
+                        k = globalStore.settings.show_landing;
+                    c = k ? 1 : 0;
+                    var l = globalStore.finderObject[j - 1].headline;
+                    j - 1 === 0 && 1 === c && (g = globalStore.finderObject[0].answers[0].buttonLabel);
+                    var m = "";
+                    if (e && "undefined" != e) {
+                        tagSelections.push(e);
+                        var n = "",
+                            o = "";
+                        e && (n = e.toUpperCase(), o = " " + n.replace(/,/g, " and ") + " "), handleTags(e, o, j - c), m = createRegExTests(e, m), addToGlobalObject(m, j, c, h)
+                    }
+                    f || (TotalClickCount++, saveAnna(l, g, e, j, TotalClickCount, h, k));
+                    "results" == d ? (finder.goToSlide(i), displayResults()) : i - 1 === j ? (finder.goToNextSlide(), displayResults()) : (finder.goToNextSlide(), updatePagination());
+                    var p = $("#pf-experience").offset().top - 50;
+                    $("body").scrollTop(p), doResize("simple-button"), console.log(tagSelectionObj), showReporting && countResults(), updatePagination()
+                } else $(".pf-answer-checkbox-error").html(globalStore.settings.checkbox_error_msg)
+            }), $(document).on("change", "input:checkbox", function() {
+                this.checked && $(".pf-answer-checkbox-error").html("")
+            }), $(document).on("click", ".pf-back-link", function(a) {
+                a.preventDefault();
+                var b, c = globalStore.settings.show_landing,
+                    d = 2;
+                if (finder && (c === !1 && (d = 1), b = finder.getCurrentSlideNumber() - d, steps.length >= b))
+                    for (var e = steps.length - b; e >= 0; e--) steps.pop(), sudo.pop(), jsRegEx.pop();
+                modifyURL(), showReporting && countResults(), $(".pf-answer-checkbox-error").html(""), checkBoxCheck = !0, finder.goToPrevSlide(), doResize("pf-back-link")
+            }), $(document).on("click", ".start-over", function() {
+                location.reload()
+            }), window.addEventListener && window.addEventListener("popstate", function() {
+                removeParam(finder_url_parameter_name, URL_refresh)
+            }), $(document).on("click", ".pf-results-link", function(a) {
+                a.preventDefault();
+                var b = $(this).data("url"),
+                    c = $(this).data("title"),
+                    d = "saveTo=update";
+                d += "&a_sId=" + globalStore.settings.a_sId, d += "&title=" + c, runAnna(d), window.location.href = b
+            });
+            var loopLimit = 0
+        },
+        loadScript = function(a, b) {
+            var c = document.createElement("script");
+            c.type = "text/javascript", c.readyState ? c.onreadystatechange = function() {
+                ("loaded" == c.readyState || "complete" == c.readyState) && (c.onreadystatechange = null, b())
+            } : c.onload = function() {
+                b()
+            }, c.src = a, document.getElementsByTagName("head")[0].appendChild(c)
+        };
+    loadScript("//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js", function() {
+        jQuery191 = jQuery.noConflict(!0), Guidelines(jQuery191)
+    })
+}(window);

@@ -1,0 +1,80 @@
+<div class="wigs-header-container">
+	<div class="row">
+    	<div class="wh-left desktop-5 tablet-12 mobile-12">
+          &nbsp;
+      	</div>
+      	<div class="wh-right desktop-7 tablet-12 mobile-12">
+          <h1>{{page.title}}</h1>
+          <p>{{ page.content }}</p>
+          <hr class="wh-break">
+		  <ul class="header_nav">
+            <li><a href="#">Women's Wigs</a></li>
+            <li><a href="#">Men's Wigs</a></li>
+            <li><a href="#">Kid's Wigs</a></li>
+            <li><a href="#">Human Hair Wigs</a></li><br/>
+            <li><a href="#">Synthetic Wigs</a></li>
+            <li><a href="#">Lace Front Wigs</a></li>
+            <li><a href="#">African American Wigs</a></li>
+            <li><a href="#">New Arrivals</a></li>
+          </ul>
+      	</div>
+  	</div>
+</div>
+<div class="sub-header">
+  <div class="row">
+    	<div class="desktop-4 tablet-12 mobile-12">
+          <a href="#"><img src="{{'wh_left_img.jpg' | asset_url }}" /></a>
+      	</div>
+      	<div class="desktop-4 tablet-12 mobile-12">
+          <a href="#"><img src="{{'wh_center_img.jpg' | asset_url }}" /></a>
+      	</div>
+      	<div class="desktop-4 tablet-12 mobile-12">
+          <a href="#" onclick="test(); return false;" ><img src="{{'wh_right_img.jpg' | asset_url }}" /></a>
+      	</div>
+  	</div>
+</div>
+<div id="vid-modal" class="videoWrapper">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ScMzIvxBSi4?ecver=1" frameborder="0" allowfullscreen></iframe>
+</div>
+<script>
+  $(document).ready(function(){
+    $('#vid-modal').dialog({autoOpen: false, modal:true, width:'auto', maxWidth:560, height:'auto', fluid:true, resizable:false });
+    $(document).on("dialogopen", ".ui-dialog", function (event, ui) {
+    fluidDialog();
+});
+  });
+  $(window).resize(function () {
+    fluidDialog();
+});
+  function test(){
+  	$('#vid-modal').dialog('open');
+  }
+
+  function fluidDialog() {
+    if ($('body').hasClass('shifter-enabled')){
+     $('body').removeClass('shifter-enabled'); 
+    }
+    var $visible = $(".ui-dialog:visible");
+    // each open dialog
+    $visible.each(function () {
+        var $this = $(this);
+        var dialog = $this.find(".ui-dialog-content").data("ui-dialog");
+        // if fluid option == true
+        if (dialog.options.fluid) {
+            var wWidth = $(window).width();
+            // check window width against dialog width
+            if (wWidth < (parseInt(dialog.options.maxWidth) + 50))  {
+                // keep dialog from filling entire screen
+                $this.css("max-width", "90%");
+            } else {
+                // fix maxWidth bug
+                $this.css("max-width", dialog.options.maxWidth + "px");
+            }
+            //reposition dialog
+            dialog.option("position", dialog.options.position);
+          
+        }
+    });
+
+}
+</script>

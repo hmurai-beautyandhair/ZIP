@@ -1,0 +1,111 @@
+
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+<h1>{{ page.title }}</h1>
+{{ page.content }}
+</div>
+<style><!--
+#page{margin-bottom:30px;}
+#article-list-container {text-align:center;}
+.articles-list {margin: 30px 0px; clear:both;display:flex;justify-content:space-around;list-style-type: none;flex-wrap:wrap}
+.article-list-item { width: 250px;margin:40px 0px;}
+  #article-list-menu{flex-wrap: nowrap;}
+.blog_link_text{margin-top:5px;}
+  #article-list-menu li {opacity:0.2;}
+
+ /* 
+@media only screen and (min-device-width : 1025px){
+  		#article-list-container{width:1400px;}
+  .articles-list{flex-wrap:nowrap}
+}
+  
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+  #article-list-container{width:700px;}
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+#article-list-container{width:700px;}
+}
+*/
+--></style>
+<script>
+(function(){
+      $(function(){
+    			console.log(window.location.search);
+    			function parse_query_string(query) {
+                  var vars = query.split("&");
+                  var query_string = {};
+                  for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    // If first entry with this name
+                    if (typeof query_string[pair[0]] === "undefined") {
+                      query_string[pair[0]] = decodeURIComponent(pair[1]);
+                      // If second entry with this name
+                    } else if (typeof query_string[pair[0]] === "string") {
+                      var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+                      query_string[pair[0]] = arr;
+                      // If third or later entry with this name
+                    } else {
+                      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+                    }
+                  }
+                  return query_string;
+				}
+    		
+    			var qs = parse_query_string(window.location.search.substring(1));
+				console.log(qs.page_category);
+        if(qs.page_category !== "" && typeof qs.page_category !== "undefined"){
+        		var category_to_show = qs.page_category;
+         
+        		
+        }
+        else{  
+					var category_to_show = 'news';
+		}
+	
+			 $("#list-"+category_to_show).css('display','flex');
+		 $("#article-list-menu-"+category_to_show).css('opacity','1');
+        
+        
+        $('#article-list-menu li a').each(function(){
+				var parent_id= $(this).parent('li').attr('id');
+          		var parts = parent_id.split('article-list-menu-');
+          		var page_category=parts[parts.length-1];
+
+				var first_url_parts = window.location.search.split('&');
+				var first_url_part = first_url_parts[0]
+				
+				$(this).attr('href','/pages'+first_url_part+"&page_category="+page_category);
+         });
+    	})
+})($) 
+  
+</script>
+
+<div id='article-list-container'>  
+<ul id="article-list-menu" class='articles-list'>
+<li id='article-list-menu-news'><a href=''><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/blog.png'></a></li>
+<li id='article-list-menu-magazine'><a href=''><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/lifestyle.png'></a></li>
+<li id='article-list-menu-press-releases'><a href=''><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/news.png'></a></li>
+<li id='article-list-menu-videos'><a href=''><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/videos.png'></a></li>
+  </ul>
+
+  {%- assign blog_handles = "news,magazine,press-releases," | split: ',' -%}
+ {%- assign blog_title_images = "blog,lifestyle,news,videos" | split: ',' -%}
+{%- assign hr_colors = "a21943,73b6d2,de954e" | split: ',' -%}
+  {%- for blog_handle in blog_handles -%}
+
+  <ul id="list-{{blog_handle}}" class='articles-list' style="display:none;">
+    {%comment%}<div style='margin-left:10px;float:left;display:inline-block;padding-top: 60px;'><a href='{{ blogs[blog_handle].url }}'><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/{{blog_title_images[ forloop.index0 ]}}.png'></a><div class='blog_link_text'><a href='{{ blogs[blog_handle].url }}'>View All</a></div></div>{%endcomment%}
+  
+  {% for article in blogs[blog_handle].articles %}	
+	{%- if forloop.index <= 4 -%}
+	
+   <li class='article-list-item'>
+	{% if article.image %} <div><a href='{{article.url}}'><img src='{{ article.image.src | img_url: 'medium' }}' ></a></div> {% endif %}
+     {{ article.title | link_to: article.url }}
+	</li>
+	{%- endif -%}  	
+  {%- endfor -%}
+</ul>
+{%comment%}<hr style='background-color:#{{hr_colors[forloop.index0]}}'>{%endcomment%}
+{%- endfor -%}
+</div>

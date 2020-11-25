@@ -1,0 +1,115 @@
+<form action="/cart/add" method="post" data-money-format="{{ shop.money_format }}" data-option-index="{{ option_index }}" id="product-form-{{ product.id }}">
+  {% if product.options.size > 1 %}
+  <div class="select">
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% elsif product.options.size == 1 and product.variants.size > 1 %}
+  <div class="select">
+    <label>{{ product.options[0] }}</label>
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% else %}
+  <div class="what-is-it">
+    {% if product.options.first != 'Title' %}
+    <label>{{ product.options.first }}:</label>{% for variant in product.variants %}<span class="it-is">{{ variant.option1 | escape }}</span>{% endfor %}
+    {% endif %}
+  </div>
+  <div class="product-variants"></div><!-- product variants -->  
+  <input  type="hidden" id="{{ variant.id }}" name="id" data-sku="{{ variant.sku }}" value="{{ product.variants[0].id }}" />    
+  {% endif %}
+
+  {% if product.available %}  
+  <div id="product-add">
+    <label for="quantity">{{ 'products.product.quantity' | t }}</label> 
+    <input min="1" type="number" id="quantity" name="quantity" value="1" />
+    <input type="submit" name="button" class="add" value="{{ 'products.product.pre_order' | t }}" />
+  </div>
+  <p class="add-to-cart-msg"></p>
+  {% endif %}
+
+  <div class="clear"></div>
+
+</form>
+
+{% if template contains 'product' %}
+
+
+<ul id="popups">
+  {% if settings.popup_1 %}<li class="first"><a href="#pop-one" class="fancybox">{{ pages[settings.popup-one].title }}</a></li>{% endif %}
+  {% if settings.popup_2 %}<li><a href="#pop-two" class="fancybox">{{ pages[settings.popup-two].title }}</a></li>{% endif %}
+  {% if settings.popup_3 %}<li><a href="#pop-three" class="fancybox">{{ pages[settings.popup-three].title }}</a></li>{% endif %}
+  {% if settings.popup_4 %}<li class="last"><a href="#pop-four" class="fancybox">{{ 'products.product.popup_question' | t }}</a></li>{% endif %}
+</ul>
+
+<div id="pop-one" style="display: none">{{ pages[settings.popup-one].content }}</div>
+<div id="pop-two" style="display: none">{{ pages[settings.popup-two].content }}</div>
+<div id="pop-three" style="display: none">{{ pages[settings.popup-three].content }}</div>
+<div id="pop-four" style="display: none">{% include 'question' %}</div>
+
+{% endif %}
+  
+
+
+<script>
+  // Shopify Product form requirement
+  selectCallback = function(variant, selector) {
+    var $product = $('#product-' + selector.product.id);    
+    if (variant && variant.available == true) {
+      if(variant.compare_at_price > variant.price){
+        $('.was', $product).html(Shopify.formatMoney(variant.compare_at_price, $('form', $product).data('money-format')))        
+      } else {
+        $('.was', $product).text('')
+      } 
+      $('.product-price', $product).html(Shopify.formatMoney(variant.price, $('form', $product).data('money-format'))) 
+      $('.add', $product).removeClass('disabled').removeAttr('disabled').val('{{ 'products.product.pre_order' | t }}');
+        } else {
+        var message = variant ? "{{ 'products.product.sold_out' | t }}" : "{{ 'products.product.sold_out' | t }}";
+        $('.was', $product).text('')
+      $('.product-price', $product).text(message);
+      $('.add', $product).addClass('disabled').attr('disabled', 'disabled').val(message); 
+    } 
+
+
+    if (variant && variant.featured_image) {
+      var original_image = $(".bigimage-{{ product.id }} img"), new_image = variant.featured_image;
+		Shopify.Image.switchImage(new_image, original_image[0], function (new_image_src, original_image, element) {
+
+        $(element).attr('src', new_image_src);   
+
+        $('.thumbnail[data-image-id="' + variant.featured_image.id + '"]').trigger('click');
+
+        {% if template contains 'product' %}        
+        $('.zoomImg').attr('src', new_image_src);
+        {% endif %}
+      });
+    }    
+  }; 
+</script>
+
+{% if product.variants.size > 1 or product.options.size > 1 %}
+<script type="text/javascript">
+
+
+  $(function() {
+
+    $product = $('#product-' + {{ product.id }});
+      if($('.single-option-selector', $product).length == 0) {             
+      new Shopify.OptionSelectors("product-select-{{ product.id }}", { product: {{ product | json }}, onVariantSelected:
+      selectCallback{% if template contains 'product'%}, enableHistoryState: true{% endif %} });
+    }
+
+
+  });    
+
+
+</script>
+{% endif %}
+

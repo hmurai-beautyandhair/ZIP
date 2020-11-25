@@ -1,0 +1,25 @@
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+  <h1>{{ 'general.404.title' | t }}</h1>
+
+  
+    <p>{{ 'general.404.subtext' | t }}</p>
+  
+  <div id="search-bar">
+    <form action="/search" method="get">
+      <h3>{{ 'general.search.title' | t }}</h3>
+      <input type="text" name="q" id="q" placeholder="{{ 'general.search.placeholder' | t }}" />
+    </form>
+  </div>  
+  
+  <div style="margin-top: 20px;">
+    {% include 'sale-page-content' %}
+  </div>
+  
+  <div class="clear"></div>
+  
+  <div id="contact404">
+    <h3 style="padding-top: 30px; margin-top: 30px; clear: left; border-top: 1px solid {{ settings.dotted_color }}">Or contact us</h3>
+    {% include 'contact' %}
+  </div>
+  
+</div>

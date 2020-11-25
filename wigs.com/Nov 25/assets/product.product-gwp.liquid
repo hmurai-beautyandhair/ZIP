@@ -1,0 +1,506 @@
+<meta content="0;url=https://www.wigs.com/collections/easipart-hd-promo" http-equiv="refresh" />
+<script>
+  location.href='https://www.wigs.com/';
+</script>
+{{ 'jquery.responsive-dom.js' | asset_url | script_tag }}
+<style>
+  #bh-bigimag-alt-text{ padding:5px; min-height:4em;margin-bottom:5px;}
+  .main-image-navigation span {background-color:#fff;border: 1px solid #ddd;}
+  .main-image-navigation span i {color:#000;}
+  #product-attribute-specs-table {width: 80%;border: 1px solid #eee;margin-top:25px;}
+  #product-attribute-specs-table td {padding: 5px 10px;border: 1px solid #ccc;}
+  #product-description ul {    margin-left: 20px;list-style: disc outside; }
+  .fancybox-skin {background-color:#f8f8f8; border: 1px black solid; padding: 2px; }
+  .fancybox-close{font-size:2.5em; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;}
+  #bh_vendor_name {font-size:22px;}
+	#bh-bigimage-container{position:relative;}
+  
+  .main-image-navigation{ position: absolute;bottom: 90px;left: 2.5%;top:initial;right:initial;z-index: 4;width: 95%;text-align: left;}
+  
+  .main-image-navigation span{padding: 10px 20px;opacity: 0.7;}
+  .main-image-navigation span.next {float: right;}
+  #popups li a {text-decoration:underline;}
+</style>
+
+  
+<div itemscope itemtype="http://schema.org/Product" id="product-{{ product.id }}" class="product-page">
+
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+
+
+  {% include 'product-schema-review-data' %}  
+
+  
+  
+  <div id="mob-product-images" class="owl-carousel desktop-hide tablet-hide mobile-3">
+    {% for image in product.images %}
+{% assign bh_mobile_thumbnail_variant_attribute='' %}	
+{% if image.attached_to_variant? %}		
+		{% capture bh_mobile_thumbnail_variant_attribute %} data-mobile-thumbnail-variant="{{ image.variants[0].title }}" {% endcapture %}		
+{% endif %}
+
+    <div class="mthumb"><img src="{{ image | product_img_url: 'master' }}" alt="{{ image.alt | escape }}" {{ bh_mobile_thumbnail_variant_attribute }}></div>
+    {% endfor %}
+  </div>    
+  <div id="product-photos" class="{% if settings.related-products == 'right' %}desktop-5{% else %}desktop-6{% endif %}  tablet-3 mobile-hide">
+    {% assign featured_image = product.selected_variant.featured_image | default: product.featured_image %}
+    <div id="bigimage" class="bigimage-{{ product.id }}{% if settings.thumbnails != 'bottom' %} desktop-10 tablet-5{% else %} desktop-12 tablet-6{% endif %}">
+<div id="bh-bigimage-container">
+    <div class="main-image-navigation" id="bh-main-image-navigation">
+      <span class="prev"><i class="fa fa-angle-left"></i></span>
+      <span class="next"><i class="fa fa-angle-right"></i></span>
+    </div> 	
+      <img class="mainimage" id="{{ product.id }}" data-image-id="{{ image.id }}" src="{{ featured_image | img_url: 'master' }}" alt='{{ image.alt }}' title="{{ product.title }}"/> 
+</div>
+      <div id="bh-bigimag-alt-text"></div>
+     
+    
+    </div>
+    {% if product.images.size > 1 %} 
+    <div class="thumbnails{% if settings.thumbnails == 'bottom' %} desktop-12 tablet-6{% endif %}">
+      {% for image in product.images %}
+				{% assign bh_thumbnail_variant_attribute='' %}		
+	  {% if image.attached_to_variant? %}		
+		{% capture bh_thumbnail_variant_attribute %} data-thumbnail-variant="{{ image.variants[0].title }}" {% endcapture %}		
+	  {% endif %}
+      <a id="{{ forloop.index }}"  href="{{ image | product_img_url: 'master' }}" data-image-id="{{ image.id }}" class="{% if forloop.first %}active {% endif %}thumb clicker-{{ product.id }}">
+        <img class="thumbnail desktop-2 tablet-1" src="{{ image | product_img_url: 'medium' }}" alt="{{ image.alt | escape }}" data-image-id="{{ image.id }}" title="{{ image.alt | escape }}" {{ bh_thumbnail_variant_attribute }}/>
+      </a>
+      {% endfor %} 
+    </div>
+    {% endif %}
+  </div>
+
+
+  <script>
+    
+    function thumbnailToSelectSync(color,default_value_text){		
+
+      var select_box = $('#product-select-{{product.id}}-option-0 ');		
+                         if(typeof  color !== "undefined" && color !== ''){		
+
+        select_box.val(color);		
+        select_box.find('option[value="'+color+'"]');		
+
+      }		
+
+      else{		
+        if(select_box.find('option').eq(0).text() !== default_value_text ){		
+          select_box.prepend('<option>'+default_value_text+'</option>');		
+        } 		
+        select_box.val(0);  		
+      }		
+      select_box.change();	
+	  //console.log(color);	
+    }
+
+
+	function showAltTagContentFor( $this ){
+					var newAltTagText = $this.attr('alt');
+					$('#bh-bigimag-alt-text').text(newAltTagText);
+		}	
+    //$('.bigimage-{{ product.id }}').zoom();	
+    
+    {% if product.images.size > 1 %}
+    // Next and Previous Navigation
+    $('.next').click(function() {
+      var $current = $('.thumb.active'); // active thumb
+      var $thumbs = $('.thumb'); // find other thumbs
+      var $next = $thumbs.eq($thumbs.index($current) + 1); // next thumb        
+      $($next).trigger('click');
+      $($current).removeClass('active');
+		//add functionality to change the alt image on click
+	showAltTagContentFor( $next.find('img') );
+	//end image alt on click
+	thumbnailToSelectSync($next.find('img').data('thumbnail-variant'),"Add to Cart");
+	//console.log($next.data('thumbnail-variant'));  
+    });
+
+    $('.prev').click(function() {
+      var $current = $('.thumb.active'); // active thumb
+      var $thumbs = $('.thumb'); // find other thumbs
+      var $previous = $thumbs.eq($thumbs.index($current) - 1); // prev thumb        
+      $($previous).trigger('click');
+	//add functionality to change the alt image on click
+	showAltTagContentFor( $previous.find('img') );
+	//end image alt on click
+	thumbnailToSelectSync($previous.find('img').data('thumbnail-variant'),"Add to Cart");
+    });
+
+    // Switching main image
+    $('.clicker-{{ product.id }}').click(function() {
+      var newImage = $(this).attr('href');
+    $('.bigimage-{{ product.id }} img').attr({
+      src: newImage
+      });
+
+    $("a.active").removeClass("active");
+    $(this).addClass('active');
+	//add functionality to change the alt image on click
+	showAltTagContentFor( $(this) );
+	//end image alt on click
+    return false;
+    });    
+    {% endif %}     
+  </script>
+
+
+
+  <div id="product-right" class="{% if settings.related-products == 'right' %}desktop-7{% else %}desktop-6{% endif %} tablet-3 mobile-3">
+    <div id="product-description" {% if settings.related-products == 'right' %}class="desktop-10 tablet-6 mobile-3"{% endif %}>
+      {% if collection %} 
+      <div class="product-navigation">
+        {% if collection.previous_product %}
+        {{ '<i class="fa fa-angle-left" aria-hidden="true"></i>' | link_to: collection.previous_product }}
+        {% endif %}
+        {% if collection.next_product %}
+        {{ '<i class="fa fa-angle-right" aria-hidden="true"></i>' | link_to: collection.next_product }}
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if settings.vendor %}<h2 id='bh_vendor_name'>{{ product.vendor }}</h2>{% endif %}
+      <h1 itemprop="name">{{ product.title }}</h1>
+<!-- reviews star rating -->
+      <div style="margin: 10px 0px;"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+<!-- end reviews star rating -->      
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <p class="product-prices">
+          {% if product.available %}
+          {% if product.compare_at_price > product.price %}
+          <span class="product-price" itemprop="price">{{ product.price | money_without_currency }}</span>&nbsp;<span class="was">{{ product.compare_at_price | money_without_currency }}</span>
+          {% else %}
+          <span class="product-price" itemprop="price">{{ product.price | money_without_currency }}</span>
+          {% endif %}
+          {% else %}
+          <span class="product-price" itemprop="price">{{ 'products.product.sold_out' | t }}</span>
+          {% endif %}
+        </p>    
+
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+        {% include 'product-form' %}
+      </div>
+
+      {{ product.description }}
+
+      <div class="desc">
+        {% include 'social' with product %}
+      </div>
+    </div>
+
+    {% if settings.related-products == 'right' %}
+    <div id="related" class="desktop-2 tablet-hide mobile-hide">
+      {% include 'related-products' %}
+    </div>	
+    {% endif %}
+  </div>
+  <div class="clear"></div>
+    <!-- start reviews -->
+    <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+    
+    <!-- end reviews -->
+  {% if settings.related-products == 'bottom' %}
+  <div id="related" class="bottom-related">
+    {% include 'related-products' %}
+  </div>	
+  <div class="clear"></div>
+  {% endif %}
+
+  <div id="looked-at" class="desktop-12 mobile-hide">
+    {% include 'recently-viewed' %}
+  </div>
+</div>
+<script>
+  
+  (function($) {
+
+ $('iframe[src*="youtube.com"]:not(".responsiveyoutube-50"):not(".responsiveyoutube-75"):not(".responsiveyoutube-100")').each(function() {
+        //$(this).removeAttr('width').removeAttr('height');
+        $(this).wrap('<div style="position: relative;overflow: hidden;max-width: 100%;width: 100%;display: inline-block;height:100%;" class="embed-container" />');
+    });
+
+    function showAltTagContent(altTagText) {
+        $('#bh-bigimag-alt-text').text(altTagText);
+
+		
+    }
+
+    jQuery(function() {
+      
+      
+      
+      
+      
+      
+$('#AddToCartForm').responsiveDom({
+
+appendTo: '#mob-product-images',
+mediaQuery: '(max-width:750px)'
+
+});
+      
+      
+      var $notify_form = $('.notify_form .contact-form');		
+  		
+  $notify_form.each(function() {		
+    var $nf = $(this);		
+    $nf.on("submit", function (e) {		
+      if($nf.find('.notify_email').val() != "") {		
+        $.ajax({		
+            type: $nf.attr('method'),		
+            url: 'https://api.wigs.com/email_relays/outOfStock.php',//$nf.attr('action'),	
+            data: $nf.serialize(),		
+            success: function (data) {		
+              $notify_form.fadeOut("slow", function(){		
+                $nf.prev('.message').html("Thanks! We will notify you when this product becomes available!");		
+              });		
+            }		
+        }).fail(function(){ 		
+					$notify_form.fadeOut("slow", function(){		
+                $nf.prev('.message').html("Thanks! We will notify you when this product becomes available!");		
+              });		
+			});		
+      } else {		
+        $nf.prev('.message').html("Please provide a valid email address.");		
+      }  		
+      e.preventDefault();		
+    });		
+  });  		
+  $notify_form.hide();   
+      
+      $('.mthumb').each(function(){
+			var image_alt = $(this).find('img').attr('alt');
+ 	
+			$(this).append('<div>'+image_alt+'</div>');
+		});
+      
+      
+        $('td:contains("Ideal Face Shape")').next().text(function(i, text) {
+            return text.replace(/,/g, ', ');
+        });
+
+
+        var first_alt = jQuery('.thumbnails a img').eq(0).attr('alt');
+
+        showAltTagContent(first_alt);
+
+        jQuery('.thumbnails a img').click(function() {
+            //console.log($(this).attr('alt'));
+            showAltTagContent($(this).attr('alt'));
+			var color = $(this).data('thumbnail-variant');		
+            thumbnailToSelectSync(color,'Add to Cart'); 
+
+        });
+
+        function addImageButton() {
+
+            SPR.submitForm = function(t) {
+                setTimeout(function() {
+                    $('.spr-form-actions').attr('style', top_level_variable_button_style);
+                }, 320);
+                //console.log($('.spr-form-actions').attr('style'));
+                var e;
+                return e = this.$(t).serializeObject(),e["review[body]"]=saveImageURLInText(e["review[body]"],review_image_url), e = this.$.extend(e, this.extraAjaxParams), e = this.$.param(e), e = e.replace(/%0D%0A/g, "%0A"), this.$.ajax({
+                    url: this.api_url + "/reviews/create",
+                    type: "GET",
+                    dataType: "jsonp",
+                    data: e,
+                    success: this.formCallback,
+                    beforeSend: function(t) {
+                        return function() {
+                            return t.$(".spr-button-primary").attr("disabled", "disabled")
+                        }
+                    }(this),
+                    complete: function(t) {
+                        return function() {
+                            return t.$(".spr-button-primary").removeAttr("disabled")
+                        }
+                    }(this)
+                }), !1
+            }
+
+
+            $('.spr-form-actions').css('margin-top', '115px');
+          $('.spr-form').after('<div style="position:relative;bottom:180px;width:40%;margin-left:5px;margin-top:5px;"><form id="form1" enctype="multipart/form-data" method="post">           <div id="image_upload_container"> <div class="row" style="margin-bottom:5px;">   <label for="file">Select a Photo to Upload</label>  <input type="file" name="file" id="file" accept="image/gif, image/jpeg, image/png" onchange="previewImage(this)"/> </div> <div id="fileName"></div> <div id="fileSize"></div> <div id="fileType"></div> <div class="row">   </div> <div id="progressNumber"></div> <div id="filePreview"></div> </div> </form> </div>');
+            $(document).off('click', '.spr-summary-actions-newreview', addImageButton);
+            top_level_variable_button_style = $('.spr-form-actions').attr('style');
+        }
+
+
+        $(document).on('click', '.spr-summary-actions-newreview', addImageButton);
+
+    });
+})(jQuery);
+
+
+//Image Upload functions
+function decodeReview(unformattedReview) {
+
+
+
+    var unformatted_string = unformattedReview.text();
+    var formatted_string = unformatted_string.replace(/\[img\|https?:\/\/www\.wigs\.com\/media\/reviews\/(.*)[ |\n]?\]/gi, "<p><br><img src='https://s3.amazonaws.com/wigs-image-uploads/$1' style='max-width:450px'></p>");
+  	var formatted_string = formatted_string.replace(/\[img-az\|(.*)[ |\n]?\]/gi, "<p><br><img src='https://s3.amazonaws.com/wigs-image-uploads/$1' style='max-width:450px'></p>");
+    unformattedReview.html(formatted_string);
+
+
+}
+
+var top_level_variable_button_style = '';
+var review_image_url = '';
+function getXMLHTTPObject() {
+    var xmlHttp = null;
+    try {
+        // Firefox, Opera 8.0+, Safari
+        xmlHttp = new XMLHttpRequest();
+    } catch (e) {
+        // Internet Explorer
+        try {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+    }
+    return xmlHttp;
+}
+
+function uploadFile() {
+
+    var file = document.getElementById('file').files[0];
+    var fd = new FormData();
+
+    var key = (new Date).getTime() + '-' + file.name;
+
+    fd.append('key', key);
+    fd.append('acl', 'public-read');
+    fd.append('Content-Type', file.type);
+    fd.append('AWSAccessKeyId', 'AKIAJ75V3ZJQMF3ZDEVQ');
+    fd.append('policy', 'eyAiZXhwaXJhdGlvbiI6ICIyMDIwLTEyLTAxVDEyOjAwOjAwLjAwMFoiLAogICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgeyJidWNrZXQiOiAid2lncy1pbWFnZS11cGxvYWRzIn0sCiAgICAgICAgICAgIFsic3RhcnRzLXdpdGgiLCAiJGtleSIsICIiXSwKICAgICAgICAgICAgeyJhY2wiOiAicHVibGljLXJlYWQifSwKICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgImltYWdlIl0sCiAgICAgICAgICAgIFsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwMDBdCiAgICAgICAgICAgIF0KICAgICAgICAgIH0=');
+    fd.append('signature', 'TsjeNAjWTNygIrec7AwiOqs9Ykk=');
+
+    fd.append("file", file);
+
+    var xhr = getXMLHTTPObject();
+
+    xhr.upload.addEventListener("progress", uploadProgress, false);
+    xhr.addEventListener("load", uploadComplete, false);
+    xhr.addEventListener("error", uploadFailed, false);
+    xhr.addEventListener("abort", uploadCanceled, false);
+
+    xhr.open('POST', 'https://wigs-image-uploads.s3.amazonaws.com/', true); //MUST BE LAST LINE BEFORE YOU SEND 
+
+    xhr.send(fd);
+    $('#file').replaceWith('<span id="file" style="font-style:italic;">Your image is uploading</span>');
+}
+
+function uploadProgress(evt) {
+    if (evt.lengthComputable) {
+        var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+        document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+    } else {
+        document.getElementById('progressNumber').innerHTML = 'unable to compute';
+    }
+}
+
+function uploadComplete(evt) {
+    /* This event is raised when the server sends back a response */
+
+    review_image_url= evt.target.getResponseHeader('Location') ;
+    $('label[for="file"]').empty();
+    $('#file').replaceWith('<span style="font-style:italic;">Your image has been uploaded! It will be submitted with your review once you finish.</span>');
+    $('#image-upload-button').fadeOut();
+  if(review_image_url !== ""){
+		
+		//console.log('review_image_url');
+  }
+
+}
+
+function uploadFailed(evt) {
+    //console.log("There was an error attempting to upload the file." + evt);
+  $('label[for="file"]').empty();
+    $('#file').replaceWith('<span style="font-style:italic;">There was an error attempting to upload the file.</span>');
+    $('#image-upload-button').fadeOut();
+  
+}
+
+function uploadCanceled(evt) {
+    //console.log("The upload has been canceled by the user or the browser dropped the connection.");
+	$('label[for="file"]').empty();
+    $('#file').replaceWith('<span style="font-style:italic;">The upload has been canceled by the user or the browser dropped the connection.</span>');
+    $('#image-upload-button').fadeOut();
+}
+
+function previewImage(input) {
+    var preview_div = document.getElementById('filePreview');
+    var preview_image = document.createElement('img');
+    $('#filePreview').empty();
+    if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            preview_image.setAttribute('src', e.target.result);
+            preview_div.appendChild(preview_image);
+            //console.log(preview_image.width + ' ' + preview_image.height);
+            var new_height = parseInt(preview_image.height / 2);
+            var new_width = parseInt(preview_image.width / 2);
+            preview_image.width = new_width;
+            preview_image.height = new_height;
+            $('#filePreview').append('<br /><input type="button" id="image-upload-button" onclick="uploadFile()" value="Use this photo" /> ');
+            var new_submit_height = 75 + new_height;
+            var new_submit_height_string = String(new_submit_height);
+            //console.log("----"+new_submit_height_string);
+            $('.spr-form-actions').css({
+                "position": "relative",
+                'top': new_submit_height_string + 'px'
+            });
+            top_level_variable_button_style = $('.spr-form-actions').attr('style');
+        }
+        reader.readAsDataURL(input.files[0]);
+
+
+    } else {
+
+    }
+
+}
+  
+function saveImageURLInText(description_text,image_url){
+	if(image_url.length > 0){
+	var image_url_parts = image_url.split("/");
+	var filename = image_url_parts[image_url_parts.length-1];
+	filename = "[img-az|"+filename+"]";
+	var description_length = description_text.length;
+	var image_url_length = image_url.length;
+	var new_description_text = "";
+
+	if(description_length+image_url_length > 1499){
+		
+		var stop_length = description_length - filename.length -1;
+		
+		new_description_text = description_text.substring(0,1499);
+		new_description_text = new_description_text.substring(0,stop_length) + filename;
+ 
+	}
+	else{
+
+
+		
+		new_description_text=description_text+filename;
+
+	}
+}
+else{
+
+
+	new_description_text=description_text;
+}
+
+	return new_description_text;
+}
+
+</script>
+

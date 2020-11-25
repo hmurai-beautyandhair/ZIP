@@ -1,0 +1,313 @@
+{% if section.settings.enable_top_layout %}
+{%comment%} Community navigation added here {%endcomment%}
+<style>
+@media screen and (max-width:770px) and (min-width:450px )
+{
+  .community-nav{font-size:0.6em;}
+ }
+  .community-nav-container {text-align:left;margin-bottom:30px;}
+ .community-logo {display: inline-block;}
+ .community-logo img{float:left;}
+ .community-nav {display:inline-block;vertical-align:top;}
+ #content ul.community-nav-list{list-style-type:none;padding-left:0px;}
+ #content ul.community-nav-list li {margin-right: 2px;display: inline-block;}
+  #breadcrumb{text-align:left;}
+ @media screen and (max-width:760px) {
+   
+   .community-logo{display:block;}
+   .community-logo img {float:none;display: block; margin:auto auto;}
+   .community-nav-list{text-align:center;}
+ }
+</style>
+
+{%assign h1_tag =""%}
+
+{%if blog.handle == "news" %}
+{%assign h1_tag ="Wigs Blog - All About Wigs"%}
+{%else if blog.handle == "magazine" %}
+{%assign h1_tag ="The Latest News"%}
+{%else if blog.handle == "press-releases" %}
+{%assign h1_tag ="The Latest News."%}
+{%endif%}
+
+
+
+<div class="community-nav-container">
+<h1>{{h1_tag}}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}</h1>
+<div class="community-logo">
+<img src="//cdn.shopify.com/s/files/1/2636/2774/files/wigs_commmunityLogo_no-arrow_large.png?v=1524167720"  width="265" height="90" />
+</div>
+<div class="community-nav">
+<ul class="community-nav-list">
+<li style="vertical-align: -30px;"><a href="/pages/one-woman-stories">Stories of Hope</a> |</li>
+<li style="vertical-align: -30px;"><a href="https://www.wigs.org" target="_blank" rel="noopener noreferrer">Our Forum</a> |</li>
+<li style="vertical-align: -30px;"><a href="/pages/community-stories">Ambassadors</a> |</li>
+<li style="vertical-align: -30px;"><a href="/pages/become-an-influencer">Influencers</a> |</li>
+<li style="vertical-align: -30px;"><a href="/blogs/news">Blog</a> |</li>
+<li style="vertical-align: -30px;"><a href="/blogs/press-releases">News</a> |</li>
+<li style="vertical-align: -30px;"><a href="/pages/test-page-1">Community</a></li>
+</ul>
+</div>
+</div>
+  <script>(function($){ $('.community-nav a[href="'+window.location.pathname+'"]').css('color','#c31c4b'); })(jQuery)</script>
+{%comment%} End Community navigation  {%endcomment%}
+
+
+<div class='desktop-12 tablet-6 mobile-3 top-layout'>
+  {% for article in blog.articles  %}
+  {% if forloop.first %}
+  <div class='desktop-6 tablet-6 mobile-3 top-left-gd bigger-gd'>
+    <div class="views-field views-field-field-arc-article-thumbnail">
+      <div class="field-content">  
+        <a href="{{ article.url }}">  
+          <img src="{{ article | img_url: '1024x1024' }}" alt="{{ article.title }}">
+        </a>
+      </div>
+    </div>
+    <div class="content">
+      <h3 class="list-title">
+        <a href="{{ article.url }}">{{ article.title }} </a>
+      </h3>
+    </div>
+  </div><div class='desktop-6 tablet-6 mobile-3 top-right-gd'>
+  {% for article in blog.articles  %}
+  {% if forloop.index <= 5 and  forloop.index > 1 %}
+  <div class='desktop-6 tablet-6 mobile-3 smaller'>
+    <div class="views-field views-field-field-arc-article-thumbnail">
+      <div class="field-content">  
+        <a href="{{ article.url }}">  
+          <img srcset="{{ article | img_url: '1024x1024' }}" alt="{{ article.title }}">
+        </a>
+      </div>
+    </div>
+    <div class="content">
+      <h3 class="list-title">
+        <a href="{{ article.url }}">{{ article.title }} </a>
+      </h3>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+{% paginate blog.articles by 25 %}
+<div id="article-loop" class="desktop-9 tablet-6 mobile-3"> 
+  {% for article in blog.articles  %}
+  {% assign number_of_comments = article.comments_count %}
+  {% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+  {% endif %} 
+
+  {% if section.settings.enable_top_layout %}
+
+  {% if forloop.index > 5 %}
+  <div class="article-index" id="article-{{ article.id }}" data-alpha="{{ article.title }}">   
+    {% include 'article-loop' %}
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="article-index" id="article-{{ article.id }}" data-alpha="{{ article.title }}">   
+    {% include 'article-loop' %}
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>{% if section.blocks.size > 0 %}<div id="blog-sidebar" class="desktop-3 tablet-hide mobile-3">
+{% for block in section.blocks %}
+{% if block.type == 'recent_block' %}
+<div class='recent-posts'>
+  <h2 class="block-title">{{block.settings.title}}</h2>
+  <ul id="posts" class='posts'>
+    {% for article in blog.articles limit: block.settings.limit  %}
+    <li><a href="{{article.url}}"><h4>{{ article.title }}</h4></a>
+      <p>{{ article.published_at | date: "%b %d %Y" }}</p>
+      {% comment %} <p>{{ article.content | strip_html | truncate: 140 }}</p>{% endcomment %}
+    </li>
+    {% endfor %} 
+    {% if blog.tags > 0 %}
+    <h3 style="margin: 20px 0">{{ 'blogs.sidebar.categories' | t }}</h3>
+    {% for tag in blog.all_tags %}
+    <li class="tags">
+      <a href="{{ shop.url}}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+    </li>
+    {% endfor %}
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
+{% if block.type == 'custom_image' %}
+{% if block.settings.image %}
+<div class='image_sidebar_gd'>
+  {% if block.settings.image_url != blank %}<a href='{{block.settings.image_url}}'>{% endif %}
+  <img src='{{ block.settings.image | img_url : 'original' }} '>
+  {% if block.settings.image_url != blank %}</a>{% endif %}
+</div>
+{% endif %}
+{% endif %}
+{% if block.type == 'newsletter' %}
+<div class='newsletter-sidebar'>
+  <div class='title'>
+    {{ block.settings.title }}
+  </div>
+  <div class='subtitle'>
+    {{ block.settings.subtitle }}
+  </div>
+  <div class='content'>
+    {{ block.settings.content }}
+  </div>
+  <form action="https://api.wigs.com/relay.php" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" > 
+    <input type="hidden" name="site" value="wigs">
+    <input type="hidden" name="addressbookid" value="11236637">
+    <input type="hidden" name="userid" value="117078">
+    <input type="hidden" name="ReturnURL" value="http://www.wigs.com/">
+    <input value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="{{ block.settings.placeholder }}" required="" type="email"> 
+    <input type="hidden" id="double" name="double" value="double"/>
+    <input value="{{ block.settings.button_title }}" name="subscribe" id="mc-embedded-subscribe" class="small button" type="submit">
+  </form>
+</div>
+{% endif %}
+{% if block.type == 'twitter' %}
+
+<div id="twitter-card">
+  <h3>{{ 'blogs.sidebar.twitter_title' | t }}</h3>
+  <a class="twitter-timeline" href="//twitter.com/{{ settings.twittername }}" data-widget-id="{{ settings.twitter-widget }}" data-chrome="noborders noheader transparent" data-tweet-limit="3">Recent Tweets</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>     
+</div> 
+{% endif %}
+{% if block.type == 'facebook' %}
+<div id="facebook-card">
+  <h3>{{ 'blogs.sidebar.facebook_title' | t }}</h3>
+  <div class="fb-like-box" data-href="{{ settings.facebook_url }}" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div> 
+</div>
+{% endif %}
+{% if block.type == 'instagram' %}
+{% assign url = '{{image}}' %}
+{% assign caption = '{{caption}}' %}
+<div id="instagram-card">
+  <h3>{{ 'layout.homepage.instagram' | t }}</h3>
+  <div id="instafeed"></div>
+  <script type="text/javascript">
+    var userFeed = new Instafeed({
+      get: 'user',
+      userId: {{ settings.instagram-user-id }},
+      accessToken: '{{ settings.instagram-access-token }}',
+      template: '<a class="fancybox desktop-4 tablet-2 mobile-half href="{{url}}" rel="ig" title="{{ caption }}"><img class="instagram-image" src="{{ url }}" /></a>'
+    });
+    userFeed.run();        
+  </script>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+{% endif %}
+<div class="clear"></div>
+{% include 'pagination' %}
+{% endpaginate %}
+
+
+{% schema %}
+{
+"name": "Blog",
+"settings": [
+{
+"type":"checkbox",
+"id":"enable_top_layout",
+"label":"Enable magazine layout"
+}
+],
+"blocks":[
+{
+"type":"recent_block",
+"name":"Recent posts",
+"settings":[
+{
+"type":"range",
+"min":4,
+"max":20,
+"step":1,
+"id":"limit",
+"default":5,
+"label":"Limit"
+},
+{
+"type":"text",
+"id":"title",
+"label":"Title",
+"default":"Popular Content"
+}
+
+]
+},
+{
+"type":"custom_image",
+"name":"Custom Image",
+"settings":[
+{
+"type":"image_picker",
+"id":"image",
+"label":"Add Image"
+},
+{
+"type":"url",
+"id":"image_url",
+"label":"Add Url"
+}
+]
+},
+{
+"type":"newsletter",
+"name":"Newsletter",
+"settings":[
+{
+"type":"text",
+"label":"title",
+"id":"title",
+"default":"sign up for"
+},
+{
+"type":"text",
+"label":"subtitle",
+"id":"subtitle",
+"default":"Your Daily Beauty Fix"
+},
+{
+"type":"text",
+"label":"content",
+"id":"content",
+"default":"newsletter"
+},
+{
+"type":"text",
+"label":"Email placeholder",
+"id":"placeholder",
+"default":"Email"
+},
+{
+"type":"text",
+"label":"Button title",
+"id":"button_title",
+"default":"Sign up here"
+}
+]
+},
+{
+"type":"twitter",
+"name":"Twitter",
+"settings":[]
+},
+{
+"type":"facebook",
+"name":"Facebook",
+"settings":[]
+},
+{
+"type":"instagram",
+"name":"Instagram",
+"settings":[]
+}
+]
+}
+{% endschema %}

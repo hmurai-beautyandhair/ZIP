@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style><!-- ul {list-style-type:none;display:flex;} li {margin:20px;} --></style>
+  </head>
+  <body> 
+<div class="container">
+  	<h2>Shopify Bookmarklets</h2>
+  	<div class="well">
+  		<h3>Product Page</h3>
+  	<ul>
+  		<li ><a href="javascript: $('script.modal_source').each(function(){ var script_html = $(this).html(); var y = $.parseHTML(script_html); var x = $(y).filter('form'); var id = x.find('input#image_id').attr('value'); var alt = x.find('input#image_alt').attr('value'); $('#product-image-'+id).append('<div>'+alt+'</div>'); });"   class="btn btn-primary">View Alt Tags</a></li>
+  	</ul>
+  </div>
+<div class="well" >
+      <h3>Order Page</h3>
+    <ul>
+      <li>
+     <a href="javascript: (function($){ $('.ui-button.customer-email.btn--link.show-when-printing').click(function(){ var customer_name  = $('#customer-card a[href^=\'/admin/customers/\']').text();  var text_area = $('#order_contact_message_custom_message');  var template = 'Hi '+customer_name+',\r\n\r\nIt looks like you made a popular choice! Due to the high demand for this particular style and color, your item is unfortunately backordered. We\'ve added you to our priority waitlist so you will be among the first to receive your item when it becomes available.\r\n\r\n\r\nSwitching to a different color that is in stock is easy! Simply call us so that we can cancel your current order and replace it with a new order containing your new color selection or to just cancel this order simply reply to this email. If you purchased this item with a discount, that same discount can be applied to your new order!\r\n\r\nWe will send you an email once your order has shipped. If you have set up your account on our site. Just sign in to check your order status anytime. As always, please let us know if you have any questions.\r\n\r\nYou can always call us at 800.581.2001, M-F from 8:00am - 6:30pm CST.\r\n\r\nThank you again for shopping with us!\r\n\r\nSincerely,\r\n\r\nBeauty & Hair,\r\n\r\nBeauty & Hair\r\n<a href=\'https://www.wigs.com/\'>wigs.com</a> | <a href=\'https://www.hairextensions.com\'>extensions.com</a>\r\n\r\n<img src=\'https://s3.amazonaws.com/images.wigs.com/image001.png\'>Connect with Beauty & Hair\'s FACEBOOK';  text_area.val(template).css('height','350px');  $('#order_contact_message_subject').val('Important Order Notification | wigs.com and extensions.com') }).click(); })(jQuery);" class="btn btn-primary">Shopify Backorder Template</a>
+
+      </li>
+            <li>
+     <a href="javascript: (function($){ $('.ui-button.customer-email.btn--link.show-when-printing').click(function(){ var customer_name  = $('#customer-card a[href^=\'/admin/customers/\']').text();  var text_area = $('#order_contact_message_custom_message');  var template = 'Dear '+customer_name+', \r\n\r\nThank you for shopping one of our Beauty & Hair sites.  It looks like you made a popular choice! Unfortunately, your International order contains a backorder.\r\n\r\nAs shipping internationally can be costly, shipping partial orders is not prudent.  You have the following options from which to choose.  Please let us know your wishes as soon as possible so we can process your order timely:\r\n\r\n1.     Wait to ship your entire/complete order when all items are available to incur only one shipping cost.\r\n2.     Select an alternative color to replace the backordered item[s] so we can ship your complete order at once. \r\n3.   Immediately Ship the portion of your order which is in stock and keep yourself on the top of the list for your backorder item[s].  Once your backorder is in, it will be shipped to you (Please be advised you will be responsible for any shipping charges, duties or taxes charged for both shipments).\r\n4.     Cancel the backordered item[s] and have the rest of your order shipped right away. We will refund you fully for item[s] not shipped.\r\n\r\n***Please note we are not responsible for any duties, taxes, or additional charges that may be charged by Customs for any International deliveries.\r\n\r\nYour speedy response will help us serve you quickly. As always, please let us know if you have any questions and thank you for shopping with us! \r\n\r\nYou can email clientcare@beautyandhair.com or call us at 800.581.2001, M-F 8:00 am - 6:30 pm CST.\r\n\r\nSincerely,\r\nBeauty & Hair,\r\n\r\nBeauty & Hair\r\n<a href=\'https://www.wigs.com/\'>wigs.com</a> | <a href=\'https://www.hairextensions.com\'>extensions.com</a>\r\n\r\n<img src=\'https://s3.amazonaws.com/images.wigs.com/image001.png\'>Connect with Beauty & Hair\'s FACEBOOK';  text_area.val(template).css('height','350px');  $('#order_contact_message_subject').val('Important Order Notification | wigs.com and extensions.com') }).click(); })(jQuery);" class="btn btn-primary">Shopify International Backorder Template</a>
+
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+  </body>
+</html>
+{% layout none %}
+
+<!-- <style>
+  div#content.row a{text-decoration:underline;}
+</style>
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+<h1>{{ page.title }}</h1>
+{{ page.content }}
+</div>
+ -->

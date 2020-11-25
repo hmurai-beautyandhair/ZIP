@@ -1,0 +1,266 @@
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+
+
+<h1>{{ page.title }}</h1>
+
+  
+{{ page.content }}
+
+
+  
+
+{% assign collection = collections['new-arrivals'] %}
+{% assign second_collection_link_text = "Shop New Arrivals" %}
+{% assign second_collection_link_href = "/collections/new-arrivals" %}
+
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+  
+
+  
+
+  
+  
+   {% if page.handle != "sale" %}
+  <div class="homepage-section" >
+    <h2 style="margin-top:0px;">Shop by Collection</h2>
+  </div>
+<p> </p>
+
+  
+
+{% include 'homepage-image-gallery-2' %}
+{% include 'homepage-image-gallery-1' %}
+{%else%}
+  <div class="homepage-section"></div>
+<p> </p>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/ellen-wille"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0005_EW.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP Ellen Wille</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/raquel-welch"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0003_RW.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP RAQUEL WELCH</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/jon-renau-wigs-hairpieces"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0004_JR.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP JON RENAU</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/envy"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_NV.jpg?18173949787363728534" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP ENVY</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/noriko"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0001_NO.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP NORIKO</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/gabor"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0000_EG.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP GABOR</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<hr style="color: #e5e5e5; background-color: #e5e5e5; margin: 20px 0px 35px;" />
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/short-wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/t/2/assets/image_grid1.jpg?10641525791917355611" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP SHORT WIGS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/long-wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/t/2/assets/image_grid2.jpg?10641525791917355611" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP LONG WIGS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/lace-front-wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/lace_front_4a8ba144-ba64-4f08-b0a4-25508944f99f.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP LACE FRONT</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/human-hair"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/10.jpg?17772949613898789182" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP HUMAN HAIR</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/petite-wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/shop_petite.jpg?10988793378729899443?17772949613898789182" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP PETITE WIGS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/large-wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/shop_large_ca2baead-d780-46e5-9184-282edf12acdd.jpg?10988793378729899443?17772949613898789182" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP LARGE WIGS</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/wigs"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/allWigs.jpg?10988793378729899443?17772949613898789182" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP ALL WIGS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/top-pieces-toppers"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/allToppers.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP ALL TOPPERS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/new-arrivals"> <img src="//cdn.shopify.com/s/files/1/1410/9094/files/new_v2_25c720ae-9d4d-42c2-a5a3-af47006b820f.jpg?10988793378729899443" alt="" />
+<div class="caption">
+<h3></h3>
+<p>SHOP NEW ARRIVALS</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+  
+{%endif%}  
+  
+  
+  
+  
+{%comment%}  
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3" style="text-align: center;"><a href="/collections/ellen-wille" title="Ellen Wille">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/ew_1853d6b2-617b-4fdb-be93-720763ee6c06.jpg?10396888402779625855" alt="Ellen Wille"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/ew_1853d6b2-617b-4fdb-be93-720763ee6c06.jpg?10396888402779625855" alt="Ellen Wille" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/ellen-wille" title="Shop Ellen Wille">Ellen Wille</a></div>
+<!------------RW---->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/raquel-welch" title="Raquel Welch">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/rw_f45ece24-5859-4f61-9176-6123b28a82bb.jpg?11968169295562180662" alt="Raquel Welch"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/rw_bd524d02-336c-4fd9-b199-27a48cfec53d.jpg?10396888402779625855" alt="Raquel Welch" />
+<div class="row-homepage-section"></div>
+</a><a href="/collections/raquel-welch" title="Shop Raquel Welch">Raquel Welch</a></div>
+<!----------JR-------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/jon-renau-wigs-hairpieces" title="Jon Renau">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/jr_a121b6a1-c272-439e-a7d5-20fb657ba8cf.jpg?16185378066337920629" alt="Jon Renau"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/jr_a121b6a1-c272-439e-a7d5-20fb657ba8cf.jpg?16185378066337920629" alt="Jon Renau" />
+<div class="row-homepage-section"></div>
+</a><a href="/collections/jon-renau-wigs-hairpieces" title="Shop Jon Renau">Jon Renau </a></div>
+{%if page.handle != "free-gift" %}
+<!--------Giveaway-------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/pages/contests" title="Giveaway">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/generic_contest_0a4969e4-fdea-473a-9e8a-145d6682a75b.jpg?10256786831545840759" alt="Giveaway"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/generic_contest_0a4969e4-fdea-473a-9e8a-145d6682a75b.jpg?10256786831545840759" alt="Giveaway" /> </a>
+<div class="row-homepage-section"></div>
+<a href="/collections/noriko" title="Giveaway">Giveaway</a></div>
+<!--------LF--------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/louis-ferre-wigs-hairpieces" title="Louis Ferre">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/lf_51e68f5b-78b0-40b4-a30f-711e845303c0.jpg?16185378066337920629" alt="Louis Ferre"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/lf_51e68f5b-78b0-40b4-a30f-711e845303c0.jpg?16185378066337920629" alt="Louis Ferre" />
+<div class="row-homepage-section"></div>
+</a><a href="/collections/gabor" title="Shop Louis Ferre">Louis Ferre</a></div>
+<!-------GWP------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/ellen-wille" title="Free Gift">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/1812_gwp_tile_v2.jpg?16580470084770806034" alt="Ellen Wille"></noscript>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/1812_gwp_tile_v2.jpg?16580470084770806034" alt="Free Gift" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/rene-of-paris" title="Free Gift">Free Gift</a></div>
+{%endif%}
+<!---------Short Styles------>
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/short-wigs" title="Short Styles">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/short_v3_a4455499-f4cb-4846-a072-a7152aeeccb9.jpg?16185378066337920629" alt="Short Styles"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/short_v3_a4455499-f4cb-4846-a072-a7152aeeccb9.jpg?16185378066337920629" alt="Short Styles" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/envy" title="Shop Short Styles">Short Styles</a></div>
+<!------Long Styles------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/long-wigs" title="Long Styles">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/long_v4_83fe4c58-be94-4810-8741-ed2ab529a75d.jpg?16185378066337920629" alt="Long Styles"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/long_v4_83fe4c58-be94-4810-8741-ed2ab529a75d.jpg?16185378066337920629" alt="Long Styles" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/long-wigs" title="Shop Long Styles">Long Styles</a></div>
+<!-------Colored Wigs-------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/colored-wigs" title="Colored Wigs">
+<noscript><img src="//cdn.shopify.com/s/files/1/1410/9094/files/color_v4_4aa23492-d17b-4e89-89b2-a48ca066a38b.jpg?16185378066337920629" alt="Colored Wigs"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="//cdn.shopify.com/s/files/1/1410/9094/files/color_v4_4aa23492-d17b-4e89-89b2-a48ca066a38b.jpg?16185378066337920629" alt="Colored Wigs" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/colored-wigs" title="Shop Colored Wigs">Colored Wigs</a></div>
+<!-----------Human Hair---------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/human-hair-wigs" title="Human Hair Wigs">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/human_3f5e23bb-76ef-4e7a-8f72-f3f1fbbce3cf.jpg?16185378066337920629" alt="Forever Young Wigs"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/human_3f5e23bb-76ef-4e7a-8f72-f3f1fbbce3cf.jpg?16185378066337920629" alt="Human Hair Wigs" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/human-hair-wigs" title="Shop Human Hair Wigs">Human Hair Wigs</a></div>
+<!--------Lace Front-------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/lace-front-wigs" title="Lace Front Wigs">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/lace_front.jpg?16185378066337920629" alt="Lace Front Wigs"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/lace_front.jpg?16185378066337920629" alt="Lace Front Wigs" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/lace-front-wigs" title="Shop Lace Front Wigs">Lace Front Wigs</a></div>
+<!--------New Arrivals--------->
+<div class="caption">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/new-arrivals" title="New Arrivals">
+<noscript><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/new_v2.jpg?16185378066337920629" alt="Vivica Fox Wigs"></noscript>
+<img class="lazyload" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Placeholder_v2.jpg?422150254838256492" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/new_v2.jpg?16185378066337920629" alt="New Arrivals" />
+<div class="row homepage-section"></div>
+</a><a href="/collections/new-arrivals" title="Shop New Arrivals">New Arrivals</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</div>
+{%endcomment%}
+</div>

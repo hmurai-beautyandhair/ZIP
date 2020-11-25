@@ -1,0 +1,2 @@
+{%- assign SS_discount_percent_coefficient = 100 | minus: SS_percent_off -%}
+{%- assign SS_discount_percent_coefficient = SS_discount_percent_coefficient | times : 0.01 -%}{{SS_intial_price | times: SS_discount_percent_coefficient | round: 2 | money}}

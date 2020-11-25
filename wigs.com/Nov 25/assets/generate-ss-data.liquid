@@ -1,0 +1,34 @@
+{%assign sales_prefixes = "DD,SS0719"| split: ',' %}  
+
+    {%assign tag_string =""%}
+    {% for tag in product.tags %}
+    			
+  		  		{%assign tag_parts = tag| split: "-"%}
+                
+                {%assign tag_prefix = tag_parts[0]%}
+                {%if sales_prefixes contains tag_prefix%}
+                {%if tag_string == ""%}
+                {%capture tag_string%}"{{tag_prefix}}-{{tag_parts[1]}}"{%endcapture%}
+                {%else%}
+                {%capture tag_string%}{{tag_string}},"{{tag_prefix}}-{{tag_parts[1]}}"{%endcapture%}
+                {%endif%}
+                
+                
+                {%endif%}
+    
+    
+    {%endfor%}
+  {%assign prefix_string  =  "" %}
+  {%for prefix in sales_prefixes %}
+  				
+  	{%if prefix_string == ""%}
+  		
+  		{%capture prefix_string%}"{{prefix}}"{%endcapture%}			
+  	{%else%}
+  		{%capture prefix_string%}{{prefix_string}},"{{prefix}}"{%endcapture%}			
+  	{%endif%}
+  
+  {%endfor%}
+  {%comment%}Add prefixes to the ss-data-holder object{%endcomment%}
+<script id="ss-data-holder" type="application/json">{"ss_prefixes":[{{prefix_string}}],"ss_variants":[{{tag_string}}]}</script>
+<script>var ss_variant_obj = JSON.parse(document.getElementById('ss-data-holder').textContent);ss_variants = ss_variant_obj.ss_variants;ss_prefixes = ss_variant_obj.ss_prefixes</script>

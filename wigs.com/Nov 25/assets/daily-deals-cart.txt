@@ -1,0 +1,37 @@
+// var subTotal;
+// var discount;
+
+// $.ajax({
+//     url: 'https://daily-deals.herokuapp.com/products/live.json',
+//     type: 'GET',
+//     dataType: 'json',
+//     success: function(data) {
+//       discount = data.discount;
+//       $.get('/cart.json', function(cart){
+//         var hasDeal;
+//         subTotal = (cart.items_subtotal_price / 100).toFixed(2);
+//         for(var i = 0; i < cart.items.length; i++){
+//           var variantId = cart.items[i].variant_id;
+//           if(data.products.includes(variantId)){
+//             $('<input>').attr('type','hidden').attr('name', 'discount').val('DAILYDEALS').appendTo('#cartform');
+//             handlePriceMarkup(variantId);
+//             hasDeal = true;
+//           }
+//         }
+//         if(hasDeal){
+//          $('.saso-cart-original-total').text('$' + subTotal.toFixed(2)); 
+//         }
+//       });
+//     }
+// });
+
+// function handlePriceMarkup(variantId){
+//     var $elem = $(`[data-variant-id="${variantId}"]`);
+//     var orig_price = Number($elem.find('.saso-cart-item-price').text().substring(1).replace(/,/g, ''));
+//     var deal_price = orig_price - (orig_price * discount);
+//     $('<span>$' + deal_price.toFixed(2)  + '&nbsp;</span>').insertBefore($elem.find('.saso-cart-item-price'));
+//     $elem.find('.saso-cart-item-price').wrap('<del>');
+//     $elem.find('.saso-cart-item-line-price').text('$' + deal_price.toFixed(2));
+
+//     subTotal = subTotal - (orig_price.toFixed(2) - deal_price.toFixed(2));
+// }

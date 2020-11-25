@@ -1,0 +1,22 @@
+  <div class="article-info"> 
+    <div class="article-info-inner">
+      <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+      {% assign published_at = article.published_at | date: format: 'month_date_year' %}
+      <p class="posted">{{ 'blogs.article.posted_on_date_html' | t: date: published_at }}</p>
+      {% if article.image %}
+      <div class="article-image">
+        <div class="article-image">
+          <a href="{{ article.url }}">
+          <img src="{{ article | img_url: '1024x1024' }}">
+          </a>
+        </div>
+      </div>
+      {% endif %}           
+      <div class="article-content">
+        {{ article.excerpt }}
+      </div>
+      <div class="readmore">
+        <a href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+      </div>
+    </div>
+  </div>

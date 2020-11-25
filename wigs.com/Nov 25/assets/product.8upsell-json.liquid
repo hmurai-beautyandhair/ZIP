@@ -1,0 +1,12 @@
+{% layout none %}{
+"id": {{ product.id }},
+"title": {{ product.title | json }},
+"handle": "{{ product.handle }}",
+"url": "{{ product.url }}",
+"variants": {{ product.variants | json }},
+"available": {{ product.available }},
+"tags": {{ product.tags | json }},
+"images": {{ product.images | json }},
+"featured_image": {{ product.featured_image.src | json }},
+"options": {{ product.options | json }}
+}

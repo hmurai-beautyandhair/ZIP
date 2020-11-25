@@ -1,0 +1,105 @@
+{%comment%}Code fore free gift with purchase app {%endcomment%}
+{%assign sca_price = product.price%}
+{%assign sca_price_min = product.price_max%}
+{%assign sca_price_max = product.price_min%}
+{%assign sca_compare_at_price = product.compare_at_price%}
+{%assign sca_compare_at_price_min = product.compare_at_price_max%}
+{%assign sca_compare_at_price_max = product.compare_at_price_min%}
+
+{%comment%} end code fore free gift with purchase app {%endcomment%}
+{%assign apply_special_sale  = false%}
+{%if apply_special_sale  %}
+{%include 'special-sale-parameters' %}
+<style>
+  #clearance-sale-status-text{display:none;}
+</style>
+{%endif%}
+
+
+  <div class="prod-container">
+ 
+   
+    <div class="prod-image">
+    <a href="{{ product.url | within: collection }}" title="{{ product.title | escape }}">
+      <div class="reveal">
+        {%comment%} SS SALE CODE {%endcomment%}
+    	{%assign new_hues_circle= ""%}
+        {%assign display_ss_sale_icon = false%}
+        
+        {%if apply_special_sale  %}
+        {%assign variant_tagged = false %}   	
+        
+        
+        {%for vars in product.variants%}
+        {%capture check_for_tag%}{{SS_special_sale_prefix}}-{{vars.id}}{%endcapture%}
+        		
+        		{%if vars.inventory_quantity > 0 and  product.tags contains check_for_tag and product.type != "Hair Care"  %}
+        			{%assign display_ss_sale_icon = true%}
+        
+        			{%break%}
+        		{%endif%}
+        
+        
+        {%endfor%}
+    	{%endif%}
+     
+        
+        {%if display_ss_sale_icon%}
+        
+        	<div class="circle" id="circle-30">{{SS_percent_off}}%<br />OFF*</div>       
+        
+        {%else%}
+        
+        	        {%include 'timed-variables'%}
+        {% for tag in product.tags %}
+        {% if tag contains 'FREEGIFT'%}
+				<div class="circle">FREE<br />GIFT</div>
+        
+        {% elsif tag  == 'TOP5' %}
+        <div class="circle">TOP<br />5</div>   
+        {% elsif tag  == 'NEW' %}
+    	<div class="circle" style="padding-top:14px">NEW</div>   
+        {% elsif tag  == 'faves' %}
+    	<div class="circle" style="padding-top:14px">FAV</div>   
+        {%elsif tag contains 'NEW-COLOR-'%}
+        		<div class="circle" style="font-size:11px;">NEW<br />HUES</div>
+        {%endif%}
+        {%endfor%}
+
+        
+        
+        {%endif%}
+        
+        {%comment%} END SS SALE CODE {%endcomment%}  
+
+      <img class="lazyload" width='360' src="https://cdn.shopify.com/s/files/1/1410/9094/files/white_bkgd.png?5571714176742118764" data-src="https:{{ product.featured_image.src | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" />
+     
+      </div>
+    </a>
+    </div>
+
+  </div>
+
+
+
+  <div class="product-info"> 
+    <a href="{{ product.url | within: collection }}"> 
+      <p>{{ product.title }}{% if settings.vendor %} - {{ product.vendor }}
+      {% endif %}</p>
+      <h3></h3>
+    </a>
+    <div class="price">
+      {% if sca_price < sca_compare_at_price %}
+      <div class="onsale">{{ sca_price | money }}</div>
+      <div class="was">{{ sca_compare_at_price | money }}</div>
+      {% else %}
+      <div class="prod-price">{% if product.price_varies %} {{ 'products.general.from' | t }} {{ sca_price_min | money }} - {{ sca_price_max | money }} {% else %}{{ sca_price | money }}{% endif %}</div>
+      {% endif %} 
+    </div>
+  <!-- reviews star rating -->
+      {%comment%}<div style="margin: 10px 0px;"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>{%endcomment%}
+    <span class=" stamped-product-reviews-badge" data-product-sku="{{ product.handle }}" data-id="{{ product.id }}" style="display:block;">{{ product.metafields.stamped.badge }}</span>
+<!-- end reviews star rating -->
+  </div>
+
+    

@@ -1,0 +1,75 @@
+{% layout 'theme.daily-deals' %}
+
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+    <h1>{{ page.title }}</h1>
+    <p style="font-size: 18px;"><strong>Guaranteed ships same day*!</strong> All daily deal items are new overstock
+        products. Supply is very low and they are priced to move quickly! Check back here daily! We have new deals
+        posted each day!</p>
+    <daily-deals></daily-deals>
+
+    <iframe src="https://daily-deals.herokuapp.com/products/live" style="width: 1px; min-width: 100%;" id="daily-deals"></iframe>
+
+    <p><span style="text-decoration: underline;">Daily Deals Terms &amp; Conditions</span></p>
+    <ul>
+        <li>30% discount on the above products will expire tonight at midnight (CST)</li>
+        <li>Daily Deal coupon codes &amp; discounts cannot be combined with any other offers or discounts</li>
+        <li>*Guaranteed same day shipping if ordered before 2 pm (CST) Monday-Friday and in the available quantities
+        </li>
+    </ul>
+</div>
+
+
+<script>
+  
+  document.getElementById('daily-deals').onload = function (){
+    iFrameResize({
+      logs: false,
+      onInit: function (iframe) {
+        if(getUrlParameter('product-id')){
+          iframe.iFrameResizer.sendMessage(getUrlParameter('product-id'));
+        }
+        $('.page-loading').hide();
+      },
+      onMessage: function ({iframe,message}) {
+        if (message.openModal) {
+          $('.modal-overlay').css('opacity', message.openModal).show();
+          $('body').addClass('modal-open');
+        } else if (message == "closeModal") {
+          $('.modal-overlay').hide();
+          $('body').removeClass('modal-open');
+        } else if(message == "getScrollPosition") {
+          iframe.iFrameResizer.sendMessage({scrollPosition: $(window).scrollTop()});
+        }else {
+          addToCart(message);
+        }
+      }
+    }, '#daily-deals');
+  }
+  
+    function addToCart(data) {
+        $.ajax({
+            type: "POST",
+            url: '/cart/add.js',
+            data: data,
+            dataType: 'json',
+            success: function () {
+                window.location.href = "/cart"
+            }
+        });
+    }
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+</script>

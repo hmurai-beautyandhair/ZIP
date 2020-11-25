@@ -1,0 +1,87 @@
+{% if settings.g2_full_width %}<div class="gridlock-fluid"><div class="row">{% endif %}
+<div class="row homepage-section no-fouc">      
+{% for i in (7..9) %}  
+{% assign image='promo_image_' | append: i %}
+{% assign image_grid_url='image_grid' | append: i | append: '_url' %}
+{% assign image_grid_alt='image_grid' | append: i | append: '_alt' %}
+{% assign image_grid_img_url='image_grid' | append: i | append: '.jpg' %}
+{% assign image_grid_title='image_grid' | append: i | append: '_title' %}
+{% assign image_grid_hidden='image_grid' | append: i | append: '_hidden' %} 
+{% assign image_size = 'image-width-' | append: i %}
+{% if settings[image] %}
+<div class="homepage-promo {{settings[image_size]}} mobile-3 {% if settings.g2_full_width and settings[image_size] == 'desktop-12' %} centered{% endif %}">
+<a href="{{settings[image_grid_url]}}" data-ga-cat="Homepage Tiles"  data-ga-order="{{i | minus : 6}}" data-ga-label="Tile">
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/placeHolder.gif?v=1587744508" class="lazyload" data-src="{{image_grid_img_url | asset_url}}" alt="{{settings[image_grid_title]}}" loading="lazy">
+<div class="caption"><h3>{{settings[image_grid_title]}}</h3>
+<p>{{settings[image_grid_hidden]}}</p>
+</div>
+</a>
+</div>
+{% endif %}
+{% endfor %}        
+</div>
+{% if settings.g2_full_width %}</div></div>{% endif %}
+
+
+<div class="gridlock-fluid"><div class="row">
+<div class="row homepage-section">      
+
+      
+      <div class="homepage-promo desktop-4 tablet-2 mobile-3 ">
+        <a href="/products/wig-secure-crystal-accessory-amy-gibson" data-ga-cat="Homepage Tiles"  data-ga-order="4" data-ga-label="Tile">
+          <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/placeHolder.gif?v=1587744508" class="lazyload" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/2008_HTile_AmyGibsonCrystal_1.jpg?v=1596488738" alt="" loading="lazy">
+          <div class="caption"><h3></h3>
+            <p>Shop Amy Gibson</p>
+          </div>
+        </a>
+      </div>
+      
+  
+      <div class="homepage-promo desktop-4 tablet-2 mobile-3 ">
+        <a href="/collections/estetica" data-ga-cat="Homepage Tiles"  data-ga-order="5" data-ga-label="Tile">
+          <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/placeHolder.gif?v=1587744508" class="lazyload" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/2008_htile_ESGWP.jpg?v=1596208478" alt="" loading="lazy">
+          <div class="caption"><h3></h3>
+            <p>Shop Estetica Wigs</p>
+          </div>
+        </a>
+      </div>
+      
+      
+      <div class="homepage-promo desktop-4 tablet-2 mobile-3 ">
+        <a href="/pages/45-day-returns" data-ga-cat="Homepage Tiles"  data-ga-order="6" data-ga-label="Tile">
+          <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/placeHolder.gif?v=1587744508" class="lazyload" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/2003_htile_45dayreturns_498baf84-589e-42b1-8093-69e80c43d321.jpg?v=1596209804" alt="" loading="lazy">
+          <div class="caption"><h3></h3>
+            <p>Returns</p>
+          </div>
+        </a>
+      </div>
+      
+      
+</div>
+</div></div>
+
+
+
+{% if settings.g2_full_width %}<div class="gridlock-fluid"><div class="row">{% endif %}
+<div class="row homepage-section no-fouc">      
+{% for i in (10..12) %}  
+{% assign image='promo_image_' | append: i %}
+{% assign image_grid_url='image_grid' | append: i | append: '_url' %}
+{% assign image_grid_alt='image_grid' | append: i | append: '_alt' %}
+{% assign image_grid_img_url='image_grid' | append: i | append: '.jpg' %}
+{% assign image_grid_title='image_grid' | append: i | append: '_title' %}
+{% assign image_grid_hidden='image_grid' | append: i | append: '_hidden' %} 
+{% assign image_size = 'image-width-' | append: i %}
+{% if settings[image] %}
+<div class="homepage-promo {{settings[image_size]}} mobile-3 {% if settings.g2_full_width and settings[image_size] == 'desktop-12' %} centered{% endif %}">
+<a href="{{settings[image_grid_url]}}" data-ga-cat="Homepage Tiles"  data-ga-order="{{i | minus : 3}}" data-ga-label="Tile">
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/placeHolder.gif?v=1587744508" class="lazyload" data-src="{{image_grid_img_url | asset_url}}" alt="{{settings[image_grid_title]}}" loading="lazy">
+<div class="caption"><h3>{{settings[image_grid_title]}}</h3>
+<p>{{settings[image_grid_hidden]}}</p>
+</div>
+</a>
+</div>
+{% endif %}
+{% endfor %}        
+</div>
+{% if settings.g2_full_width %}</div></div>{% endif %}

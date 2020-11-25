@@ -1,0 +1,363 @@
+
+<style>
+  .upsell-offer-container{display:none;background-color: #f6f6f6;margin: 10px 0px;padding: 5px 5px;text-align: center;border-radius: 5px;position: relative;top: 0px;left: 0px;/*height: 385px;*/}
+  .upsell-products{/*height: 290px;*/
+    text-align: center;
+    padding-top: 10px;}
+  .upsell-product-container{    margin: auto 6px;
+    height: 135px;
+    width: 43%;
+    display: inline-block;
+    border: 1px solid #dcd8d8;
+    padding: 10px 2px 0px 2px;
+    background-color: #fff;
+    position: relative;
+  	margin-bottom:10px;
+	    border-radius: 0px 0px 5px 5px;}
+  img.upsell-product{width:60%}
+  .upsell-add-to-cart{    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    font-size: 12px;
+    padding: 0;
+    width: 100%;
+    margin: 0px;}
+  .upsell-no-thanks-container{margin-top:10px;}
+  span.ajaxcart__product-meta[data-status="Upsell"]{visibility:hidden;}	
+	
+</style>
+
+
+{%comment%}
+Hair trix comb
+Beautimark pure care kit (HH)
+Beautimark Mask (HH)
+Mesh wig cap
+
+Synthetic
+Hair trix comb
+Beautimark care kit
+Beautimark travel kit
+Mesh wig cap
+{%endcomment%}
+
+
+{%assign upsell-products-group-1-string = 'hair-trix-wide-tooth-wig-comb;5-pc-pure-care-system-human-hair-beautimark;wig-secure-accessory-amy-gibson;metal-wig-head-stand-beautimark'%}
+{%assign upsell-products-group-1 = upsell-products-group-1-string | split: ';' %}
+
+{%assign upsell-products-group-2-string = 'hair-trix-wide-tooth-wig-comb;4-pc-try-me-kit-for-synthetic-hair-beautimark;wig-secure-accessory-amy-gibson;metal-wig-head-stand-beautimark'%}
+{%assign upsell-products-group-2 = upsell-products-group-2-string | split: ';' %}
+
+
+
+{%assign group_assigned = false %}
+{% for tag in product.tags %}
+
+    {%if tag == "Human Hair" or tag == "Human Hair | Remy"%}
+	
+		{%assign upsell-products  = upsell-products-group-1 %}
+		{%assign group_assigned = true%}
+	
+	{%elsif tag == "Synthetic Hair" or tag == "Synthetic Heat Friendly" %}
+		
+		{%if group_assigned == false %}
+		
+	{%assign upsell-products  = upsell-products-group-2 %}
+		{%assign group_assigned = true%}
+		{%endif%}
+
+{%endif%}
+
+{% endfor %}
+
+
+
+
+<div class="upsell-offer-container">
+    
+  
+    <div class='upsell-offer-product-text' style="height:75px;"	>
+      Add Hair Trix Wide Tooth Wig Comb to your order for only $7.95
+    </div>
+ <div class="upsell-products"> 
+
+   {% for upsell-product in upsell-products  %}
+   
+   {%assign upsell-product-holder = upsell-product %}
+   {%if upsell-product-holder == "wig-secure-accessory-amy-gibson" %}
+		
+   								 <!-- checking product receives special upsell product -->
+						{%if  product.type == "Wigs" and product.tags contains "Human Hair" or product.tags contains "Human Hair | Remy" or product.tags contains "Lace Front" %}
+   									{%assign upsell-product-holder = 'wig-secure-crystal-accessory-amy-gibson'%}		
+						{%endif%}
+   {%endif%}
+	<div class="upsell-product-container">
+      {%assign upsell_image= all_products[upsell-product-holder] | img_url: 'compact'%}
+		{%if upsell-product-holder == "wig-secure-accessory-amy-gibson"%}
+			      {%assign upsell_image="https://cdn.shopify.com/s/files/1/1410/9094/products/WigSECURE7-525x700_grande.jpg?v=1564661023"%}
+		{%endif%}
+	<img src="{{upsell_image}}" class="upsell-product" data-upsell-variant="{{all_products[upsell-product-holder].first_available_variant.id}}" data-upsell-product-price="{{all_products[upsell-product-holder].first_available_variant.price}}" data-upsell-product-description="" data-upsell-product-name="{{all_products[upsell-product-holder].title}}">
+	<button  class="upsell-add-to-cart">Add to Cart</button>
+  </div>
+{%comment%}   
+{%endcomment%}
+{%endfor%}
+  
+</div>
+
+  <div class='upsell-no-thanks-container'> <a href="">No Thanks</a></div>
+</div>
+
+<script>
+
+
+//output html for upsell-offer-container server-side
+(function(d,$){
+$(function(){
+//get the conditions that need to be if
+//the car is to be shown
+//
+
+
+
+  
+
+var upsell_items = [];
+
+//get all upsell items into array
+  
+  $('.upsell-product').each(function(){ upsell_items.push($(this).data('upsell-variant')) });  
+
+  
+  var upsell_items_in_cart= [7084658720802];
+
+  function findUpsellItemsInCart(items){
+    upsell_items_in_cart= [];
+    for(var i = 0; i < items.length;i++){
+    
+      if(upsell_items.indexOf(items[i].variant_id) !== -1){
+      
+            upsell_items_in_cart.push(items[i].variant_id);
+            
+            
+      }
+    
+    }
+
+    
+                
+  }
+  
+  
+  
+function getLastUpsellOfferDate(){
+
+
+    var last_upsell_offer_date = d.cookie.replace(/(?:(?:^|.*;\s*)last_upsell_offer_date\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+    return last_upsell_offer_date;
+
+}
+
+
+function setLastUpsellOfferDate(){
+
+  
+    
+
+var the_date = new Date();
+var one_year_later = new Date( the_date.getTime() + 31536000000 );
+var expiry_date = one_year_later.toGMTString();
+    
+  
+  var current_time = (new Date()).getTime().toString();
+   document.cookie = 'last_upsell_offer_date='+current_time+'; expires='+expiry_date+'; path=/';
+
+
+}
+
+function removeLastUpsellOfferDate(){
+
+    document.cookie= "last_upsell_offer_date=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+
+}
+
+function upsellOfferIsEligible(time_in_milliseconds){
+    var is_eligible = false;
+    var last_upsell_offer_date = getLastUpsellOfferDate();
+    var current_time = (new Date()).getTime();
+
+     if(last_upsell_offer_date == '' || typeof last_upsell_offer_date === "undefined"){//no last upsell time exists
+
+        is_eligible = true;
+        //setLastUpsellOfferDate();
+    }
+    else if( parseInt(last_upsell_offer_date) > 0 && (current_time -parseInt(last_upsell_offer_date) > time_in_milliseconds)   ){//last upsell time exists
+
+
+            is_eligible = true;
+            //setLastUpsellOfferDate();
+            removeLastUpsellOfferDate();
+    }
+
+//     console.log(d.cookie);
+//     console.log('is_eligible: '+is_eligible);
+
+    return is_eligible;
+}
+
+
+
+function cartContainsUpsellItems(items){
+    var contains_items = false;
+    for(var i = 0;  i < items.length; i++){
+    if(upsell_items.indexOf(items[i].variant_id) === -1 ){
+     //upsell item is not present
+     contains_items = false;
+     }
+    else{
+    //upsell item is present
+     contains_items = true;
+     break;
+    }
+
+
+    }
+    return contains_items;
+}
+
+
+function cartContainsOneItem(items){
+    var contains_at_least_one= false;
+    if(items.length !== 0 ){
+
+        contains_at_least_one = true;
+
+    }
+    return contains_at_least_one;
+}
+
+  
+  function upsellOfferAbsent(){
+        var offer_is_absent = false;
+    
+    
+            if($('#CartDrawer .upsell-offer-container').length == 0 ){
+                offer_is_absent = true;
+            }
+        return offer_is_absent;
+    }
+  
+  function cartContainsAllUpsellItems(){
+  
+  
+  
+  
+  }  
+  
+  
+  function cartDoesNotContainAllUpsellItems(){
+	var does_not_contain_all = false;
+    if( jQuery.unique(upsell_items_in_cart).length !== upsell_items.length ){
+    		does_not_contain_all = true;
+    }
+    
+	return does_not_contain_all;
+	} 
+  
+function checkConditions(items){
+    var conditions_met = false;
+   
+    if( cartContainsOneItem(items) && upsellOfferIsEligible( 86400000 ) && cartDoesNotContainAllUpsellItems()  ){
+
+        conditions_met = true;
+
+
+    }
+  else{
+  
+  	$('#CartDrawer .upsell-offer-container').remove();
+  }
+    return conditions_met;
+}
+
+  
+function handleUpsellSelect(jQelem){ var upsell_product_name = jQelem.find('img').data('upsell-product-name'); var upsell_product_price =  parseInt(jQelem.find('img').data('upsell-product-price'))/100; upsell_product_price = upsell_product_price.toFixed(2); $('.upsell-offer-product-text').text('Add '+upsell_product_name+' to your order for only $'+upsell_product_price.toString());jQelem.css('box-shadow','0px 0px 5px 2px rgba(196,25,74,1)'); }   
+  
+function createUpsellOffer(){
+
+
+
+if(  $('#CartDrawer .upsell-offer-container').length == 0  )
+{
+	var upsell_container = $('div#product-description .upsell-offer-container').clone();
+
+
+$('.upsell-products',upsell_container).empty();
+//upsell_container.insertAfter('.drawer__header')
+upsell_container.insertAfter('#CartDrawer form');	
+upsell_container.show();
+$('.upsell-no-thanks-container a',upsell_container).click(function(e){ e.preventDefault(); setLastUpsellOfferDate(); upsell_container.remove();   return false;});
+
+}
+else{
+	var upsell_container = $('#CartDrawer .upsell-offer-container');
+  $('.upsell-products',upsell_container).empty();
+
+}
+var upsell_products_containers = $('div#product-description .upsell-products .upsell-product-container').clone();
+
+
+upsell_products_containers.each(function(){
+
+var variant_id = parseInt($(this).find('img').data('upsell-variant'));
+if( upsell_items_in_cart.indexOf(variant_id) === -1 ){
+
+$('.upsell-products',upsell_container).append($(this));
+
+
+}
+})
+
+
+               $('.upsell-add-to-cart',upsell_container).click(function(){
+                    var upsell_data = $(this).siblings('img').data('upsell-variant');
+                      
+                    var product_container = $(this).parent('.upsell-product-container')
+
+                    $.post('/cart/add.js',{quantity:1,id:upsell_data,"properties[_Status]":"Upsell"}).always(function(){ 
+					//_loq.push(["tag", "Upsell Added"] );
+					product_container.remove();ajaxCart.load(); });
+               });
+				    $('.upsell-product-container',upsell_container).hover(function(){   handleUpsellSelect($(this)); },function(){ $('.upsell-offer-product-text').text('Add Hair Trix Wide Tooth Wig Comb to your order for only $7.95');$(this).css('box-shadow',"none");  });
+
+
+
+}
+
+jQuery('body').on('ajaxCart.afterCartLoad',function(){      
+  
+ShopifyAPI.getCart(function(cart){
+
+var conditions_met = false;
+items = cart.items
+
+findUpsellItemsInCart(items);
+conditions_met = checkConditions(items);
+
+if(conditions_met == true){
+
+    
+   createUpsellOffer();
+
+}
+})
+})
+})
+})(document,jQuery)
+
+//output html for upsell-offer-container server-side
+
+  
+</script>

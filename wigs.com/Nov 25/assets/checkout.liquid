@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+	 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<style>
+      tr[data-product-id="1502103208047"] div.product-thumbnail span.product-thumbnail__quantity{display:none;}
+      .product__description__property.order-summary__small-text{display:none;}
+      tr[data-variant-id="32467182026"] td.product__description .product__description__property, tr[data-variant-id="32467182026"] td ul {display:none;}
+      option[data-alternate-values='["Guam"]'] {display:none;}
+    </style>
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+{% include 'smile-initializer' %}
+{% include 'smile-points-slider' %}
+<script>
+  $(document).ready(function(){
+
+	
+
+    function restrictShippingForEW(){
+        var current_country = $('#checkout_shipping_address_country').val();
+        var button= $('button.step__footer__continue-btn.btn[type="submit"]'); 
+        $('#EW-shipping-restriction-msg').remove();
+        if(!( current_country == 'United States' || current_country=='Canada' ) ){
+
+            button.addClass('btn--disabled').attr('disabled',true);
+            button.parent().before("<div id='EW-shipping-restriction-msg'style='text-align:center; border:2px solid red;padding:8px;border-radius:10px;margin:5px;'>At this time Ellen Wille items cannot be shipped outside of the U.S. or Canada.</div>");
+        }else{
+            button.removeClass('btn--disabled').removeAttr('disabled');
+
+        }
+
+
+
+    }
+	function checkEWShippingMessage(){
+      var shipping_message = $('div.content-box.blank-slate:contains("There are items in your cart that can not be shipped internationally.")');
+		
+      if(shipping_message.length != 0 && $('#EW-shipping-restriction-msg').length ==0 && $('.product__description__property.order-summary__small-text:contains("vendor: Ellen Wille")').length !== 0 ){
+      shipping_message.after("<div id='EW-shipping-restriction-msg'style='text-align:center; border:2px solid red;padding:8px;border-radius:10px;margin:5px;'>At this time Ellen Wille items cannot be shipped outside of the U.S. or Canada </div>");
+      }
+
+      }
+
+
+
+
+	
+    setInterval(function(){
+    $('span.reduction-code__text:contains("%40 CLEARANCE")').text("40% CLEARANCE");
+    $('li.reduction-code').siblings().each(function(){ if($(this).css('display') !== "none"){ $(this).siblings().css('display','none')   } })
+	//remove GUAM
+    $('option[value="GU"]').remove();
+	checkEWShippingMessage();
+    },500);
+	$('#checkout_shipping_address_country').on('change',function(){
+           $('#tax-duties-notification').remove();
+      if($(this).val() !== "United States" &&  $(this).val() !== "United States Minor Outlying Islands" ){
+
+        setTimeout(
+          function(){
+       
+            $('.field.field--required[data-address-field="country"]').append('<p id="tax-duties-notification" style="color:red;text-align:center;font-weight:bold;padding:5px;">* Tax & duty charges may apply for your country.</p>');
+          }
+
+          ,500);
+      }
+
+		//restrict EW Shipping
+      	if( $('.product__description__property.order-summary__small-text:contains("vendor: Ellen Wille")').length !== 0 ){
+          restrictShippingForEW();
+      	}
+
+    })
+    
+// setInterval(function(){
+// 	$code_input = $('#checkout_reduction_code');
+// 	$code_input_value = $('#checkout_reduction_code').val();
+// 	$apply_button =$code_input.closest('.field__input-btn-wrapper').find('button');
+// 	if(  $code_input_value !== '' ){
+// 		$apply_button.removeClass('btn--disabled').removeAttr('disabled');
+// 	}
+//   	if (  $('.sweettooth-range-input-container').text() =="Congrats! Your reward has been applied to the cart." ){
+// 			$apply_button.click();
+// 	}
+
+  
+// },600);    
+    
+    
+})
+</script>
+  </body>
+</html>

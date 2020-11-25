@@ -1,0 +1,18 @@
+$("[data-ga-cat]").click(function(){
+
+	var ga_category = $(this).data('ga-cat');
+
+	var ga_label  = $(this).data('ga-label');
+
+	var image_alt = $(this).find('img').attr('alt');
+	
+		ga('send','event',ga_category,'Click',ga_label +' ' + image_alt);
+		//console.log(ga_category + " " + ga_label +' '+ image_alt);
+})
+
+
+
+
+
+
+

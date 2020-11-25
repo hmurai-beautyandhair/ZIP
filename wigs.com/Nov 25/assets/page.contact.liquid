@@ -1,0 +1,20 @@
+<div><h1 class="desktop-12">{{ page.title }}</h1></div>
+
+{% comment %}
+<div><h1 class="desktop-12" style="float:none">{{ page.title }}</h1></div>
+
+<div style="padding:6px;margin-bottom:25px;background-color: #FBEDE7;border-radius: 6px;color: #D14604;font-size: 14px;">
+  <strong>Weather Alert!</strong> Due to a Tornado in the Dallas area our call center is currently closed. We hope to re-open soon!
+</div>
+{% endcomment %}
+
+  <div class="desktop-6 mobile-3">
+    
+    {{ page.content }}
+  </div>
+
+
+  <div class="desktop-6 mobile-3">
+    {% include 'contact' %}
+  </div>
+

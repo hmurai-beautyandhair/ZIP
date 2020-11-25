@@ -1,0 +1,19 @@
+<section id="index-social" class="row homepage-section no-fouc">
+  <h2 class="desktop-12 mobile-3">{{ 'layout.homepage.instagram' | t }}</h2>
+  <div id="instagram-feed">
+    {% assign igimage = '{{image}}'%}
+    {% assign url = '{{link}}' %}
+    {% assign caption = '{{caption}}' %}  
+   <div id="instafeed"></div>
+    <script type="text/javascript">
+      var userFeed = new Instafeed({
+        get: 'user',
+        userId: {{ settings.instagram-user-id }},
+        accessToken: '{{ settings.instagram-access-token }}',
+        template: '<a class="desktop-2 tablet-1 mobile-1" target="_blank" href="{{url}}" rel="ig" title="{{ caption }}"><img class="instagram-image" src="{{ igimage }}" /></a>'
+      });
+      userFeed.run();        
+    </script>
+  
+  </div> 
+</section>

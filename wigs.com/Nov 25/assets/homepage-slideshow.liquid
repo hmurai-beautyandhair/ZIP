@@ -1,0 +1,107 @@
+<div class="homepage-section no-fouc">
+  {% if settings.thin-slideshow %}
+  <div class="row">
+    <div class="desktop-12 tablet-6 mobile-3">
+      {% endif %}
+      {% if settings.homepage-display == 'video' %}
+      <div class="videoWrapper">
+        {{ settings.video-embed }}
+      </div>
+      {% elsif settings.homepage-display == 'slideshow' %}
+      <div class="flexslider">
+        <ul class="slides" id="main-hero-slides">
+          {% for i in (1..6) %}
+          {% assign slide_show = 'slide-' | append: i | append: '-check' %}
+          {% if settings[slide_show] %}
+          {% assign index = 'slide' | append: i %}
+          {% assign slide_link_url = 'slide' | append: i | append: '_url' %}
+          {% assign slide_img_url = 'slide' | append: i | append: '.jpg' %}
+          {% assign slide_img_alt = 'slide' | append: i | append: '_alt' %}
+          {% assign slide_title = 'slide-' | append: i | append: '-title' %}
+          {% assign slide_caption = 'slide-' | append: i | append: '-caption' %}
+          {% assign slide_button = 'slide-' | append: i | append: '-button' %}
+          {% assign slide_button_text = 'slide-' | append: i | append: '-button-text' %}        
+          <li>
+            <a href="{{ settings[slide_link_url] }}" data-ga-cat="Homepage Hero"  data-ga-order="{{i}}" data-ga-label="Hero" >
+              <picture>
+				{%- assign slide_show_mobile = 'mobile-slide-' | append: i | append: '-check' -%}
+				{%- if settings[slide_show_mobile] -%}
+				{%- assign slide_img_url_mobile = 'mobile-slide' | append: i | append: '.jpg' -%}
+ 				<source media="(max-width: 800px)"  srcset="{{ slide_img_url_mobile | asset_url }}"> 
+				{%- endif -%}
+                <img src="{{ slide_img_url | asset_url }}" alt="{{ settings[slide_img_alt] }}" />
+              </picture>
+            </a>
+            <div class="flex-caption {{ index }}">
+              {% if settings[slide_title] != blank %}<div class="caption-inners">{% endif %}
+              {% if settings[slide_title] != blank %}                        
+              <h2 class="slide-title">{{ settings[slide_title] }}</h2>
+              {% endif %}
+              {% if settings[slide_caption] != blank %}            
+              <p class="caption">{{ settings[slide_caption] }}</p>
+              {% endif %}
+              {% if settings[slide_button] %}
+              <div class="cta">
+                <a href="{{ settings[slide_link_url] }}">{{ settings[slide_button_text] }}</a>
+              </div>
+              {% endif %}  
+              {% if settings[slide_title] != blank %}</div>{% endif %}
+            </div>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if settings.thin-slideshow %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div class="clear"></div>
+
+<div style="text-align:center;">
+
+  {%comment%}  
+  <a href="/collections/costume-wigs-under-115">
+  <picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/1910_Party-Wigs_Mobile-Banner_600x200_22dbee3f-45ef-425d-83b8-ac6220e2b2e6.jpg?49080" media="(max-width: 800px)"> 
+    	<img style="min-width:100%;min-height:100%" src="https://cdn.shopify.com/s/files/1/1410/9094/files/Desktop-Banner_Party-Wigs_1400x100_fcda127f-dd74-4e9d-97be-fa99b37a0b59.jpg?49080">
+	</picture>
+  </a>
+  {%endcomment%} 
+  
+<!--  
+  <a href="/collections/clearance-sale" class="clearance_sale_ahref" style="display:none;">
+  <picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/2007_Mhomepagebanner_clearancesale.jpg?v=1594388423" media="(max-width: 800px)"> 
+    	<img style="min-width:100%;min-height:100%" src="https://cdn.shopify.com/s/files/1/1410/9094/files/2007_homepagebanner_clearancesale.jpg?v=1594388423" data-ga-cat="Homepage Images" data-ga-label="B.O.B. - Clearance Sale">
+	</picture>
+  </a>
+   -->
+  
+  {%comment%}
+  <a href="/pages/daily-deals">
+  <picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/1905_dailyDeals_mobile.jpg?18940" media="(max-width: 800px)"> 
+    	<img style="min-width:100%;min-height:100%" src="https://cdn.shopify.com/s/files/1/1410/9094/files/1905_dailyDeals.jpg?18940">
+	</picture>
+  </a>
+  {%endcomment%} 
+
+  {%comment%}   
+    <a href="/pages/the-wigs-com-experience">
+      <img style="min-width:100%;min-height:100%" src="https://cdn.shopify.com/s/files/1/2636/2774/files/1904_hBanner_thewigsExperience_withCTA.jpg?430">
+    </a>
+  {%endcomment%}  
+  
+  {%comment%}
+  <a href="/collections/medical-wigs-hair-loss">
+  <picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/2003_mobile-banner_medical-wigs-and-insurance.jpg?v=1585077955" media="(max-width: 800px)"> 
+    	<img src=""  style="min-width:100%;min-height:100%" data-src="https://cdn.shopify.com/s/files/1/1410/9094/files/2003_banner_medical-wigs2.jpg?v=1585075239" class="lazyload" >
+	</picture>
+  </a>
+  {%endcomment%}  
+
+</div>

@@ -1,0 +1,40 @@
+
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+<h1>{{ page.title }}</h1>
+{{ page.content }}
+</div>
+
+
+
+<div id='article-list-container'>  
+  {%- assign blog_handles = "news,press-releases," | split: ',' -%}
+ {%- assign blog_title_images = "blog,news" | split: ',' -%}
+{%- assign hr_colors = "a21943,73b6d2,de954e" | split: ',' -%}
+  {%- for blog_handle in blog_handles -%}
+
+  <ul class='articles-list'>
+    <div style='margin-left:10px;float:left;display:inline-block;padding-top: 60px;'><a href='{{ blogs[blog_handle].url }}'><img src='https://cdn.shopify.com/s/files/1/1410/9094/files/{{blog_title_images[ forloop.index0 ]}}.png'></a><div class='blog_link_text'><a href='{{ blogs[blog_handle].url }}'>View All</a></div></div>
+  
+  {% for article in blogs[blog_handle].articles %}	
+	{%- if forloop.index <= 3 -%}
+	
+   <li class='article-list-item'>
+	{% if article.image %} <div><a href='{{article.url}}'><img src='{{ article.image.src | img_url: 'medium' }}' ></a></div> {% endif %}
+     {{ article.title | link_to: article.url }}
+	</li>
+	{%- endif -%}  	
+  {%- endfor -%}
+</ul>
+<hr style='background-color:#{{hr_colors[forloop.index0]}}'>
+{%- endfor -%}
+  
+  <ul class="articles-lits">
+
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async=""></script>
+	<style><!--
+.stamped-reviews-message-block {width:160px;}
+--></style>
+<div class="trustpilot-widget" data-locale="en-US" data-template-id="539adbd6dec7e10e686debee" data-businessunit-id="590362fe0000ff0005a16777" data-style-height="500px" data-style-width="100%" data-stars="5,4" data-schema-type="Organization"></div>
+<p> </p>
+  </ul>
+</div>

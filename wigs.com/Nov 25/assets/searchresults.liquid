@@ -1,0 +1,41 @@
+  {% if page.url == "/pages/search-results-page" %}
+  
+    {% capture contentForQuerystring %}{{ content_for_header }}{% endcapture %}
+
+    {% assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+     replace:'\/','/' | 
+     replace:'%20',' ' | 
+     replace:'+',' ' | 
+     replace:'\u0026','&'
+    %}
+
+    {% for i in (1..1) %}
+
+      {% unless pageUrl contains "?" %}{% break %}{% endunless %}
+
+      {% assign pageQuerystring = pageUrl | split:'?' | last %}
+
+      {% assign parts = pageQuerystring | split:'&' %}
+
+      {% for part in parts %}
+
+          {% assign keyAndValue = part | split:'=' %}
+
+        {% if keyAndValue.size > 1 %}
+
+          {% if keyAndValue[0] == "q" %}
+
+             {% assign searchQuery = keyAndValue[1] %}
+			 {% capture searchQuery %} - {{ searchQuery }}{% endcapture %} 
+
+          {% endif %}
+        {% else %}
+
+           {% assign searchQuery = keyAndValue %}
+		   {% capture searchQuery %} - {{ searchQuery }}{% endcapture %} 
+
+        {% endif %}
+
+      {% endfor %}
+    {% endfor %}
+  {% endif %}

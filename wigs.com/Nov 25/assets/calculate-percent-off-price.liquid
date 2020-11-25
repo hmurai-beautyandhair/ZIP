@@ -1,0 +1,1 @@
+{%- assign this_discount_percent_coefficient = 100 | minus: this_percent_off -%}{%- assign this_discount_percent_coefficient = this_discount_percent_coefficient | times : 0.01 -%}{{calculate-percent-off-price | times: this_discount_percent_coefficient | round: 2 }}

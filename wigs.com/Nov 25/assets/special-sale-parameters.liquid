@@ -1,0 +1,44 @@
+{%if template == "product"%}
+{%if product.type == "Hair Care" %}
+{%assign apply_special_sale =false%}
+{%endif%}
+
+{%endif%}
+
+
+
+
+
+{%assign SS_special_sale_prefix = "SS1220"%}
+{%assign SS_percent_off = 40%}
+
+
+
+
+
+
+
+
+{%comment%} changed SS0619 percent from 40 to 30 at 2:35pm 06/28{%endcomment%}
+
+{%assign special_sale_variants_string = ''%}
+
+{%for tag in product.tags %}
+{%assign tag_fragments = tag | split: '-'%}
+{%if tag_fragments[0] == SS_special_sale_prefix %}
+{%capture special_sale_variants_string %}{{special_sale_variants_string}}{{tag_fragments[1]}},{%endcapture%}
+{%endif%}
+{%endfor%}
+
+{%assign special_sale_variants = special_sale_variants_string | split: ','%}
+
+{%comment%}
+{%for special_sale_variants in special_sale_variants %}
+<!-- ss-variant:{{special_sale_variants}}-->
+{%endfor%}
+
+{%endcomment%}
+
+
+
+

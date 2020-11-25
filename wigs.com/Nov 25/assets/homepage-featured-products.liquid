@@ -1,0 +1,177 @@
+{%comment%}
+{% assign collection = collections[settings.homepage-collection] %}
+
+
+{% assign cols =  collection.handle %}
+{% assign cols_array = cols | split : "," %}
+
+
+{% for cols_string in cols_array %}
+{% assign collection = collections[cols_string] %}
+<!-- grid starts here with {{collections[settings.homepage-collection]}} -->
+<div class="row homepage-section no-fouc">  
+  {%assign second_collection_limit = 4 %}
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+</div>
+{% endfor %}
+{%endcomment%}
+
+
+<div class="row homepage-section">
+	<div id="first_section" class="homepage-section desktop-12 tablet-6 mobile-3">
+		<div id="product-loop">
+			<div class="product-index desktop-3 first tablet-half mobile-half" data-alpha="Voltage | Synthetic Wig (Basic Cap)" data-price="14199">
+				<div class="prod-container">
+					<div class="prod-image">
+						<a href="/products/voltage-short-wig-raquel-welch" title="Voltage | Synthetic Wig (Basic Cap)" data-ga-cat="Homepage Images" data-ga-order="1" data-ga-label="Featured Product">
+							<div class="reveal">
+								<img class="lazyload" width="360" src="https://cdn.shopify.com/s/files/1/1410/9094/products/rwvoltage_60_lg_525x700.jpg?v=1589990168" data-src="https://cdn.shopify.com/s/files/1/1410/9094/products/rwvoltage_60_lg_525x700.jpg?v=1589990168" alt="VOLTAGE by Raquel Welch">
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="product-info">
+					<a href="/products/voltage-short-wig-raquel-welch">
+						<p>Voltage | Synthetic Wig (Basic Cap)<br>
+               Raquel Welch</p>
+					</a>
+					<div class="price">
+						<div class="onsale">$141.99</div>
+						<div class="was">$167.00</div>
+					</div>
+					<!-- reviews star rating -->
+					<span class=" stamped-product-reviews-badge" data-product-sku="voltage-short-wig-raquel-welch" data-id="9279865482" style="display:block;">
+						<span class="stamped-badge" data-rating="4.4" data-lang="" aria-label="Rated 4.4 out of 5 stars">
+							<span class="stamped-starrating stamped-badge-starrating" aria-hidden="true">
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star-half-o" style="color:#c41949 !important;" aria-hidden="true"></i>
+							</span>
+							<span class="stamped-badge-caption" data-reviews="406" data-rating="4.4" data-label="reviews" aria-label="406 reviews" data-version="2">406
+								<span style="display:none;"> reviews</span>
+							</span>
+						</span>
+					</span>
+					<!-- end reviews star rating -->
+				</div>
+			</div>
+			<div class="product-index desktop-3 tablet-half mobile-half" data-alpha="Sky | Synthetic Wig (Basic Cap)" data-price="16099">
+				<div class="prod-container">
+					<div class="prod-image">
+						<a href="/products/sky-short-wig-best-seller-noriko" title="Sky | Synthetic Wig (Basic Cap)" data-ga-cat="Homepage Images" data-ga-order="2" data-ga-label="Featured Product">
+							<div class="reveal">
+								<img class="lazyload" width="360" src="https://cdn.shopify.com/s/files/1/1410/9094/products/RP1649_Sky_01_large.jpg?v=1557327948" data-src="https://cdn.shopify.com/s/files/1/1410/9094/products/RP1649_Sky_01_large.jpg?v=1557327948" alt="SKY by Noriko in CREAMY TOFFEE R | Rooted Dark Blonde&nbsp; Evenly Blended with Light Platinum Blonde and Light Honey Blonde">
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="product-info">
+					<a href="/products/sky-short-wig-best-seller-noriko">
+						<p>Sky | Synthetic Wig (Basic Cap)<br>
+               Noriko</p>
+					</a>
+					<div class="price">
+						<div class="onsale">$160.99</div>
+						<div class="was">$195.00</div>
+					</div>
+					<!-- reviews star rating -->
+					<span class=" stamped-product-reviews-badge" data-product-sku="sky-short-wig-best-seller-noriko" data-id="9316460362" style="display:block;">
+						<span class="stamped-badge" data-rating="4.4" data-lang="" aria-label="Rated 4.4 out of 5 stars">
+							<span class="stamped-starrating stamped-badge-starrating" aria-hidden="true">
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star-half-o" style="color:#c41949 !important;" aria-hidden="true"></i>
+							</span>
+							<span class="stamped-badge-caption" data-reviews="312" data-rating="4.4" data-label="reviews" aria-label="312 reviews" data-version="2">312
+								<span style="display:none;"> reviews</span>
+							</span>
+						</span>
+					</span>
+					<!-- end reviews star rating -->
+				</div>
+			</div>
+			<div class="product-index desktop-3 tablet-half mobile-half" data-alpha="Ignite | Synthetic Lace Front Wig (Basic Cap)" data-price="18799">
+				<div class="prod-container">
+					<div class="prod-image">
+						<a href="/products/ignite-short-lace-front-wig-jon-renau" title="Ignite | Synthetic Lace Front Wig (Basic Cap)" data-ga-cat="Homepage Images" data-ga-order="3" data-ga-label="Featured Product">
+							<div class="reveal">
+								<img class="lazyload" width="360" src="https://cdn.shopify.com/s/files/1/1410/9094/products/resized_Ignite_0001_Ignite-22F16S8-Venice-Blonde-Main_525x700.jpg?v=1557257503" data-src="https://cdn.shopify.com/s/files/1/1410/9094/products/resized_Ignite_0001_Ignite-22F16S8-Venice-Blonde-Main_525x700.jpg?v=1557257503" alt="IGNITE by JON RENAU">
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="product-info">
+					<a href="/products/ignite-short-lace-front-wig-jon-renau">
+						<p>Ignite | Synthetic Lace Front Wig<br>
+               Jon Renau</p>
+					</a>
+					<div class="price">
+						<div class="onsale">$187.99</div>
+						<div class="was">$220.80</div>
+					</div>
+					<!-- reviews star rating -->
+					<span class=" stamped-product-reviews-badge" data-product-sku="ignite-short-lace-front-wig-jon-renau" data-id="9289808458" style="display:block;">
+						<span class="stamped-badge" data-rating="4.5" data-lang="" aria-label="Rated 4.5 out of 5 stars">
+							<span class="stamped-starrating stamped-badge-starrating" aria-hidden="true">
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star-half-o" style="color:#c41949 !important;" aria-hidden="true"></i>
+							</span>
+							<span class="stamped-badge-caption" data-reviews="329" data-rating="4.5" data-label="reviews" aria-label="329 reviews" data-version="2">329
+								<span style="display:none;"> reviews</span>
+							</span>
+						</span>
+					</span>
+					<!-- end reviews star rating -->
+				</div>
+			</div>
+			<div class="product-index desktop-3 last tablet-half mobile-half" data-alpha="Tab | Synthetic Lace Front Wig (Mono Crown)" data-price="22799" data-ga-cat="Homepage Images" data-ga-order="4" data-ga-label="Featured Product">
+				<div class="prod-container">
+					<div class="prod-image">
+						<a href="/products/tab-short-wig-ellen-wille" title="Tab | Synthetic Lace Front Wig (Mono Crown)">
+							<div class="reveal">
+								<img class="lazyload" width="360" src="https://cdn.shopify.com/s/files/1/1410/9094/products/ewtab_09_lg_large.jpg?v=1548885573" data-src="https://cdn.shopify.com/s/files/1/1410/9094/products/ewtab_09_lg_large.jpg?v=1548885573" alt="TAB by Ellen Wille">
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="product-info">
+					<a href="/products/tab-short-wig-ellen-wille">
+						<p>Tab | Synthetic Lace Front Wig<br>
+               Ellen Wille</p>
+					</a>
+					<div class="price">
+						<div class="onsale">$227.99</div>
+						<div class="was">$284.50</div>
+					</div>
+					<!-- reviews star rating -->
+					<span class=" stamped-product-reviews-badge" data-product-sku="tab-short-wig-ellen-wille" data-id="9280404042" style="display:block;">
+						<span class="stamped-badge" data-rating="4.5" data-lang="" aria-label="Rated 4.5 out of 5 stars">
+							<span class="stamped-starrating stamped-badge-starrating" aria-hidden="true">
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star" style="color:#c41949 !important;" aria-hidden="true"></i>
+								<i class="stamped-fa stamped-fa-star-half-o" style="color:#c41949 !important;" aria-hidden="true"></i>
+							</span>
+							<span class="stamped-badge-caption" data-reviews="206" data-rating="4.5" data-label="reviews" aria-label="206 reviews" data-version="2">206
+								<span style="display:none;"> reviews</span>
+							</span>
+						</span>
+					</span>
+					<!-- end reviews star rating -->
+				</div>
+			</div>
+        </div>
+    </div>
+</div>

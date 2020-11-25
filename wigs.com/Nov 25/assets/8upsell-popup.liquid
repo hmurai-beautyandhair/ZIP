@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    var upsellParamsDiff = upsellParamsDiff || {};
+    upsellParamsDiff.templatesVersion = 2;
+</script>
+<script type="text/javascript">
+    var permanent_domain = "{{shop.permanent_domain}}";
+    var upsellCurrency = "{{shop.money_format | strip_html}}";
+    var suuCurrentDate = '{{ "now" | date: "%Y,%m,%d" }}';
+
+    (function() {
+        var sIR = document.createElement('script'); sIR.type = 'text/javascript'; sIR.async = true;
+        sIR.src = '//8upsell.s3.amazonaws.com/shopify/store/ea813cc828ee22fc22b870dd0c59102e.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sIR, s);
+    })();
+</script>

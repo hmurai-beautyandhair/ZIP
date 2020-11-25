@@ -1,0 +1,48 @@
+{%-  capture raw_data_vocab_html  -%}
+{{ product.metafields.spr.reviews }}
+{%-  endcapture  -%}
+
+
+{%-  assign br_data_vocab = raw_data_vocab_html | newline_to_br | split : '<br />'  -%}
+
+{% assign product_has_reviews = false %}
+
+{%-  for line in br_data_vocab  -%}
+
+{%-  if line contains 'itemprop="votes"'  -%}
+{%assign product_has_reviews = true %}
+{%- assign schema_rating_count = line | replace: '<meta itemprop="votes" content="', "" | replace: '" />', "" | strip -%} 
+
+{%- endif -%}
+
+
+{%-  if line contains 'itemprop="average"'  -%}
+{%- assign schema_rating_value = line | replace: '<meta itemprop="average" content="', "" | replace: '" />', "" | strip -%} 
+
+{%- endif -%}
+
+{%-  if line contains 'itemprop="best"'  -%}
+{%- assign schema_rating_best_rating = line | replace: '<meta itemprop="best" content="', "" | replace: '" />', "" | strip -%} 
+
+{%- endif -%}
+
+{%-  if line contains 'itemprop="worst"'  -%}
+{%- assign schema_rating_worst_rating = line | replace: '<meta itemprop="worst" content="', "" | replace: '" />', ""  | strip -%} 
+
+{%- endif -%}
+
+{%-  endfor  -%}
+ 
+{%- if product_has_reviews == true -%}
+
+<!-- Schema.org review data -->
+<span itemscope itemprop="aggregateRating" itemtype="http://schema.org/AggregateRating">
+<meta itemprop="ratingValue" content="{{ schema_rating_value }}" />
+<meta itemprop="ratingCount" content="{{ schema_rating_count }}">
+<meta itemprop="bestRating" content="{{ schema_rating_best_rating }}">
+<meta itemprop="worstRating" content="{{ schema_rating_worst_rating }}">
+</span>
+<!-- end Schema.org review data -->
+
+
+{%- endif -%}

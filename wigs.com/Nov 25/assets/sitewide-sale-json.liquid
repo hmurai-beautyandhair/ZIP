@@ -1,0 +1,11 @@
+{%- capture calculated_price -%}{{ variant.price | times: jsonld_price_modifier | divided_by: 100.0 | round: 2 }}{%- endcapture -%}
+	{%- assign apply_sitewide_discount = false -%}
+	{%- assign collections_handles = product.collections | map: "title" -%}
+	{%- unless collections_handles contains "All" -%}
+		{%- assign apply_sitewide_discount = false -%}
+	{%- endunless -%}
+	{%- assign sitewide_percentage_off = 30 -%}
+	{%- if apply_sitewide_discount -%}
+	{%- capture calculated_price -%}{%- include 'calculate-percent-off-price' with calculated_price,this_percent_off: sitewide_percentage_off -%}{%- endcapture -%}
+	{%- endif -%}
+    

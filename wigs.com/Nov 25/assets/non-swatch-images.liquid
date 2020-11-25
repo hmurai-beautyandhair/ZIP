@@ -1,0 +1,30 @@
+{% assign images_to_filter_string = '/blondes_,/brunettes_,/blacks_,/reds_,/rooted_,/greys_,/ombres_' %}
+{%assign images_to_filter = images_to_filter_string | split: ',' %}
+
+
+{% capture product_image_thumbnail_mobile_gallery %}
+  {% for image in  product.images %}
+
+{% assign should_be_filtered_out = false %}
+{%for filter_out  in images_to_filter %}
+{% assign image_src_to_check = image.src | downcase %}
+{% if image_src_to_check contains filter_out%}
+	{% assign should_be_filtered_out = true %}
+{%endif%}
+{%endfor%}
+
+{% if image.attached_to_variant? == false %}
+{% if should_be_filtered_out == false%} 	
+<div data-value="" class="product-image-element swatch-element color only-mobile" >
+		
+		<label for="product-image" style="background-image: url({{ image.src | img_url: '50x50' }})"></label>
+</div>
+{%endif%}
+{%endif%}
+{%	endfor %}
+{% endcapture %}
+
+{{ product_image_thumbnail_mobile_gallery}}
+
+
+

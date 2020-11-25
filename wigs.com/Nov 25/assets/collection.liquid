@@ -1,0 +1,104 @@
+{% assign number = settings.products_per_page %}
+{% paginate collection.products by number %}
+
+<div id="collection-description" class="desktop-12 mobile-3">
+
+{%  if current_tags.size > 0  %}
+<h1>{{ collection.title }}: {{ current_tags | first }}</h1>
+{%capture ctd %}ctd-{{ collection.handle }}-{{ current_tags | first | handle}}{%endcapture%}  
+{%capture include_text %}{%include ctd %}{%endcapture%}
+{% unless include_text contains "Liquid error" %}    
+{{include_text }}
+{%endunless %}
+  {% else %}
+<h1>{{ collection.title }}</h1>
+<div class="rte">{{ collection.description | remove: "[banner]" }}</div> 
+{%endif%}
+
+{%if collection.handle == "clearance-sale"%}
+<strong data-mce-fragment="1">This clearance sale has ended. Check back soon for more deals!</strong>
+{%endif%}
+</div>
+
+
+
+<div class="clear"></div>
+
+{% if settings.filters %}
+<div id="full-width-filter" class="desktop-12 tablet-6 mobile-3">
+  {% include 'filter' %}
+</div>
+{% endif %} 
+
+
+
+<div id="product-loop">
+  {% assign products-per-row = settings.products-per-row %}
+
+  {% if collection.image %}
+  <div class="product-index {% if products-per-row == "6" %}desktop-2{% cycle ' first', '', '', '', '', ' last' %}{% elsif products-per-row == "4" %}desktop-3{% cycle ' first', '', '', ' last' %}{% elsif products-per-row == "3" %}desktop-4{% cycle ' first', '', ' last' %}{% elsif products-per-row == "5" %}desktop-fifth{% cycle ' first', '', '', '', ' last' %}{% elsif products-per-row == "2" %}desktop-6{% cycle ' first', ' last' %}{% endif %} tablet-half mobile-half" data-alpha="{{ collection.title }}">     
+      {{ collection.image.src | collection_img_url: 'grande' | img_tag: collection_title }}     
+  </div>  
+  {% endif %}
+  {% for product in collection.products %}
+  <div class="product-index {% if template == 'index' and settings.homepage-product-display == 'carousel' %}{% else %}{% if products-per-row == "6" %}desktop-2{% cycle ' first', '', '', '', '', ' last' %}{% elsif products-per-row == "4" %}desktop-3{% cycle ' first', '', '', ' last' %}{% elsif products-per-row == "3" %}desktop-4{% cycle ' first', '', ' last' %}{% elsif products-per-row == "5" %}desktop-fifth{% cycle ' first', '', '', '', ' last' %}{% elsif products-per-row == "2" %}desktop-6{% cycle ' first', ' last' %}{% endif %} tablet-half mobile-half{% endif %}" data-alpha="{{ product.title }}" data-price="{{ product.price }}" data-product-id={{product.id}}>     
+    {% include 'product-listing' %}
+  </div>
+  {% endfor %}  
+</div>
+
+{% include 'pagination' %}
+
+
+{% endpaginate %}
+
+
+{%if collection.url contains "ellen-wille" or collection.url == "/collections/hair-power-collection" %}
+<h2 id="explore-more" class="explore-more-header">Explore More from Ellen Wille</h2>
+<div class="explore-more-body">
+  <div><strong>SHOP BY COLLECTION</strong>: <a href="/collections/hair-power-collection">HAIR POWER</a> | <a href="/collections/ellen-wille-perucci-wig-collection">PERUCCI</a> | <a href="/collections/changes-synthetic-wig-ellen-wille">CHANGES</a> | <a href="/collections/hair-society-wigs-ellen-wille">HAIR SOCIETY</a> | <a href="/collections/ellen-wille-prime-power-human-hair-synthetic-wigs">PRIME POWER</a> | <a href="/collections/pure-collections-by-ellen-wille">PURE COLLECTIONS</a> | <a href="/collections/top-power-pieces-ellen-wille">TOP POWER</a> | <a href="/collections/ellen-wille-power-pieces-collection">POWER PIECES</a> | <a href="/collections/ellen-wille-hairformance-mens-collection">HAIRforMANce MEN'S WIGS</a></div>
+  <div><strong>SHOP BY TYPE</strong>: <a href="/collections/ellen-wille-wigs">ELLEN WILLE WIGS</a> | <a href="/collections/ellen-wille-power-pieces-collection">ELLEN WILLE HAIR PIECES</a> | <a href="/collections/top-power-pieces-ellen-wille">ELLEN WILLE TOPPERS</a></div>
+  <div><strong>SHOP BY FIBER</strong>: <a href="/collections/ellen-wille-human-hair-wigs-hairpieces">ELLEN WILLE HUMAN HAIR</a> | <a href="/collections/ellen-wille-synthetic-hair-wigs-hairpieces">ELLEN WILLE SYNTHETIC</a> | <a href="/collections/ellen-wille-blended-hair-wigs-hairpieces">BLENDS</a></div>
+  <div><strong>SHOP NEW</strong>: <a href="/collections/ellen-wille-new-arrivals">NEW ARRIVALS from ELLEN WILLE</a></div>
+</div>
+{%endif%}
+
+
+{%if collection.url contains "jon-renau" %}
+<h2 id="explore-more" class="explore-more-header">Explore More from Jon Renau</h2>
+<div class="explore-more-body">
+  <div>
+		<strong>SHOP BY COLLECTION</strong>: 
+		<a href="/collections/jon-renau-smart-lace-human-hair-collection">SMARTLACE HUMAN HAIR WIG COLLECTION</a> | 
+		<a href="/collections/jon-renau-toppers-hairpiece-collection">JON RENAU TOPPER COLLECTION</a> | 
+		<a href="/collections/jon-renau-care-styling-for-wigs">JON RENAU HAIR CARE &amp; STYLING PRODUCTS</a> | 
+		<a href="/collections/jon-renau-headwear-collection">JON RENAU HEADWEAR COLLECTION</a>
+	</div>
+  <div>
+		<strong>SHOP BY TYPE</strong>: 
+		<a href="/collections/jon-renau-wigs">JON RENAU WIGS</a> | 
+		<a href="/collections/jon-renau-toppers-hairpiece-collection">JON RENAU HAIR TOPPERS</a> | 
+		<a href="/collections/easihair-hairpieces">EASIHAIR HAIRPIECES</a> | 
+		<a href=" /collections/easihair-extensions">EASIHAIR EXTENSIONS</a>
+	</div>
+  <div>
+		<strong>SHOP BY FIBER</strong>: 
+		<a href="/collections/jon-renau-human-hair-wigs">JON RENAU HUMAN HAIR</a> | 
+		<a href="/collections/jon-renau-synthetic">JON RENAU SYNTHETIC</a> 
+	</div>
+  <div>
+		<strong>SHOP BY SEASON</strong>: 
+		<a href="/collections/jon-renau-fall-wig-collection">FALL COLLECTION</a> | 
+		<a href="/collections/jon-renau-spring-collection-wigs">SPRING COLLECTION</a>
+	</div>
+  <div>
+		<strong>SHOP BY COLOR</strong>: 
+		<a href="/collections/jon-renau-california-blondes">CALIFORNIA BLONDES</a> | 
+		<a href="/collections/arctic-color-collection-jon-renau">ARCTIC COLOR COLLECTION</a> | 
+		<a href="/collections/chocolate-collection-jon-renau">CHOCOLATE COLLECTION</a>
+	</div>
+  <div>
+		<strong>SHOP NEW</strong>: <a href="/collections/jon-renau-new-arrivals">NEW ARRIVALS FROM JON RENAU</a>
+	</div>
+</div>
+{%endif%}

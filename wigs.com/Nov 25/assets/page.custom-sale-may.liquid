@@ -1,0 +1,213 @@
+<style>
+  div#content.row a{text-decoration:underline;}
+  
+
+.homepage-section h2{margin-top:25px;}
+  #mobile-banners-container {display: flex;flex-wrap:wrap;justify-content:space-around;}
+  @media only screen and (min-width: 740px){
+  
+    #mobile-banners-container {display:none;}
+  
+  }
+
+
+div#content.row a{text-decoration:none;}
+h2#special_link:hover a{color:#c41949!important}
+h2#special_link2:hover a{color:#c41949!important}
+  #price-links{display:none;}
+  #mobile-price-links ul {margin:0px;padding:0px;display:flex; flex-wrap: nowrap;justify-content:space-between;list-style-type:none;}
+  #mobile-price-links ul li{width:30%}jj
+  #final-brand-tiles{display:none;} 	
+  
+  @media only screen and (min-width: 780px) {
+    #price-links{display:block;}
+    #final-brand-tiles{display:block;} 	
+    #mobile-price-links{display:none;}
+  }
+</style>
+
+
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+<h1>{{ page.title }}</h1>
+  
+  	<picture>
+     	<source srcset="https://cdn.shopify.com/s/files/1/1410/9094/files/1905_MSaleBanner_WishesDoComeTrue_30.jpg?14676" media="(max-width: 800px)"> 
+    	<img src="{{ page.metafields.template.banner }} " class="{{hide_banner}}" />      	
+	</picture>
+  {{ page.content }}
+  
+  
+  
+  {%if page.handle == "sale-may-2019"  %}  
+{% assign collection = collections['changes-synthetic-wig-ellen-wille'] %}
+{% assign second_collection_link_text = "Shop New Ellen Wille" %}
+{% assign second_collection_link_href = "/collections/changes-synthetic-wig-ellen-wille" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+  
+</div>
+  
+  
+  {% assign collection = collections['jon-renau-spring-collection-wigs'] %}
+{% assign second_collection_link_text = "Shop New Jon Renau" %}
+{% assign second_collection_link_href = "/collections/jon-renau-spring-collection-wigs" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+  
+</div>
+  
+    {% assign collection = collections['raquel-welch-spring-collection'] %}
+{% assign second_collection_link_text = "Shop New Raquel Welch" %}
+{% assign second_collection_link_href = "/collections/raquel-welch-spring-collection" %}
+{%assign second_collection_limit  = 4%}
+  
+<div class="row homepage-section no-fouc" >  
+  {% if settings.homepage-product-display == 'grid' %}
+  {% include 'product-grid' with collection %}
+  {% elsif settings.homepage-product-display == 'carousel' %}
+  {% include 'product-carousel' with collection %}
+  {% endif %}
+  
+</div>
+  
+  
+
+  
+  
+{%endif%}
+  
+  
+
+
+
+<div class="homepage-section"></div>
+<p> </p>
+<div class="gridlock-fluid">
+<div class="row" >
+<div class="row homepage-section" id="price-links">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/wigs-under-100"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/Under-_100_1.jpg?2318" alt="Under $100" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/wigs-under-200"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/Under-_200_1.jpg?2318" alt="Under $200" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/wigs-under-300"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/Under-_300_1.jpg?2318" alt="Under $300" /> </a></div>
+</div>
+<div id="mobile-price-links">
+  <ul>
+    <li><a href="/collections/wigs-under-100"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/UNDER-_100_3c684be3-f496-4e99-a65f-9acb03728571.jpg?2895"></a></li>
+	<li><a href="/collections/wigs-under-200"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/UNDER-_200_6e75294d-8197-474d-acba-d79623c70f9c.jpg?2895"></a></li>
+	<li><a href="/collections/wigs-under-300"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/UNDER-_300_57fd9592-36ef-4cd4-82ef-e5768376b9b1.jpg?2895"></a></li>
+  </ul>
+  </div>
+</div>
+</div>
+<hr style="color: #e5e5e5; background-color: #b6b6b6; margin: 10px 0px 35px;" />
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/new-arrivals"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/new_v2_2e077070-40a5-4c6b-8dad-8366b66c4f02.jpg?2094" alt="New Arrivals" />
+<div class="caption">
+<h3></h3>
+<p>SHOP NEW ARRIVALS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/allWigs_962fbb60-01ab-45ff-9049-4aba151b5f5c.jpg?2094" alt="All Wigs" />
+<div class="caption">
+<h3></h3>
+<p>SHOP ALL WIGS</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/womens-top-pieces-toppers"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/allToppers_39be8aa8-3757-4e29-8db9-8bfc633f2b18.jpg?2094" alt="Best Sellers" />
+<div class="caption">
+<h3></h3>
+<p>SHOP ALL TOPPERS</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/short-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/short_5f97c8c8-4d4f-4014-bfd1-e37b5b2fe2ab.jpg?2094" alt="Short Styles" />
+<div class="caption">
+<h3></h3>
+<p>SHOP SHORT STYLES</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/mid-length-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/mid-length.jpg?2094" alt="Mid-Length Styles" />
+<div class="caption">
+<h3></h3>
+<p>SHOP MID-LENGTH STYLES</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/long-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/long_bf6a73c7-a351-45db-96c0-fedbd40f0454.jpg?2094" alt="Long Styles" />
+<div class="caption">
+<h3></h3>
+<p>SHOP LONG STYLES</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/lace-front-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/lace_front_81158a31-740b-4617-b4a6-e5675de86589.jpg?2094" alt="Lace Front" />
+<div class="caption">
+<h3></h3>
+<p>SHOP LACE FRONT</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/human-hair-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/human_0050c1a2-36ef-438a-b36b-12343a9fd713.jpg?2094" alt="Human Hair" />
+<div class="caption">
+<h3></h3>
+<p>SHOP HUMAN HAIR</p>
+</div>
+</a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/synthetic-hair-wigs"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/synthetic_867d3d5b-413a-4fcf-81eb-b9772e6aa207.jpg?2094" alt="Synthetic Hair" />
+<div class="caption">
+<h3></h3>
+<p>SHOP SYNTHETIC HAIR</p>
+</div>
+</a></div>
+</div>
+</div>
+</div>
+<hr style="color: #e5e5e5; background-color: #b6b6b6; margin: 20px 0px 35px;" />
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/ellen-wille"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0005_EW_c2b24403-1b6c-48c7-91df-5c462c9ecb8d.jpg?2794" alt="Ellen Wille" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/raquel-welch"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0003_RW_589cb4bd-4316-4ed8-a20c-8d67f892d7e0.jpg?2307" alt="Raquel Welch" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/jon-renau-wigs-hairpieces"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0004_JR_6eca5320-ebd9-4522-950d-7df7f0d8b265.jpg?2307" alt="Jon Renau" /> </a></div>
+</div>
+</div>
+</div>
+<div class="gridlock-fluid">
+<div class="row">
+<div class="row homepage-section" id="final-brand-tiles">
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/envy"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_EY.jpg?2794" alt="Envy" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/noriko"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0001_NO_6b3b0e67-8b86-44a4-ac2f-25a8f42c4282.jpg?2794" alt="Noriko" /> </a></div>
+<div class="homepage-promo desktop-4 tablet-2 mobile-3 "><a href="/collections/gabor"> <img src="https://cdn.shopify.com/s/files/1/1410/9094/files/brandTile_template_0000s_0000_EG_ed859faf-1b00-4223-b386-61cd12737c83.jpg?2794" alt="Gabor" /> </a></div>
+</div>
+</div>
+</div>
+<div class="row homepage-section" style="border: none;">
+<div>
+<h2 id="special_link" style="font-size: 1.4em; border: none; text-align: right; margin: 0 0 30px; padding-right: 35px;"><span style="text-decoration: underline;"><a href="https://www.wigs.com/pages/brands">Shop ALL BRANDS ›</a></span></h2>
+</div>
+</div>
+<div><!-- end second row --></div>
+
+  
+</div>

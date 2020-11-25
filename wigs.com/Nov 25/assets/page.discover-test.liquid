@@ -1,0 +1,147 @@
+<style>
+  /*.youtube_thumbnails {display:inline-block} 
+@media only screen and (max-width: 1400px) {
+  .youtube_thumbnails {display:block; }    
+}*/
+.youtube_thumbnails,.ambassador_thumbnails,.recommended_thumbnails {display: flex;flex-flow: row;flex-wrap: nowrap;justify-content: space-between;align-items: center;}
+  .youtube_thumbnails{margin-bottom:30px;}
+.youtube_thumbnails a {display:inline-block;} 
+.ambassador_thumbnails a img,.recommended_thumbnails a img {display:inline-block;height:100%;}
+ 
+
+  
+  #page{margin-bottom:0px;}
+
+
+
+.article-list-container {text-align:left;}
+.articles-list {margin: 30px 0px; clear:both;display:flex;list-style-type: none; flex-wrap: nowrap;justify-content:space-between}
+
+.article-list-item {width: 250px;margin:40px 5px;margin-bottom:0px;}
+.article-list-item div{text-align:center;}
+  #forum-list-item-container div {text-align:left;}
+  #forum-list-item-container{width:100%;}
+.forum-list {margin: 0px 0px; clear:both; display:block; list-style-type: none; flex-wrap: wrap;}
+  
+ .forum_posts_list{ display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;margin-bottom: 30px;}
+  li.forum_post {display: inline-block;width: 32%;min-width: 360px;margin-top: 30px;}
+  .forum_profile_picture {float: left;margin-right: 15px;overflow: auto;height:85px;}
+  .forum_profile_picture a img {border-radius: 5px;width: 50px;} 
+  .forum_title a {font-weight: bold;}
+  .community-logo {display: inline-block;}
+  .community-logo img{float:left;}
+	.community-nav {padding-top: 0px;display:inline-block;vertical-align:top;}
+  #page ul.community-nav-list{list-style-type:none;padding-left:0px;}
+  #page ul.community-nav-list li {margin-right: 2px;display: inline-block;}
+
+
+   @media screen and (max-width:770px) {
+
+     
+  .youtube_thumbnails,.ambassador_thumbnails,.recommended_thumbnails,.articles-list {flex-wrap:wrap;justify-content:center;}
+   .youtube_thumbnails a img, .recommended_thumbnails a img{margin:20px 20px;}
+   .ambassador_thumbnails a img {margin: 20px 5px;}
+   .forum_posts_list{justify-content:center;}
+     .article-list-item {margin:20px 10px;}
+} 
+  
+  @media screen and (max-width:770px) {
+    .community-logo{display:block;}
+  	.community-logo img {float:none;display: block; margin:auto auto;}
+    .community-nav-list{text-align:center;}
+    .community-nav{padding-top:0px;}
+  
+  
+  }
+  
+</style>
+<div id="page" class="desktop-12 tablet-6 mobile-3">
+  
+<h1>{{ page.title }}</h1>
+  
+{{ page.content }}
+</div>
+
+
+<body>
+  
+  <!-------------forum-------------->
+  
+<hr style='background-color:#f2f2f2'>
+  <div><strong> Our Forum | Share and Discuss </strong></div>  
+  <ul class='forum-list'>
+  <div class='article-list-container'>    
+    <li class='article-list-item' id='forum-list-item-container'> {% include 'forum-posts-feed' %}  </li>
+</div>
+      </ul>
+  <div style="text-align: right;"><a href="https://www.wigs.org"><button>Read More &gt;</button></a></div>
+  <hr style='background-color:#{{hr_colors[forloop.index0]}}'>
+
+
+
+<!-------------blog-------------->
+
+<div class='article-list-container'>  
+  {%- assign blog_handles = "news," | split: ',' -%}
+ 
+{%- assign hr_colors = "f2f2f2" | split: ',' -%}
+  {%- for blog_handle in blog_handles -%}
+    <div id="blogfooterlink"><strong>Blog | All About Wigs</strong></div>  
+  <ul class='articles-list'>
+    {% for article in blogs[blog_handle].articles %}	
+	{%- if forloop.index <= 4 -%}
+   <li class='article-list-item'>
+	{% if article.image %} <div><a href='{{article.url}}'><img src='{{ article.image.src | img_url: 'medium'}}'></a></div> {% endif %}
+     {{ article.title | link_to: article.url }}
+	</li>
+	{%- endif -%}  	
+  {%- endfor -%}
+  </ul>
+  <div style="text-align: right;"><a href="https://www.wigs.com/blogs/news"><button>Read More &gt;</button></a></div>
+<hr style='background-color:#{{hr_colors[forloop.index0]}}'>
+{%- endfor -%}
+</div>
+
+<!-------------magazine-------------->
+<div class='article-list-container'>  
+  {%- assign blog_handles = "magazine," | split: ',' -%}
+  {%- assign hr_colors = "f2f2f2" | split: ',' -%}
+  {%- for magazine_handle in blog_handles -%}
+  <p><strong>Magazine</strong></p>
+  <ul class='articles-list'>
+    {% for article in blogs[magazine_handle].articles %}	
+	{%- if forloop.index <= 4 -%}
+   <li class='article-list-item'>
+	{% if article.image %} <div><a href='{{article.url}}'><img src='{{ article.image.src | img_url: 'medium' }}' ></a></div> {% endif %}
+     {{ article.title | link_to: article.url }}
+	</li>
+	{%- endif -%}  	
+  {%- endfor -%}
+  </ul>
+  <div style="text-align: right;"><a href="https://www.wigs.com/blogs/magazine"><button>Read More &gt;</button></a></div>
+  <hr style='background-color:#{{hr_colors[forloop.index0]}}'>
+{%- endfor -%}
+</div>
+
+<!-------------news-------------->
+<div class='article-list-container'>  
+  {%- assign blog_handles = "press-releases," | split: ',' -%}
+ 
+{%- assign hr_colors = "f2f2f2" | split: ',' -%}
+  {%- for press-releases_handle in blog_handles -%}
+    <div><strong>News | Stay Up to Date</strong></div>  
+  <ul class='articles-list'>
+    {% for article in blogs[press-releases_handle].articles %}	
+	{%- if forloop.index <= 4 -%}
+   <li class='article-list-item'>
+	{% if article.image %} <div><a href='{{article.url}}'><img src='{{ article.image.src | img_url: 'medium' }}' ></a></div> {% endif %}
+     {{ article.title | link_to: article.url }}
+	</li>
+	{%- endif -%}  	
+  {%- endfor -%}
+  </ul>
+  <div style="text-align: right;"><a href="https://www.wigs.com/blogs/press-releases"><button>Read More &gt;</button></a></div>
+  <hr style='background-color:#{{hr_colors[forloop.index0]}}'>
+{%- endfor -%}
+</div>
+</body>

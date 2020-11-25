@@ -1,0 +1,79 @@
+{% if product.type == "Wigs"  %}
+{%unless product.tags contains 'PRE-LAUNCH'%}
+{%assign bh_special_offer = true %}
+{%endunless%}
+{%else%}
+{%assign bh_special_offer = false %}
+{%capture bh_special_offer_banner = %}{% endcapture %}
+{%endif%}
+{%assign bh_special_offer = false %}
+{%if bh_special_offer %}
+
+
+
+
+
+
+
+
+{%capture bh_special_offer_banner = %}<a href="#" id="bh-special-offer-image"><img src="https://cdn.shopify.com/s/files/1/2636/2774/files/1911_productPageAdbanner_BMShapingCream.jpg?3658"></a>{% endcapture %}
+
+{%assign special_offer_product = all_products["shaping-creme-wig-styling-product-beautimark"] %}
+{%assign special-offer-image =  special_offer_product.featured_image | img_url: '100x100 %}
+{%assign offer_disabled = "disabled" %}
+{%if product.selected_variant.id  %}
+{%assign offer_disabled = "" %}
+{%endif%}
+
+
+<style>
+  #bh-special-offer-container{margin: 50px 0px;
+    float: left;
+    clear: left;
+  width: 100%;}
+  .special-offer-was{
+    text-decoration: line-through;}
+  #special-offer-text{}
+  #special-offer-items span{color: #c41949;}
+  #special-offer-items img{float:left;}
+  #special-offer-input{ display:block;}
+  #special-offer-input input{ width:auto;min-width:initial;}
+  #special-offer-image{display:inline;float:left;background-repeat:no-repeat;width:60px;height:47px;background-position: -10px -26px;background-image:url("{{special-offer-image}}");}
+  #special-offer-text strong{}
+  
+</style>
+
+
+<div id="bh-special-offer-container">
+  
+
+
+<div id="special-offer-items">
+  
+  <div><strong><span id='special-offer-text'>Easy styling with BeautiMark's Shaping Creme!</span></strong></div>
+  
+  <div id="special-offer-image">
+<!--   	<img src="{{special-offer-image}}"> -->
+  </div>
+  
+  <div id="special-offer-text">
+    
+    <strong>$5.00</strong> <span class="special-offer-was">${{special_offer_product.compare_at_price_max|money_without_currency  }}</span> <span>MSRP</span>
+  </div>
+  <div id="special-offer-input">
+  <input type="checkbox" style="position:relative;width:30px;height:18px;top:5px;min-width:0px;" name="add-special-offer" id="add-special-offer" data-offer-product="{{special_offer_product.variants[0].id}}" {{offer_disabled}}> <label for="add-special-offer" style="display: inline;float: none;line-height: 0px;margin: 0;">Add this offer to my cart</label>
+  </div>
+  
+  
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+{%endif%}

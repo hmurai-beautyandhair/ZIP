@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+
+    <title>{{ shop.name }} - {{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+	 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+		.product__description__property 
+    </style>
+<!-- lucky orange -->
+<script type='text/javascript'>
+/*
+  window.__lo_site_id = 110521;
+
+   (function() {
+    var wa = document.createElement('script'); wa.type = 'text/javascript'; wa.async = true;
+    wa.src = 'https://d10lpsik1i8c69.cloudfront.net/w.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(wa, s);
+    })();
+*/
+
+</script>
+  </head>
+  <body>
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+      </div>
+    </div>
+{% include 'sweettooth-initializer' %}
+{% include 'sweettooth-points-slider' %}
+    {{ tracking_code }}
+
+  </body>
+<script>
+  $(document).ready(function(){
+    
+    $('#checkout_shipping_address_company').attr("autocomplete","nope");
+    
+    
+    
+// limit these fields to 30 characters    
+var fields_to_limit = ['checkout_shipping_address_company','checkout_shipping_address_address1','checkout_shipping_address_address2','checkout_shipping_address_city'];    
+    
+    for(var i = 0; i < fields_to_limit.length; i++){
+		var field_to_limit = $('#'+fields_to_limit[i]);
+    		if(field_to_limit.length > 0){
+			field_to_limit.attr('maxlength','30');
+		}
+	}
+
+function removeFreeShipping(){
+
+	if($('.applied-reduction-code__information').text() !== "" ){		
+		var free_shipping_input = $('input#checkout_shipping_rate_id_shopify-free20standard20shipping20-20us20orders20over2050-000');
+		free_shipping_input.attr('checked',false);
+		free_shipping_input.closest('.content-box__row').remove();
+
+	}
+	if($('.content-box__row input:checked').length === 0){
+		$('.content-box__row input').eq(0).click();
+	}
+
+}
+
+//setInterval( removeFreeShipping, 500);
+
+
+function removeAllButGroundShipping (){
+    if ($('.applied-reduction-code__information').text() == 'FREESHIP' || $('.applied-reduction-code__information').text() == 'SHIPFREE' ){
+
+        var ground_shipping_radio = $('#checkout_shipping_rate_id_shopify-standard20shipping207-920business20days-795');
+        ground_shipping_radio.click();
+        var first_option = ground_shipping_radio.closest('.content-box__row');
+        var other_options = first_option.siblings('.content-box__row');
+        other_options.remove();
+
+    }
+}
+//removeAllButGroundShipping();
+//setInterval(removeAllButGroundShipping,400);
+
+
+setInterval(function(){
+$code_input = $('#checkout_reduction_code');
+$code_input_value = $('#checkout_reduction_code').val();
+$apply_button =$code_input.closest('.field__input-btn-wrapper').find('button');
+if(  $code_input_value !== '' ){
+$apply_button.removeClass('btn--disabled').removeAttr('disabled');
+}
+},600)    
+    
+    
+setTimeout(function(){
+
+var current_sweeth_tooth_text = $('h3.sweettooth-points-balance-heading').text();
+$('h3.sweettooth-points-balance-heading').text(current_sweeth_tooth_text+". Use the slider below to change the amount of points redeemed.");
+
+
+},1500)    
+    
+
+
+});
+</script>
+</html>

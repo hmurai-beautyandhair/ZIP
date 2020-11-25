@@ -1,0 +1,6 @@
+{%- comment -%}This will be the default output {%- endcomment -%}
+{%- assign price_output = product.price -%}
+{%- if product.selected_variant  -%}
+{%- assign price_output = product.selected_variant.price -%}
+{%- endif -%}
+{{price_output | money_without_currency}}

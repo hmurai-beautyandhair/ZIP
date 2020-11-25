@@ -1,0 +1,162 @@
+<!-- /snippets/ajax-cart-template.liquid -->
+{% comment %}
+
+  This snippet provides the default handlebars.js templates for
+  the ajax cart plugin. Use the raw liquid tags to keep the
+  handlebar.js template tags as available hooks.
+
+{% endcomment %}
+  <script id="CartTemplate" type="text/template">
+
+  {% raw %}
+    <form action="/cart" method="post" novalidate class="cart ajaxcart">
+      <div class="ajaxcart__inner">
+        {{#items}}
+
+        
+        <div class="ajaxcart__product">
+          <div class="ajaxcart row" data-line="{{line}}">
+
+              <div class="grid__item desktop-4 tablet-2 mobile-1">
+                <a href="{{url}}" class="ajaxcart__product-image"><img src="{{img}}" alt=""></a>
+              </div>
+              <div class="desktop-8 tablet-4 mobile-2">
+                <p>
+                  <a href="{{url}}" data-test="{{collection}}" class="ajaxcart__product-name">{{name}}</a>
+                  {{#if variation}}
+                    <span class="ajaxcart__product-meta">{{variation}}</span>
+                  {{/if}}
+                  {{#properties}}
+                    {{#each this}}
+                      {{#if this}}
+                        <span class="ajaxcart__product-meta" style="display:none;"><!-- {{@key}}: --> {{this}}</span>
+                      {{/if}}
+                    {{/each}}
+                  {{/properties}}
+                  {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+                    <span class="ajaxcart__product-meta">{{ vendor }}</span>
+                  {% endraw %}{% endif %}{% raw %}
+                </p>
+				{%endraw%}
+				{%assign apply_sitewide_discount = true%}
+                {%if apply_sitewide_discount%}
+                {%raw%}
+                {{#if discounted_price}}
+				<p><s><strong style="color:#ccc">{{{price}}}</strong></s> <strong data-ajax-cart-vendor="{{vendor}}">{{{discounted_price}}}</strong></p>
+                {{else}}
+                <p><strong data-ajax-cart-vendor="{{vendor}}">{{{price}}}</strong></p>                	                
+                {{/if}}
+				
+                
+                {%endraw%}
+				{%else%}
+                {%raw%}<p><strong data-ajax-cart-vendor="{{vendor}}">{{{price}}}</strong></p>{%endraw%}
+				{%endif%}
+
+                
+                {%raw%} 
+                <div class="display-table">
+                  <div class="display-table-cell">
+                    <div class="ajaxcart__qty">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus quantity-increment" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+                        <span>&minus;</span>
+                      </button>
+                      <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus quantity-increment" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">                        
+                        <span>+</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        {{/items}}
+
+        {% endraw %}{% if settings.cart_notes_enable %}{% raw %}
+          	
+			<div>
+            <label for="CartSpecialInstructions">{% endraw %}{{ 'cart.general.note' | t }}{% raw %}</label>
+            <textarea name="note" class="input-full" id="CartSpecialInstructions" style="height:60px;">{{ note }}</textarea>
+          </div>
+        {% endraw %}{% endif %}{% raw %}
+      </div>
+      <div class="ajaxcart__footer row">
+<!-- donation changes -->
+
+	<div style="text-align:center;position:relative;">
+<div style="font-size:12px;position:absolute;left:100px;top:-5px;">Donate &amp; Support </div>
+<img src="https://cdn.shopify.com/s/files/1/1410/9094/files/breastcancerdotorg_update_logo_cropped.gif?530250297815348532" style="width:200px;">
+</div>
+<div style="position:relative;text-align:center;margin: 0 0 1.5em 0;">
+<div style="font-size:24px;margin-bottom:10px;">
+<input style="position:relative;width:30px;height:22px;top:5px;min-width:0px;" type="checkbox" name="bh_donation" >
+Donate $<span id='bh_donation_amount'>0.50</span>?<span id="bh_donate_help" style="cursor:pointer;"></span><i class="ico"   style="display: inline-block; color: #fff; background-color: #aaa; text-align: center; width: 1.1em; border-radius: 50px; font-size: 0.9em; margin-left: 8px; font-family: serif;cursor:pointer;" id="breast_cancer_more_info">i</i>
+</div>
+<span style="font-size:12px;">Yes, I'd love to help others with Breast Cancer</span>
+</div>
+<div id="donation_modal" style="border:5px solid #eee;display:none;max-width:460px;text-align:justify;background-color:#fff;padding: 10px;">
+  <div><div style="text-align:center;margin-bottom:30px;"><img src="https://cdn.shopify.com/s/files/1/1410/9094/files/bco_horiz_color_tcm8-330114.gif?1990615054084028986"></div><div style="margin-bottom:20px;">Breastcancer.org was founded in 2000 by renowned breast oncologist Marisa C. Weiss, M.D. to help those affected by breast cancer make sense of complex medical information and empower them to make the best decisions throughout their medical and emotional journey.</div> <div>Roundup your purchase today with a donation to Breastcancer.org – and help someone facing a breast cancer diagnosis to get the information and support they need to make the best decisions for their lives.</div></div>
+</div>
+<!-- end donation app -->
+<p class="text-center">{% endraw %}{{ 'cart.general.shipping_at_checkout' | t }}{% raw %}</p>
+
+          <div class="desktop-half tablet-half mobile-half">
+            <p><strong>{% endraw %}{{ 'cart.general.subtotal' | t }}{% raw %}</strong></p>
+          </div>
+          <div class="desktop-half tablet-half mobile-half">
+            <p class="text-right"><strong>{{{totalPrice}}}</strong></p>
+          </div>
+
+        
+        <button type="submit" class="cart__checkout" name="checkout" style="background-color: #006ab6">
+          {% endraw %}{{ 'cart.general.checkout' | t }}{% raw %} &rarr;
+        </button>
+        {% endraw %}{% if additional_checkout_buttons %}
+          <!-- <div class="additional_checkout_buttons">{{ content_for_additional_checkout_buttons }}</div> -->
+        {% endif %}{% raw %}
+      </div>
+      
+    </form>
+  {% endraw %}
+  </script>
+  <script id="AjaxQty" type="text/template">
+  {% raw %}
+    <div class="ajaxcart__qty">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}">
+        <span class="icon icon-minus" aria-hidden="true"></span>
+        <span class="fallback-text">&minus;</span>
+      </button>
+      <input type="text" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" aria-label="quantity" pattern="[0-9]*">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-qty="{{itemAdd}}">
+        <span class="icon icon-plus" aria-hidden="true"></span>
+        <span class="fallback-text">+</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="JsQty" type="text/template">
+  {% raw %}
+    <div class="js-qty">
+      <button type="button" class="js-qty__adjust js-qty__adjust--minus quantity-increment" data-id="{{id}}" data-qty="{{itemMinus}}">
+        <span>&minus;</span>
+      </button>
+      <input type="text" class="js-qty__num" value="{{itemQty}}" min="1" data-id="{{id}}" aria-label="quantity" pattern="[0-9]*" name="{{inputName}}" id="{{inputId}}">
+      <button type="button" class="js-qty__adjust js-qty__adjust--plus quantity-increment" data-id="{{id}}" data-qty="{{itemAdd}}">
+        <span>+</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>
+<script>
+  $('body').on('click','#breast_cancer_more_info',function(){ $.fancybox('#donation_modal'); });
+//   function addModalClickEvent(){
+// 		var bc_info = document.getElementById('breast_cancer_more_info');
+//     	bc_info.addEventListener("click",function(){   $.fancybox('#round_up_modal');  });
+
+// 	}
+// 	addModalClickEvent();
+</script>
+
+

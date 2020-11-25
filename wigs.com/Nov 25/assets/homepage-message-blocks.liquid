@@ -1,0 +1,13 @@
+{% assign grid = 0 %}
+{% if settings.welcome_1 != blank %}{% assign grid = grid | plus: 1 %}{% endif %}
+{% if settings.welcome_2 != blank %}{% assign grid = grid | plus: 1 %}{% endif %}
+{% if settings.welcome_3 != blank %}{% assign grid = grid | plus: 1 %}{% endif %} 
+{% if grid > 0 %} 
+<div class="row no-fouc">
+{% for i in (1..3) %}
+{% assign notification_url = 'welcome_' | append: i | append: '_link' %}
+{% assign notification_text = 'welcome_' | append: i  %}
+{% if settings[notification_text] != blank %}<a href="{{ settings[notification_url] }}"><div class="desktop-{{ 12 | divided_by: grid }} tablet-{{ 6 | divided_by: grid }} mobile-3 notification">{{ settings[notification_text] }}</div></a>{% endif %}
+{% endfor %}  
+</div>
+{% endif %}

@@ -1,0 +1,2 @@
+insertFBVideo('wigsonline/videos/10155330674165849/');
+//new something else  now

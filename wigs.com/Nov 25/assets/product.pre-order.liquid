@@ -1,0 +1,79 @@
+<div itemscope itemtype="http://schema.org/Product" id="product-{{ product.id }}" class="product-page">
+
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  <div id="mob-product-images" class="owl-carousel desktop-hide tablet-hide mobile-3">
+    {% for image in product.images %}
+    <div class="mthumb"><img src="{{ image | product_img_url: 'master' }}" alt="{{ image.alt | escape }}"></div>
+    {% endfor %}
+  </div>    
+
+
+  <div id="product-photos" class="desktop-5  tablet-3 mobile-hide">
+
+    {% for image in product.images %}
+    {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
+
+    {% if forloop.first %}
+    <div class="bigimage-{{ product.id }} desktop-10 tablet-5">
+      <img id="{{ product.id }}" data-image-id="{{ image.id }}" src="{{ featured_image | img_url: 'master' }}" alt='{{ image.alt }}' title="{{ product.title }}"/>
+    </div>
+    {% endif %}    
+    <a href="{{ image | product_img_url: 'master' }}" data-image-id="{{ image.id }}" class="clicker-{{ product.id }}">
+      <img class="thumbnail desktop-2 tablet-1" src="{{ image | product_img_url: 'medium' }}" alt="{{ image.alt | escape }}" data-image-id="{{ image.id }}" />
+    </a>
+    {% endfor %} 
+  </div>
+
+  <script>
+    $('.bigimage-{{ product.id }}').zoom();		
+
+      $('.clicker-{{ product.id }}').click(function() {
+      var newImage = $(this).attr('href');
+    $( '.bigimage-{{ product.id }} img' ).attr({ src: newImage }); 
+      return false;
+      });
+  </script>
+
+  <div id="product-right" class="desktop-7 tablet-3 mobile-3">
+    <div id="product-description" class="desktop-10 tablet-6 mobile-3">
+      {% if settings.vendor %}<h2>{{ product.vendor }}</h2>{% endif %}
+      <h1 itemprop="name">{{ product.title }}</h1>
+      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <p class="product-price">
+          {% if product.available %}
+          {% if product.compare_at_price > product.price %}
+          <span class="product-price" itemprop="price">{{ product.price | money }}</span>&nbsp;<span class="was">{{ product.compare_at_price | money }}</span>
+          {% else %}
+          <span class="product-price" itemprop="price">{{ product.price | money }}</span>
+          {% endif %}
+          {% else %}
+          <span class="product-price" itemprop="price">{{ 'products.product.sold_out' | t }}</span>
+          {% endif %}
+        </p>    
+
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+        {% include 'pre-order-form' %}
+      </div>
+
+      {{ product.description }}
+
+      <div class="desc">
+        {% include 'social' with product %}
+      </div>
+    </div>
+
+    <div id="related" class="desktop-2 tablet-hide mobile-hide">
+      {% include 'related-products' %}
+    </div>	
+  </div>
+  <div class="clear"></div>
+
+
+  <div id="looked-at" class="desktop-12 mobile-hide">
+    {% include 'recently-viewed' %}
+  </div>
+</div>
